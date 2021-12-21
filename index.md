@@ -1,3 +1,3 @@
 # ruby-msg
 
-- [doc](doc/index.html)
+_Quick links_: [RDoc](doc/index.html)

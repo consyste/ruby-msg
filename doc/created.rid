@@ -1,4 +1,4 @@
-Tue, 21 Dec 2021 13:08:17 +0900
+Tue, 21 Dec 2021 13:16:14 +0900
 ./bin/mapitool	Fri, 17 Dec 2021 22:03:33 +0900
 ./ChangeLog	Fri, 17 Dec 2021 22:03:33 +0900
 ./contrib/rtf2html.c	Fri, 17 Dec 2021 22:03:33 +0900
@@ -8,8 +8,8 @@ Tue, 21 Dec 2021 13:08:17 +0900
 ./data/mapitags.yaml	Fri, 17 Dec 2021 22:03:33 +0900
 ./data/named_map.yaml	Fri, 17 Dec 2021 22:03:33 +0900
 ./data/types.yaml	Fri, 17 Dec 2021 22:03:33 +0900
-./Dev.md	Sat, 18 Dec 2021 18:55:20 +0900
-./docs/index.md	Tue, 21 Dec 2021 13:08:11 +0900
+./Dev.md	Tue, 21 Dec 2021 13:16:12 +0900
+./docs/index.md	Tue, 21 Dec 2021 13:14:36 +0900
 ./docs/_config.yml	Tue, 21 Dec 2021 13:08:11 +0900
 ./FIXES	Fri, 17 Dec 2021 22:03:33 +0900
 ./Gemfile	Sat, 18 Dec 2021 18:49:17 +0900
@@ -27,39 +27,8 @@ Tue, 21 Dec 2021 13:08:17 +0900
 ./lib/mapi/types.rb	Fri, 17 Dec 2021 22:03:33 +0900
 ./lib/mapi/version.rb	Fri, 17 Dec 2021 22:03:33 +0900
 ./lib/mapi.rb	Fri, 17 Dec 2021 22:03:33 +0900
-./Mail.mbox	Sat, 18 Dec 2021 19:16:55 +0900
 ./Rakefile	Fri, 17 Dec 2021 22:14:21 +0900
+./README.md	Tue, 21 Dec 2021 13:11:46 +0900
 ./README.rdoc	Fri, 17 Dec 2021 22:03:33 +0900
 ./ruby-msg.gemspec	Fri, 17 Dec 2021 22:06:58 +0900
-./test/contact-plain.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/contact-unicode.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/contact-unicode.xml	Fri, 17 Dec 2021 22:03:33 +0900
-./test/contact.vcf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/note.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty2.xml	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty3.xml	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty_1-orig.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty_1-orig.txt	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty_2-with_custom_properties.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty_2-with_custom_properties.txt	Fri, 17 Dec 2021 22:03:33 +0900
-./test/qwerty_3.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/Swetlana Novikova.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/Swetlana Novikova.vcf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/Swetlana Novikova.xml	Fri, 17 Dec 2021 22:03:33 +0900
-./test/test_Blammo.msg	Fri, 17 Dec 2021 22:03:33 +0900
-./test/test_convert_contact.rb	Sat, 18 Dec 2021 12:06:22 +0900
-./test/test_convert_note.rb	Sat, 18 Dec 2021 12:06:38 +0900
-./test/test_mime.rb	Sat, 18 Dec 2021 18:45:05 +0900
-./test/test_msg.rb	Sat, 18 Dec 2021 12:06:51 +0900
-./test/test_property_set.rb	Sat, 18 Dec 2021 18:44:55 +0900
-./test/test_rtf.data	Fri, 17 Dec 2021 22:03:33 +0900
-./test/test_types.rb	Sat, 18 Dec 2021 12:07:00 +0900
-./test/wmf/blah.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/fant.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/PPTTest.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/SPC_color.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/SPC_gray.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/symbols.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/test.wmf	Fri, 17 Dec 2021 22:03:33 +0900
-./test/wmf/test2.wmf	Fri, 17 Dec 2021 22:03:33 +0900
 ./TODO	Fri, 17 Dec 2021 22:03:33 +0900
