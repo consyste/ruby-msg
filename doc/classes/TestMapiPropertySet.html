@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>TestMapiPropertySet</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+TestMapiPropertySet
+</h1>
+<ol class='paths'>
+<li>
+<a href="../files/test/test_convert_contact_rb.html">test/test_convert_contact.rb</a>
+</li>
+<li class='other'>
+<a href="../files/test/test_convert_note_rb.html">test/test_convert_note.rb</a>
+</li>
+<li class='other'>
+<a href="../files/test/test_property_set_rb.html">test/test_property_set.rb</a>
+</li>
+<li>
+<a class='show' href='#' onclick='this.parentNode.parentNode.className += &quot; expanded&quot;; this.parentNode.removeChild(this); return false'>show all</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Minitest::Test</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'></div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-test_complex_keys">test_complex_keys</a></li>
+<li><a href="#method-i-test_constants">test_constants</a></li>
+<li><a href="#method-i-test_contact_from_msg">test_contact_from_msg</a></li>
+<li><a href="#method-i-test_contact_from_property_hash">test_contact_from_property_hash</a></li>
+<li><a href="#method-i-test_lookup">test_lookup</a></li>
+<li><a href="#method-i-test_property_set_basics">test_property_set_basics</a></li>
+<li><a href="#method-i-test_pseudo_properties">test_pseudo_properties</a></li>
+<li><a href="#method-i-test_simple_key">test_simple_key</a></li>
+<li><a href="#method-i-test_using_pseudo_properties">test_using_pseudo_properties</a></li>
+</ol>
+</div>
+<div id='context'>
+<div id='includes'>
+<h2>Included modules</h2>
+<ol>
+<li><a href="Mapi.html">Mapi</a></li>
+</ol>
+</div>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-test_complex_keys'>
+<a name='method-i-test_complex_keys'></a>
+<div class='synopsis'>
+<span class='name'>test_complex_keys</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_complex_keys-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_complex_keys-source'><span class="ruby-comment"># File test/test_property_set.rb, line 27</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_complex_keys</span>&#x000A;        <span class="ruby-identifier">key</span> = <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&#39;Keywords&#39;</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PS_PUBLIC_STRINGS</span>&#x000A;        <span class="ruby-comment"># note that the inspect string now uses symbolic guids</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;#&lt;Key PS_PUBLIC_STRINGS/&quot;Keywords&quot;&gt;&#39;</span>, <span class="ruby-identifier">key</span>.<span class="ruby-identifier">inspect</span>&#x000A;        <span class="ruby-comment"># note that this isn&#39;t categories</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-value">:keywords</span>, <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_sym</span>&#x000A;        <span class="ruby-identifier">custom_guid</span> = <span class="ruby-string">&#39;00020328-0000-0000-c000-deadbeefcafe&#39;</span>&#x000A;        <span class="ruby-identifier">key</span> = <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-value">0x8000</span>, <span class="ruby-constant">Ole</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span><span class="ruby-operator">::</span><span class="ruby-constant">Clsid</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">custom_guid</span>)&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-node">&quot;#&lt;Key {#{custom_guid}}/0x8000&gt;&quot;</span>,  <span class="ruby-identifier">key</span>.<span class="ruby-identifier">inspect</span>&#x000A;        <span class="ruby-identifier">key</span> = <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-value">0x8005</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PSETID_Address</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;file_under&#39;</span>, <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_s</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_constants'>
+<a name='method-i-test_constants'></a>
+<div class='synopsis'>
+<span class='name'>test_constants</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_constants-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_constants-source'><span class="ruby-comment"># File test/test_property_set.rb, line 9</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_constants</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;00020328-0000-0000-c000-000000000046&#39;</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PS_MAPI</span>.<span class="ruby-identifier">format</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_contact_from_msg'>
+<a name='method-i-test_contact_from_msg'></a>
+<div class='synopsis'>
+<span class='name'>test_contact_from_msg</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_contact_from_msg-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_contact_from_msg-source'><span class="ruby-comment"># File test/test_convert_contact.rb, line 56</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_contact_from_msg</span>&#x000A;        <span class="ruby-comment"># load some msg contacts and convert them...</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_contact_from_property_hash'>
+<a name='method-i-test_contact_from_property_hash'></a>
+<div class='synopsis'>
+<span class='name'>test_contact_from_property_hash</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_contact_from_property_hash-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_contact_from_property_hash-source'><span class="ruby-comment"># File test/test_convert_contact.rb, line 10</span>&#x000A;        <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_contact_from_property_hash</span>&#x000A;                <span class="ruby-identifier">make_key1</span> = <span class="ruby-identifier">proc</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">id</span> }&#x000A;                <span class="ruby-identifier">make_key2</span> = <span class="ruby-identifier">proc</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">id</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PSETID_Address</span> }&#x000A;                <span class="ruby-identifier">store</span> = {&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x001a</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;IPM.Contact&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x0037</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;full name&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a06</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;given name&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a08</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business telephone number&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a11</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;surname&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a15</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;postal address&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a16</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;company name&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a17</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;title&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a18</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;department name&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key1</span>[<span class="ruby-value">0x3a19</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;office location&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8005</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;file under&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x801b</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x802b</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;web page&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8045</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address street&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8046</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address city&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8047</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address state&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8048</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address postal code&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8049</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address country&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x804a</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;business address post office box&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8062</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;im address&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8082</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;SMTP&#39;</span>,&#x000A;                        <span class="ruby-identifier">make_key2</span>[<span class="ruby-value">0x8083</span>] <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;email@address.com&#39;</span>&#x000A;                }&#x000A;                <span class="ruby-identifier">props</span> = <span class="ruby-constant">PropertySet</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">store</span>&#x000A;                <span class="ruby-identifier">message</span> = <span class="ruby-constant">Message</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">props</span>&#x000A;                <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;text/x-vcard&#39;</span>, <span class="ruby-identifier">message</span>.<span class="ruby-identifier">mime_type</span>&#x000A;                <span class="ruby-identifier">vcard</span> = <span class="ruby-identifier">message</span>.<span class="ruby-identifier">to_vcard</span>&#x000A;                <span class="ruby-identifier">assert_equal</span> <span class="ruby-constant">Vpim</span><span class="ruby-operator">::</span><span class="ruby-constant">Vcard</span>, <span class="ruby-identifier">vcard</span>.<span class="ruby-identifier">class</span>&#x000A;                <span class="ruby-identifier">assert_equal</span> <span class="ruby-identifier">&lt;&lt;-&#39;end&#39;</span>, <span class="ruby-identifier">vcard</span>.<span class="ruby-identifier">to_s</span>&#x000A;<span class="ruby-value">BEGIN:VCARD&#x000A;VERSION:3.0&#x000A;N:surname;given name;;;&#x000A;FN:full name&#x000A;ADR;TYPE=work:;;business address street;business address city\, business ad&#x000A; dress state;;;&#x000A;X-EVOLUTION-FILE-AS:file under&#x000A;EMAIL:email@address.com&#x000A;ORG:company name&#x000A;END:VCARD&#x000A;</span><span class="ruby-identifier">                end</span>&#x000A;        <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_lookup'>
+<a name='method-i-test_lookup'></a>
+<div class='synopsis'>
+<span class='name'>test_lookup</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_lookup-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_lookup-source'><span class="ruby-comment"># File test/test_property_set.rb, line 13</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_lookup</span>&#x000A;        <span class="ruby-identifier">guid</span> = <span class="ruby-constant">Ole</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span><span class="ruby-operator">::</span><span class="ruby-constant">Clsid</span>.<span class="ruby-identifier">parse</span> <span class="ruby-string">&#39;00020328-0000-0000-c000-000000000046&#39;</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;PS_MAPI&#39;</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">NAMES</span>[<span class="ruby-identifier">guid</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_property_set_basics'>
+<a name='method-i-test_property_set_basics'></a>
+<div class='synopsis'>
+<span class='name'>test_property_set_basics</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_property_set_basics-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_property_set_basics-source'><span class="ruby-comment"># File test/test_property_set.rb, line 40</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_property_set_basics</span>&#x000A;        <span class="ruby-comment"># the propertystore can be mocked with a hash:</span>&#x000A;        <span class="ruby-identifier">store</span> = {&#x000A;                <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x0037</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;the subject&#39;</span>,&#x000A;                <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;Keywords&#39;</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PS_PUBLIC_STRINGS</span>) <span class="ruby-operator">=&gt;</span> [<span class="ruby-string">&#39;some keywords&#39;</span>],&#x000A;                <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x8888</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;un-mapped value&#39;</span>&#x000A;        }&#x000A;        <span class="ruby-identifier">props</span> = <span class="ruby-constant">PropertySet</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">store</span>&#x000A;        <span class="ruby-comment"># can resolve subject</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x0037</span>), <span class="ruby-identifier">props</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-string">&#39;subject&#39;</span>)&#x000A;        <span class="ruby-comment"># note that the way things are set up, you can&#39;t resolve body though. ie, only</span>&#x000A;        <span class="ruby-comment"># existent (not all-known) properties resolve. maybe this should be changed. it&#39;ll</span>&#x000A;        <span class="ruby-comment"># need to be, for &lt;tt&gt;props.body=&lt;/tt&gt; to work as it should.</span>&#x000A;        <span class="ruby-identifier">assert_nil</span> <span class="ruby-identifier">props</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-string">&#39;body&#39;</span>)&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;the subject&#39;</span>, <span class="ruby-identifier">props</span>.<span class="ruby-identifier">subject</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> [<span class="ruby-string">&#39;some keywords&#39;</span>], <span class="ruby-identifier">props</span>.<span class="ruby-identifier">keywords</span>&#x000A;        <span class="ruby-comment"># other access methods</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;the subject&#39;</span>, <span class="ruby-identifier">props</span>[<span class="ruby-string">&#39;subject&#39;</span>]&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;the subject&#39;</span>, <span class="ruby-identifier">props</span>[<span class="ruby-value">0x0037</span>]&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;the subject&#39;</span>, <span class="ruby-identifier">props</span>[<span class="ruby-value">0x0037</span>, <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PS_MAPI</span>]&#x000A;        <span class="ruby-comment"># note that the store is accessible directly, as #raw currently (maybe i should rename)</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-identifier">store</span>, <span class="ruby-identifier">props</span>.<span class="ruby-identifier">raw</span>&#x000A;        <span class="ruby-comment"># note that currently, props.each / props.to_h works with the symbolically</span>&#x000A;        <span class="ruby-comment"># mapped properties, so the above un-mapped value won&#39;t be in the list:</span>&#x000A;        <span class="ruby-identifier">assert_equal</span>({<span class="ruby-value">:subject</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;the subject&#39;</span>, <span class="ruby-value">:keywords</span> <span class="ruby-operator">=&gt;</span> [<span class="ruby-string">&#39;some keywords&#39;</span>]}, <span class="ruby-identifier">props</span>.<span class="ruby-identifier">to_h</span>)&#x000A;        <span class="ruby-identifier">assert_equal</span> [<span class="ruby-value">:keywords</span>, <span class="ruby-value">:subject</span>], <span class="ruby-identifier">props</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">sort_by</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:to_s</span>)&#x000A;        <span class="ruby-identifier">assert_equal</span> [[<span class="ruby-string">&#39;some keywords&#39;</span>], <span class="ruby-string">&#39;the subject&#39;</span>], <span class="ruby-identifier">props</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">sort_by</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:to_s</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_pseudo_properties'>
+<a name='method-i-test_pseudo_properties'></a>
+<div class='synopsis'>
+<span class='name'>test_pseudo_properties</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>other things we could test - write support. duplicate key handling</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_pseudo_properties-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_pseudo_properties-source'><span class="ruby-comment"># File test/test_property_set.rb, line 71</span>&#x000A;        <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_pseudo_properties</span>&#x000A;                <span class="ruby-comment"># load some compressed rtf data</span>&#x000A;                <span class="ruby-identifier">data</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;/test_rtf.data&#39;</span>&#x000A;                <span class="ruby-identifier">props</span> = <span class="ruby-constant">PropertySet</span>.<span class="ruby-identifier">new</span> <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x1009</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">data</span>)&#x000A;                <span class="ruby-comment"># all these get generated from the rtf. still need tests for the way the priorities work</span>&#x000A;                <span class="ruby-comment"># here, and also the html embedded in rtf stuff....</span>&#x000A;                <span class="ruby-identifier">assert_equal</span>((<span class="ruby-identifier">&lt;&lt;-&#39;end&#39;</span>).<span class="ruby-identifier">chomp</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\n/</span>, <span class="ruby-string">&quot;\n\r&quot;</span>), <span class="ruby-identifier">props</span>.<span class="ruby-identifier">body_rtf</span>)&#x000A;<span class="ruby-value">{\rtf1\ansi\ansicpg1252\fromtext \deff0{\fonttbl&#x000A;{\f0\fswiss Arial;}&#x000A;{\f1\fmodern Courier New;}&#x000A;{\f2\fnil\fcharset2 Symbol;}&#x000A;{\f3\fmodern\fcharset0 Courier New;}}&#x000A;{\colortbl\red0\green0\blue0;\red0\green0\blue255;}&#x000A;\uc1\pard\plain\deftab360 \f0\fs20 \par&#x000A;I will be out of the office starting  15.02.2007 and will not return until\par&#x000A;27.02.2007.\par&#x000A;\par&#x000A;I will respond to your message when I return. For urgent enquiries please\par&#x000A;contact Motherine Jacson.\par&#x000A;\par&#x000A;}&#x000A;</span><span class="ruby-identifier">                end</span>&#x000A;                <span class="ruby-identifier">assert_equal</span> <span class="ruby-identifier">&lt;&lt;-&#39;end&#39;</span>, <span class="ruby-identifier">props</span>.<span class="ruby-identifier">body_html</span>&#x000A;<span class="ruby-value">&lt;html&gt;&#x000A;&lt;body&gt;&#x000A;&lt;br&gt;I will be out of the office starting  15.02.2007 and will not return until&#x000A;&lt;br&gt;27.02.2007.&#x000A;&lt;br&gt;&#x000A;&lt;br&gt;I will respond to your message when I return. For urgent enquiries please&#x000A;&lt;br&gt;contact Motherine Jacson.&#x000A;&lt;br&gt;&#x000A;&lt;br&gt;&lt;/body&gt;&#x000A;&lt;/html&gt;&#x000A;</span><span class="ruby-identifier">                end</span>&#x000A;                <span class="ruby-identifier">assert_equal</span> <span class="ruby-identifier">&lt;&lt;-&#39;end&#39;</span>, <span class="ruby-identifier">props</span>.<span class="ruby-identifier">body</span>&#x000A;<span class="ruby-value">&#x000A;I will be out of the office starting  15.02.2007 and will not return until&#x000A;27.02.2007.&#x000A;&#x000A;I will respond to your message when I return. For urgent enquiries please&#x000A;contact Motherine Jacson.&#x000A;&#x000A;</span><span class="ruby-identifier">                end</span>&#x000A;        <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_simple_key'>
+<a name='method-i-test_simple_key'></a>
+<div class='synopsis'>
+<span class='name'>test_simple_key</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_simple_key-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_simple_key-source'><span class="ruby-comment"># File test/test_property_set.rb, line 18</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_simple_key</span>&#x000A;        <span class="ruby-identifier">key</span> = <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-value">0x0037</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">PS_MAPI</span>, <span class="ruby-identifier">key</span>.<span class="ruby-identifier">guid</span>&#x000A;        <span class="ruby-identifier">hash</span> = {<span class="ruby-identifier">key</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;hash lookup&#39;</span>}&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;hash lookup&#39;</span>, <span class="ruby-identifier">hash</span>[<span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x0037</span>)]&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&#39;0x0037&#39;</span>, <span class="ruby-identifier">key</span>.<span class="ruby-identifier">inspect</span>&#x000A;        <span class="ruby-identifier">assert_equal</span> <span class="ruby-value">:subject</span>, <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_sym</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-test_using_pseudo_properties'>
+<a name='method-i-test_using_pseudo_properties'></a>
+<div class='synopsis'>
+<span class='name'>test_using_pseudo_properties</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-test_using_pseudo_properties-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-test_using_pseudo_properties-source'><span class="ruby-comment"># File test/test_convert_note.rb, line 10</span>&#x000A;        <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_using_pseudo_properties</span>&#x000A;                <span class="ruby-comment"># load some compressed rtf data</span>&#x000A;                <span class="ruby-identifier">data</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;/test_rtf.data&#39;</span>&#x000A;                <span class="ruby-identifier">store</span> = {&#x000A;                        <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x0037</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;Subject&#39;</span>,&#x000A;                        <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x0c1e</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;SMTP&#39;</span>,&#x000A;                        <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x0c1f</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;sender@email.com&#39;</span>,&#x000A;                        <span class="ruby-constant">PropertySet</span><span class="ruby-operator">::</span><span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0x1009</span>) <span class="ruby-operator">=&gt;</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">data</span>)&#x000A;                }&#x000A;                <span class="ruby-identifier">props</span> = <span class="ruby-constant">PropertySet</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">store</span> &#x000A;                <span class="ruby-identifier">msg</span> = <span class="ruby-constant">Message</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">props</span>&#x000A;                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">msg</span>.<span class="ruby-identifier">attachments</span>&#x000A;                        []&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">msg</span>.<span class="ruby-identifier">recipients</span>&#x000A;                        []&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-comment"># the ignoring of \r here should change. its actually not output consistently currently.</span>&#x000A;                <span class="ruby-identifier">assert_equal</span>((<span class="ruby-identifier">&lt;&lt;-end</span>), <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">to_mime</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/NextPart[_0-9a-z\.]+/</span>, <span class="ruby-string">&#39;NextPart_XXX&#39;</span>).<span class="ruby-identifier">delete</span>(<span class="ruby-string">&quot;\r&quot;</span>))&#x000A;<span class="ruby-value">From: sender@email.com&#x000A;Subject: Subject&#x000A;Content-Type: multipart/alternative; boundary=&quot;----_=_NextPart_XXX&quot;&#x000A;&#x000A;This is a multi-part message in MIME format.&#x000A;&#x000A;------_=_NextPart_XXX&#x000A;Content-Type: text/plain&#x000A;&#x000A;&#x000A;I will be out of the office starting  15.02.2007 and will not return until&#x000A;27.02.2007.&#x000A;&#x000A;I will respond to your message when I return. For urgent enquiries please&#x000A;contact Motherine Jacson.&#x000A;&#x000A;&#x000A;&#x000A;------_=_NextPart_XXX&#x000A;Content-Type: text/html&#x000A;&#x000A;&lt;html&gt;&#x000A;&lt;body&gt;&#x000A;&lt;br&gt;I will be out of the office starting  15.02.2007 and will not return until&#x000A;&lt;br&gt;27.02.2007.&#x000A;&lt;br&gt;&#x000A;&lt;br&gt;I will respond to your message when I return. For urgent enquiries please&#x000A;&lt;br&gt;contact Motherine Jacson.&#x000A;&lt;br&gt;&#x000A;&lt;br&gt;&lt;/body&gt;&#x000A;&lt;/html&gt;&#x000A;&#x000A;&#x000A;------_=_NextPart_XXX--&#x000A;</span><span class="ruby-identifier">                end</span>&#x000A;        <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

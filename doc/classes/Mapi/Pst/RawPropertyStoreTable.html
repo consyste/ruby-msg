@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::Pst::RawPropertyStoreTable</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::Pst::RawPropertyStoreTable
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/mapi/pst_rb.html">lib/mapi/pst.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="BlockParser.html">BlockParser</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p><a href="RawPropertyStoreTable.html"><code>RawPropertyStoreTable</code></a> is kind of like a database table. it has a fixed set of columns. <a href="RawPropertyStoreTable.html#method-i-5B-5D"><code>[]</code></a> is kind of like getting a row from the table. those rows are currently encapsulated by <a href="RawPropertyStoreTable/Row.html"><code>Row</code></a>, which has <a href="RawPropertyStoreTable.html#method-i-each"><code>each</code></a> like <a href="RawPropertyStore.html"><code>RawPropertyStore</code></a>. only used for the recipients array, and the attachments array. completely lazy, doesn&#39;t load any of the properties upon creation.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-5B-5D">[]</a></li>
+<li><a href="#attribute-i-data2">data2</a></li>
+<li><a href="#attribute-i-data3">data3</a></li>
+<li><a href="#method-i-each">each</a></li>
+<li><a href="#attribute-i-index_data">index_data</a></li>
+<li><a href="#attribute-i-length">length</a></li>
+<li><a href="#attribute-i-rec_size">rec_size</a></li>
+<li><a href="#method-i-schema">schema</a></li>
+</ol>
+</div>
+<div id='context'>
+<div id='includes'>
+<h2>Included modules</h2>
+<ol>
+<li>Enumerable</li>
+</ol>
+</div>
+</div>
+<div id='class-list'>
+<h2>Classes and Modules</h2>
+<ol>
+<li><a href="RawPropertyStoreTable/Column.html">Mapi::Pst::RawPropertyStoreTable::Column</a></li>
+<li><a href="RawPropertyStoreTable/Row.html">Mapi::Pst::RawPropertyStoreTable::Row</a></li>
+</ol>
+</div>
+<div id='section'>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-data2'>data2</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-data3'>data3</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-index_data'>index_data</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-length'>length</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-rec_size'>rec_size</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(desc)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1332</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span> <span class="ruby-identifier">desc</span>&#x000A;        <span class="ruby-keyword">super</span>&#x000A;        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span>, <span class="ruby-node">&quot;expected type 2 - got #{@type}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@type</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>&#x000A;&#x000A;        <span class="ruby-identifier">header_data</span> = <span class="ruby-identifier">get_data_indirect</span> <span class="ruby-ivar">@offset1</span>&#x000A;        <span class="ruby-comment"># seven_c_blk</span>&#x000A;        <span class="ruby-comment"># often: u1 == u2 and u3 == u2 + 2, then rec_size == u3 + 4. wtf</span>&#x000A;        <span class="ruby-identifier">seven_c</span>, <span class="ruby-ivar">@num_list</span>, <span class="ruby-identifier">u1</span>, <span class="ruby-identifier">u2</span>, <span class="ruby-identifier">u3</span>, <span class="ruby-ivar">@rec_size</span>, <span class="ruby-identifier">b_five_offset</span>,&#x000A;                <span class="ruby-identifier">ind2_offset</span>, <span class="ruby-identifier">u7</span>, <span class="ruby-identifier">u8</span> = <span class="ruby-identifier">header_data</span>[<span class="ruby-value">0</span>, <span class="ruby-value">22</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;CCv4V2v2&#39;</span>)&#x000A;        <span class="ruby-ivar">@index_data</span> = <span class="ruby-identifier">header_data</span>[<span class="ruby-value">22</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]&#x000A;&#x000A;        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@num_list</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">schema</span>.<span class="ruby-identifier">length</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">seven_c</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0x7c</span>&#x000A;        <span class="ruby-comment"># another check</span>&#x000A;        <span class="ruby-identifier">min_size</span> = <span class="ruby-identifier">schema</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">total</span>, <span class="ruby-identifier">col</span><span class="ruby-operator">|</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">col</span>.<span class="ruby-identifier">size</span> }&#x000A;        <span class="ruby-comment"># seem to have at max, 8 padding bytes on the end of the record. not sure if it means</span>&#x000A;        <span class="ruby-comment"># anything. maybe its just space that hasn&#39;t been reclaimed due to columns being</span>&#x000A;        <span class="ruby-comment"># removed or something. probably should just check lower bound.</span>&#x000A;        <span class="ruby-identifier">range</span> = (<span class="ruby-identifier">min_size</span><span class="ruby-operator">..</span><span class="ruby-identifier">min_size</span> <span class="ruby-operator">+</span> <span class="ruby-value">8</span>)&#x000A;        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;rec_size seems wrong (#{range} !=== #{rec_size})&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">range</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">rec_size</span>&#x000A;&#x000A;        <span class="ruby-identifier">header_data2</span> = <span class="ruby-identifier">get_data_indirect</span> <span class="ruby-identifier">b_five_offset</span>&#x000A;        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">header_data2</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">8</span>&#x000A;        <span class="ruby-identifier">signature</span>, <span class="ruby-identifier">offset2</span> = <span class="ruby-identifier">header_data2</span>.<span class="ruby-identifier">unpack</span> <span class="ruby-string">&#39;V2&#39;</span>&#x000A;        <span class="ruby-comment"># ??? seems a bit iffy</span>&#x000A;        <span class="ruby-comment"># there&#39;s probably more to the differences than this, and the data2 difference below</span>&#x000A;        <span class="ruby-identifier">expect</span> = <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>.<span class="ruby-identifier">header</span>.<span class="ruby-identifier">version_2003?</span> <span class="ruby-operator">?</span> <span class="ruby-value">0x000404b5</span> <span class="ruby-operator">:</span> <span class="ruby-value">0x000204b5</span>&#x000A;        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span>, <span class="ruby-string">&#39;unhandled block signature 0x%08x&#39;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">signature</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">signature</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">expect</span>&#x000A;&#x000A;        <span class="ruby-comment"># this holds all the row data</span>&#x000A;        <span class="ruby-comment"># handle multiple block issue.</span>&#x000A;        <span class="ruby-ivar">@data3_io</span> = <span class="ruby-identifier">get_data_indirect_io</span> <span class="ruby-identifier">ind2_offset</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-constant">RangesIOIdxChain</span> <span class="ruby-operator">===</span> <span class="ruby-ivar">@data3_io</span>&#x000A;                <span class="ruby-ivar">@data3_idxs</span> = &#x000A;                <span class="ruby-comment"># modify ranges</span>&#x000A;                <span class="ruby-identifier">ranges</span> = <span class="ruby-ivar">@data3_io</span>.<span class="ruby-identifier">ranges</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">offset</span>, <span class="ruby-identifier">size</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">offset</span>, <span class="ruby-identifier">size</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@rec_size</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@rec_size</span>] }&#x000A;                <span class="ruby-ivar">@data3_io</span>.<span class="ruby-identifier">instance_variable_set</span> <span class="ruby-value">:@ranges</span>, <span class="ruby-identifier">ranges</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@data3</span> = <span class="ruby-ivar">@data3_io</span>.<span class="ruby-identifier">read</span>&#x000A;&#x000A;        <span class="ruby-comment"># there must be something to the data in data2. i think data2 is the array of objects essentially.</span>&#x000A;        <span class="ruby-comment"># currently its only used to imply a length</span>&#x000A;        <span class="ruby-comment"># actually, at size 6, its just some auxiliary data. i&#39;m thinking either Vv/vV, for 97, and something</span>&#x000A;        <span class="ruby-comment"># wider for 03. the second value is just the index (0...length), and the first value is</span>&#x000A;        <span class="ruby-comment"># some kind of offset i expect. actually, they were all id2 values, in another case.</span>&#x000A;        <span class="ruby-comment"># so maybe they&#39;re get_data_indirect values too?</span>&#x000A;        <span class="ruby-comment"># actually, it turned out they were identical to the PR_ATTACHMENT_ID2 values...</span>&#x000A;        <span class="ruby-comment"># id2_values = ie, data2.unpack(&#39;v*&#39;).to_enum(:each_slice, 3).transpose[0]</span>&#x000A;        <span class="ruby-comment"># table[i].assoc(PR_ATTACHMENT_ID2).last == id2_values[i], for all i.</span>&#x000A;        <span class="ruby-ivar">@data2</span> = <span class="ruby-identifier">get_data_indirect</span>(<span class="ruby-identifier">offset2</span>) <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-comment">#if data2</span>&#x000A;        <span class="ruby-comment">#    @length = (data2.length / 6.0).ceil</span>&#x000A;        <span class="ruby-comment">#else</span>&#x000A;        <span class="ruby-comment"># the above / 6, may have been ok for 97 files, but the new 0x0004 style block must have</span>&#x000A;        <span class="ruby-comment"># different size records... just use this instead:</span>&#x000A;                <span class="ruby-comment"># hmmm, actually, we can still figure it out:</span>&#x000A;                <span class="ruby-ivar">@length</span> = <span class="ruby-ivar">@data3</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@rec_size</span>&#x000A;        <span class="ruby-comment">#end</span>&#x000A;&#x000A;        <span class="ruby-comment"># lets try and at least use data2 for a warning for now</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">data2</span>&#x000A;                <span class="ruby-identifier">data2_rec_size</span> = <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>.<span class="ruby-identifier">header</span>.<span class="ruby-identifier">version_2003?</span> <span class="ruby-operator">?</span> <span class="ruby-value">8</span> <span class="ruby-operator">:</span> <span class="ruby-value">6</span>&#x000A;                <span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;somthing seems wrong with data3&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@length</span> <span class="ruby-operator">==</span> (<span class="ruby-identifier">data2</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">data2_rec_size</span>)&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-5B-5D'>
+<a name='method-i-5B-5D'></a>
+<div class='synopsis'>
+<span class='name'>[]</span><span class='arguments'>(idx)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-5B-5D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-5B-5D-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1401</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]</span> <span class="ruby-identifier">idx</span>&#x000A;        <span class="ruby-comment"># handle funky rounding</span>&#x000A;        <span class="ruby-constant">Row</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">self</span>, <span class="ruby-identifier">idx</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@rec_size</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-each'>
+<a name='method-i-each'></a>
+<div class='synopsis'>
+<span class='name'>each</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-each-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-each-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1406</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">each</span>&#x000A;        <span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-keyword">yield</span> <span class="ruby-keyword">self</span>[<span class="ruby-identifier">i</span>] }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-schema'>
+<a name='method-i-schema'></a>
+<div class='synopsis'>
+<span class='name'>schema</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-schema-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-schema-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1397</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">schema</span>&#x000A;        <span class="ruby-ivar">@schema</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">index_data</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/.{8}/m</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">data</span><span class="ruby-operator">|</span> <span class="ruby-constant">Column</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">data</span> }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

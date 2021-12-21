@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>FIXES</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>FIXES
+</h1>
+<div class='paths'>
+FIXES
+</div>
+<div class='last-update'>
+Last Update:
+<span class='datetime'>2021-12-17 22:03:33 +0900</span>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p><a href="FIXES.html">FIXES</a></p>
+
+<p>recent fixes based on importing results into evolution</p>
+<ol><li>
+<p>was running into some issue with base64 encoded message/rfc822 attachments displaying as empty. encoding them as plain solved the issue (odd).</p>
+</li><li>
+<p>problem with a large percentage of emails, not displaying as mime. turned out to be all received from blackberry. further, turned out there was 2 content-type headers,</p>
+
+<pre>&quot;Content-Type&quot;, which I add, and &quot;Content-type&quot;. normally my override works, but I&#x000A;need to handle it case insensitvely it would appear. more tricky, whats the story&#x000A;with these. fixing that will probably fix that whole class of issues there.&#x000A;evolution was renaming my second content type as X-Invalid-Content-Type or something.</pre>
+</li><li>
+<p>another interesting one. had content-transfer-encoding set in the transport message headers. it was set to base64. i didn&#39;t override that, so evolution “decoded” my</p>
+
+<pre>plaintext message into complete garbage.&#x000A;fix - delete content-transfer-encoding.</pre>
+</li><li>
+<p>added content-location and content-id output in the mime handling of attachments to get some inline html/image mails to work properly. further, the containing mime content-type must be multipart/related, not multipart/mixed,</p>
+
+<pre>at least for evolution, in order for the images to appear inline.</pre>
+
+<p>could still improve in this area. if someone drags and drops in an image, it may</p>
+
+<pre>be inline in the rtf version, but exchanges generates crappy html such that the image&#x000A;doesn&#39;t display inline. maybe i should correct the html output in these cases as i&#39;m&#x000A;throwing away the rtf version.</pre>
+</li><li>
+<p>note you may need wingdings installed. i had a lot of L and J appear in messages from outlook users. turns out its smilies in wingdings. i think its only if word is used</p>
+
+<pre>as email editor and has autotext messing things up.</pre>
+</li><li>
+<p>still unsure about how to do my “r” handling.</p>
+</li><li>
+<p>need to join addresses with , instead of ; i think. evolution only shows the first one otherwise it appears, but all when they are , separated.</p>
+</li><li>
+<p>need to solve ole storage issues with the very large file using extra bat stuff.</p>
+</li><li>
+<p>retest a bit on evolution and thunderbird, and release. tested on a corups of &gt;1000 msg files, so should be starting to get pretty good quality.</p>
+</li><li>
+<p>longer term, things fall into a few basic categories:</p>
+</li></ol>
+<ul><li>
+<p>non mail conversions (look further into vcard, ical et al support for other types of msg)</p>
+</li><li>
+<p>further tests and robustness for what i handle now. ie, look into corner cases covered so far, and work on the mime code. fix random charset encoding issues, in the various weird mime ways, do header wrapping etc etc. check fidelity of conversions, and capture some more properties as headers, such as importance which i don&#39;t do yet.</p>
+</li><li>
+<p>fix that named property bug. tidy up warnings, exceptions.</p>
+</li><li>
+<p>extend conversion to make better html. this is longer term. as i don&#39;t use the rtf, i need to make my html better. emulating some rtf things. harder, not important atm.</p>
+</li></ul>
+</div>
+<div id='context'>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

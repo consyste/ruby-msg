@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::PropertySet</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::PropertySet
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/mapi/property_set_rb.html">lib/mapi/property_set.rb</a>
+</li>
+<li class='other'>
+<a href="../../files/lib/mapi/pst_rb.html">lib/mapi/pst.rb</a>
+</li>
+<li>
+<a class='show' href='#' onclick='this.parentNode.parentNode.className += &quot; expanded&quot;; this.parentNode.removeChild(this); return false'>show all</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="../Object.html">Object</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>The <a href="PropertySet.html"><code>Mapi::PropertySet</code></a> class is used to wrap the lower level <a href="Msg.html"><code>Msg</code></a> or <a href="Pst.html"><code>Pst</code></a> property stores, and provide a consistent and more friendly interface. It allows you to just say:</p>
+
+<pre class="ruby"><span class="ruby-identifier">properties</span>.<span class="ruby-identifier">subject</span></pre>
+
+<p>instead of:</p>
+
+<pre class="ruby"><span class="ruby-identifier">properites</span>.<span class="ruby-identifier">raw</span>[<span class="ruby-value">0x0037</span>, <span class="ruby-constant">PS_MAPI</span>]</pre>
+
+<p>The underlying store can be just a hash, or lazily loading directly from the file. A good compromise is to cache all the available keys, and just return the values on demand, rather than load up many possibly unwanted values.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-5B-5D">[]</a></li>
+<li><a href="#method-i-5B-5D-3D">[]=</a></li>
+<li><a href="#method-i-body">body</a></li>
+<li><a href="#method-i-body_html">body_html</a></li>
+<li><a href="#method-i-body_rtf">body_rtf</a></li>
+<li><a href="#method-i-inspect">inspect</a></li>
+<li><a href="#method-i-keys">keys</a></li>
+<li><a href="#method-i-method_missing">method_missing</a></li>
+<li><a href="#attribute-i-raw">raw</a></li>
+<li><a href="#method-i-resolve">resolve</a></li>
+<li><a href="#method-i-sym_to_key">sym_to_key</a></li>
+<li><a href="#method-i-to_h">to_h</a></li>
+<li><a href="#method-i-values">values</a></li>
+</ol>
+</div>
+<div id='context'>
+<div id='includes'>
+<h2>Included modules</h2>
+<ol>
+<li><a href="PropertySet/Constants.html">Constants</a></li>
+</ol>
+</div>
+</div>
+<div id='class-list'>
+<h2>Classes and Modules</h2>
+<ol>
+<li><a href="PropertySet/Constants.html">Mapi::PropertySet::Constants</a></li>
+<li><a href="PropertySet/Key.html">Mapi::PropertySet::Key</a></li>
+</ol>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>NAMED_MAP</td>
+<td>=</td>
+<td class='context-item-value'>YAML.load_file("#{SUPPORT_DIR}/data/named_map.yaml").inject({}) do |hash, (key, value)|
+hash.update Key.new(key[0], const_get(key[1])) => value
+end</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>NAMES</td>
+<td>=</td>
+<td class='context-item-value'>{
+oleguid['00020328'] => 'PS_MAPI',
+oleguid['00020329'] => 'PS_PUBLIC_STRINGS',
+oleguid['00020380'] => 'PS_ROUTING_EMAIL_ADDRESSES',
+oleguid['00020381'] => 'PS_ROUTING_ADDRTYPE',
+oleguid['00020382'] => 'PS_ROUTING_DISPLAY_NAME',
+oleguid['00020383'] => 'PS_ROUTING_ENTRYID',
+oleguid['00020384'] => 'PS_ROUTING_SEARCH_KEY',
+# string properties in this namespace automatically get added to the internet headers
+oleguid['00020386'] => 'PS_INTERNET_HEADERS',
+# theres are bunch of outlook ones i think
+# http://blogs.msdn.com/stephen_griffin/archive/2006/05/10/outlook-2007-beta-documentation-notification-based-indexing-support.aspx
+# IPM.Appointment
+oleguid['00062002'] => 'PSETID_Appointment',
+# IPM.Task
+oleguid['00062003'] => 'PSETID_Task',
+# used for IPM.Contact
+oleguid['00062004'] => 'PSETID_Address',
+oleguid['00062008'] => 'PSETID_Common',
+# didn't find a source for this name. it is for IPM.StickyNote
+oleguid['0006200e'] => 'PSETID_Note',
+# for IPM.Activity. also called the journal?
+oleguid['0006200a'] => 'PSETID_Log',
+}</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>SUPPORT_DIR</td>
+<td>=</td>
+<td class='context-item-value'>File.dirname(__FILE__) + '/../..'</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>duplicated here for now</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>TAGS</td>
+<td>=</td>
+<td class='context-item-value'>YAML.load_file "#{SUPPORT_DIR}/data/mapitags.yaml"</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>data files that provide for the code to symbolic name mapping guids in named_map are really constant references to the above</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-raw'>raw</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(raw)</span>
+
+</div>
+<div class='description'>
+
+<p><code>raw</code> should be an hash-like object that maps <code>Key</code>s to values. Should respond_to? [], keys, values, each, and optionally []=, and delete.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 149</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span> <span class="ruby-identifier">raw</span>&#x000A;        <span class="ruby-ivar">@raw</span> = <span class="ruby-identifier">raw</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-5B-5D'>
+<a name='method-i-5B-5D'></a>
+<div class='synopsis'>
+<span class='name'>[]</span><span class='arguments'>(arg, guid=nil)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-5B-5D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-5B-5D-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 199</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]</span> <span class="ruby-identifier">arg</span>, <span class="ruby-identifier">guid</span>=<span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-identifier">raw</span>[<span class="ruby-identifier">resolve</span>(<span class="ruby-identifier">arg</span>, <span class="ruby-identifier">guid</span>)]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-5B-5D-3D'>
+<a name='method-i-5B-5D-3D'></a>
+<div class='synopsis'>
+<span class='name'>[]=</span><span class='arguments'>(arg, *args)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-5B-5D-3D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-5B-5D-3D-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 203</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]=</span> <span class="ruby-identifier">arg</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>&#x000A;        <span class="ruby-identifier">args</span>.<span class="ruby-identifier">unshift</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">guid</span>, <span class="ruby-identifier">value</span> = <span class="ruby-identifier">args</span>&#x000A;        <span class="ruby-comment"># FIXME this won&#39;t really work properly. it would need to go</span>&#x000A;        <span class="ruby-comment"># to TAGS to resolve, as it often won&#39;t be there already...</span>&#x000A;        <span class="ruby-identifier">raw</span>[<span class="ruby-identifier">resolve</span>(<span class="ruby-identifier">arg</span>, <span class="ruby-identifier">guid</span>)] = <span class="ruby-identifier">value</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-body'>
+<a name='method-i-body'></a>
+<div class='synopsis'>
+<span class='name'>body</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>for providing rtf to plain text conversion. later, html to text too.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-body-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-body-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 237</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">body</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@body</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-ivar">@body</span>)&#x000A;        <span class="ruby-ivar">@body</span> = (<span class="ruby-keyword">self</span>[<span class="ruby-value">:body</span>] <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>)&#x000A;        <span class="ruby-comment"># last resort</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@body</span> <span class="ruby-keyword">or</span> <span class="ruby-ivar">@body</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">empty?</span>&#x000A;                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;creating text body from rtf&#39;</span>&#x000A;                <span class="ruby-ivar">@body</span> = (<span class="ruby-constant">RTF</span><span class="ruby-operator">::</span><span class="ruby-constant">Converter</span>.<span class="ruby-identifier">rtf2text</span> <span class="ruby-identifier">body_rtf</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>)&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@body</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-body_html'>
+<a name='method-i-body_html'></a>
+<div class='synopsis'>
+<span class='name'>body_html</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>for providing rtf to html extraction or conversion</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-body_html-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-body_html-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 263</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">body_html</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@body_html</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-ivar">@body_html</span>)&#x000A;        <span class="ruby-ivar">@body_html</span> = <span class="ruby-keyword">self</span>[<span class="ruby-value">:body_html</span>]&#x000A;        <span class="ruby-comment"># sometimes body_html is a stream, and sometimes a string</span>&#x000A;        <span class="ruby-ivar">@body_html</span> = <span class="ruby-ivar">@body_html</span>.<span class="ruby-identifier">read</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@body_html</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:read</span>)&#x000A;        <span class="ruby-ivar">@body_html</span> = <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@body_html</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">empty?</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">body_rtf</span> <span class="ruby-keyword">and</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@body_html</span>&#x000A;                <span class="ruby-keyword">begin</span>&#x000A;                        <span class="ruby-ivar">@body_html</span> = <span class="ruby-constant">RTF</span>.<span class="ruby-identifier">rtf2html</span> <span class="ruby-identifier">body_rtf</span>&#x000A;                <span class="ruby-keyword">rescue</span>&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;unable to extract html from rtf&#39;</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@body_html</span>&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;creating html body from rtf&#39;</span>&#x000A;                        <span class="ruby-keyword">begin</span>&#x000A;                                <span class="ruby-ivar">@body_html</span> = <span class="ruby-constant">RTF</span><span class="ruby-operator">::</span><span class="ruby-constant">Converter</span>.<span class="ruby-identifier">rtf2text</span> <span class="ruby-identifier">body_rtf</span>, <span class="ruby-value">:html</span>&#x000A;                        <span class="ruby-keyword">rescue</span>&#x000A;                                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;unable to convert rtf to html&#39;</span>&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@body_html</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-body_rtf'>
+<a name='method-i-body_rtf'></a>
+<div class='synopsis'>
+<span class='name'>body_rtf</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>for providing rtf decompression</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-body_rtf-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-body_rtf-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 249</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">body_rtf</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@body_rtf</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-ivar">@body_rtf</span>)&#x000A;        <span class="ruby-ivar">@body_rtf</span> = <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:rtf_compressed</span>]&#x000A;                <span class="ruby-keyword">begin</span>&#x000A;                        <span class="ruby-ivar">@body_rtf</span> = <span class="ruby-constant">RTF</span>.<span class="ruby-identifier">rtfdecompr</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:rtf_compressed</span>].<span class="ruby-identifier">read</span>&#x000A;                <span class="ruby-keyword">rescue</span>&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;unable to decompress rtf&#39;</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@body_rtf</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-inspect'>
+<a name='method-i-inspect'></a>
+<div class='synopsis'>
+<span class='name'>inspect</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-inspect-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-inspect-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 225</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inspect</span>&#x000A;        <span class="ruby-node">&quot;#&lt;#{self.class} &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">to_h</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span> }.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">inspect</span>&#x000A;                <span class="ruby-node">&quot;#{k}=#{v.length &gt; 32 ? v[0..29] + &#39;...&quot;&#39; : v}&quot;</span>&#x000A;        <span class="ruby-keyword">end</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39; &#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;&gt;&#39;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-keys'>
+<a name='method-i-keys'></a>
+<div class='synopsis'>
+<span class='name'>keys</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-keys-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-keys-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 191</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">keys</span>&#x000A;        <span class="ruby-identifier">sym_to_key</span>.<span class="ruby-identifier">keys</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-method_missing'>
+<a name='method-i-method_missing'></a>
+<div class='synopsis'>
+<span class='name'>method_missing</span><span class='arguments'>(name, *args)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-method_missing-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-method_missing-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 211</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">method_missing</span> <span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\=$/</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>&#x000A;                <span class="ruby-keyword">self</span>[<span class="ruby-identifier">name</span>]&#x000A;        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/(.*)\=$/</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>&#x000A;                <span class="ruby-keyword">self</span>[<span class="ruby-node">$1</span>] = <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>]&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-keyword">super</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-resolve'>
+<a name='method-i-resolve'></a>
+<div class='synopsis'>
+<span class='name'>resolve</span><span class='arguments'>(arg, guid=nil)</span>
+
+</div>
+<div class='description'>
+
+<p>resolve <code>arg</code> (could be key, code, string, or symbol), and possible <code>guid</code> to a key. returns nil on failure</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-resolve-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-resolve-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 155</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">resolve</span> <span class="ruby-identifier">arg</span>, <span class="ruby-identifier">guid</span>=<span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">guid</span>;        <span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">arg</span>, <span class="ruby-identifier">guid</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-keyword">case</span> <span class="ruby-identifier">arg</span>&#x000A;                <span class="ruby-keyword">when</span> <span class="ruby-constant">Key</span>;     <span class="ruby-identifier">arg</span>&#x000A;                <span class="ruby-keyword">when</span> <span class="ruby-constant">Integer</span>; <span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">arg</span>&#x000A;                <span class="ruby-keyword">else</span>          <span class="ruby-identifier">sym_to_key</span>[<span class="ruby-identifier">arg</span>.<span class="ruby-identifier">to_sym</span>]&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-sym_to_key'>
+<a name='method-i-sym_to_key'></a>
+<div class='synopsis'>
+<span class='name'>sym_to_key</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>this is the function that creates a symbol to key mapping. currently this works by making a pass through the raw properties, but conceivably you could map symbols to keys using the mapitags directly. problem with that would be that named properties wouldn&#39;t map automatically, but maybe thats not too important.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-sym_to_key-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-sym_to_key-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 170</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sym_to_key</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@sym_to_key</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@sym_to_key</span>&#x000A;        <span class="ruby-ivar">@sym_to_key</span> = {}&#x000A;        <span class="ruby-identifier">raw</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-identifier">sym</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_sym</span>&#x000A;                <span class="ruby-keyword">unless</span> <span class="ruby-constant">Symbol</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">sym</span>&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;couldn&#39;t find symbolic name for key #{key.inspect}&quot;</span> &#x000A;                        <span class="ruby-keyword">next</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-ivar">@sym_to_key</span>[<span class="ruby-identifier">sym</span>]&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;duplicate key #{key.inspect}&quot;</span>&#x000A;                        <span class="ruby-comment"># we give preference to PS_MAPI keys</span>&#x000A;                        <span class="ruby-ivar">@sym_to_key</span>[<span class="ruby-identifier">sym</span>] = <span class="ruby-identifier">key</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">guid</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PS_MAPI</span>&#x000A;                <span class="ruby-keyword">else</span>&#x000A;                        <span class="ruby-comment"># just assign</span>&#x000A;                        <span class="ruby-ivar">@sym_to_key</span>[<span class="ruby-identifier">sym</span>] = <span class="ruby-identifier">key</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@sym_to_key</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-to_h'>
+<a name='method-i-to_h'></a>
+<div class='synopsis'>
+<span class='name'>to_h</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-to_h-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-to_h-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 221</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_h</span>&#x000A;        <span class="ruby-identifier">sym_to_key</span>.<span class="ruby-identifier">inject</span>({}) { <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span>, (<span class="ruby-identifier">sym</span>, <span class="ruby-identifier">key</span>)<span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">update</span> <span class="ruby-identifier">sym</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">raw</span>[<span class="ruby-identifier">key</span>] }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-values'>
+<a name='method-i-values'></a>
+<div class='synopsis'>
+<span class='name'>values</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-values-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-values-source'><span class="ruby-comment"># File lib/mapi/property_set.rb, line 195</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">values</span>&#x000A;        <span class="ruby-identifier">sym_to_key</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span> <span class="ruby-identifier">raw</span>[<span class="ruby-identifier">key</span>] }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::Pst::RawPropertyStoreTable::Column</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::Pst::RawPropertyStoreTable::Column
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../../files/lib/mapi/pst_rb.html">lib/mapi/pst.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Struct.new(:ref_type, :type, :ind2_off, :size, :slot)</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'></div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-inspect">inspect</a></li>
+<li><a href="#method-i-nice_prop_name">nice_prop_name</a></li>
+<li><a href="#method-i-nice_type_name">nice_type_name</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(data)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1312</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span> <span class="ruby-identifier">data</span>&#x000A;        <span class="ruby-keyword">super</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">data</span>.<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;v3CC&#39;</span>))&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-inspect'>
+<a name='method-i-inspect'></a>
+<div class='synopsis'>
+<span class='name'>inspect</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-inspect-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-inspect-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1324</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inspect</span>&#x000A;        <span class="ruby-node">&quot;#&lt;#{self.class} name=#{nice_prop_name.inspect}, type=#{nice_type_name.inspect}&gt;&quot;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-nice_prop_name'>
+<a name='method-i-nice_prop_name'></a>
+<div class='synopsis'>
+<span class='name'>nice_prop_name</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-nice_prop_name-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-nice_prop_name-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1320</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nice_prop_name</span>&#x000A;        <span class="ruby-constant">Mapi</span><span class="ruby-operator">::</span><span class="ruby-constant">PropertyStore</span><span class="ruby-operator">::</span><span class="ruby-constant">TAGS</span>[<span class="ruby-string">&#39;%04x&#39;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">type</span>].<span class="ruby-identifier">first</span>[<span class="ruby-regexp">/_(.*)/</span>, <span class="ruby-value">1</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-keyword">rescue</span> <span class="ruby-string">&#39;0x%04x&#39;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">type</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-nice_type_name'>
+<a name='method-i-nice_type_name'></a>
+<div class='synopsis'>
+<span class='name'>nice_type_name</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-nice_type_name-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-nice_type_name-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1316</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nice_type_name</span>&#x000A;        <span class="ruby-constant">Mapi</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span><span class="ruby-operator">::</span><span class="ruby-constant">DATA</span>[<span class="ruby-identifier">ref_type</span>].<span class="ruby-identifier">first</span>[<span class="ruby-regexp">/_(.*)/</span>, <span class="ruby-value">1</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-keyword">rescue</span> <span class="ruby-string">&#39;0x%04x&#39;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">ref_type</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

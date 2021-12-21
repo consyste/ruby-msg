@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::Message::VcardConverter</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::Message::VcardConverter
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/mapi/convert/contact_rb.html">lib/mapi/convert/contact.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="../../Object.html">Object</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'></div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-convert">convert</a></li>
+<li><a href="#method-i-field">field</a></li>
+<li><a href="#method-i-get_properties">get_properties</a></li>
+<li><a href="#method-i-get_property">get_property</a></li>
+<li><a href="#attribute-i-msg">msg</a></li>
+</ol>
+</div>
+<div id='context'>
+<div id='includes'>
+<h2>Included modules</h2>
+<ol>
+<li><a href="../../Vpim.html">Vpim</a></li>
+</ol>
+</div>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>VCARD_MAP</td>
+<td>=</td>
+<td class='context-item-value'>{
+# these are all standard mapi properties
+:name => [
+{
+:given            => :given_name,
+:family           => :surname,
+:fullname => :subject
+}
+],
+# outlook seems to eschew the mapi properties this time,
+# like postal_address, street_address, home_address_city
+# so we use the named properties
+:addr => [
+{
+:location => 'work',
+:street           => :business_address_street,
+:locality => proc do |props|
+[props.business_address_city, props.business_address_state].compact * ', '
+end
+}
+],
+
+# right type? maybe date
+:birthday   => :birthday,
+:nickname   => :nickname
+
+# photo available?
+# FIXME finish, emails, telephones etc
+}</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>a very incomplete mapping, but its a start… can&#39;t find where to set a lot of stuff, like zipcode, jobtitle etc</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-msg'>msg</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(msg)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/convert/contact.rb, line 57</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span> <span class="ruby-identifier">msg</span>&#x000A;        <span class="ruby-ivar">@msg</span> = <span class="ruby-identifier">msg</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-convert'>
+<a name='method-i-convert'></a>
+<div class='synopsis'>
+<span class='name'>convert</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-convert-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-convert-source'><span class="ruby-comment"># File lib/mapi/convert/contact.rb, line 95</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">convert</span>&#x000A;        <span class="ruby-constant">Vpim</span><span class="ruby-operator">::</span><span class="ruby-constant">Vcard</span><span class="ruby-operator">::</span><span class="ruby-constant">Maker</span>.<span class="ruby-identifier">make2</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-comment"># handle name</span>&#x000A;                [<span class="ruby-value">:name</span>, <span class="ruby-value">:addr</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">type</span><span class="ruby-operator">|</span>&#x000A;                        <span class="ruby-constant">VCARD_MAP</span>[<span class="ruby-identifier">type</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>&#x000A;                                <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">props</span> = <span class="ruby-identifier">get_properties</span>(<span class="ruby-identifier">hash</span>)&#x000A;                                <span class="ruby-identifier">m</span>.<span class="ruby-identifier">send</span> <span class="ruby-node">&quot;add_#{type}&quot;</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>&#x000A;                                        <span class="ruby-identifier">props</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">send</span> <span class="ruby-node">&quot;#{key}=&quot;</span>, <span class="ruby-identifier">value</span> }&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;&#x000A;                (<span class="ruby-constant">VCARD_MAP</span>.<span class="ruby-identifier">keys</span> <span class="ruby-operator">-</span> [<span class="ruby-value">:name</span>, <span class="ruby-value">:addr</span>]).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>&#x000A;                        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">get_property</span> <span class="ruby-constant">VCARD_MAP</span>[<span class="ruby-identifier">key</span>]&#x000A;                        <span class="ruby-identifier">m</span>.<span class="ruby-identifier">send</span> <span class="ruby-node">&quot;#{key}=&quot;</span>, <span class="ruby-identifier">value</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;&#x000A;                <span class="ruby-comment"># the rest of the stuff is custom</span>&#x000A;&#x000A;                <span class="ruby-identifier">url</span> = <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:webpage</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:business_home_page</span>)&#x000A;                <span class="ruby-identifier">m</span>.<span class="ruby-identifier">add_field</span> <span class="ruby-identifier">field</span>(<span class="ruby-string">&#39;URL&#39;</span>, <span class="ruby-identifier">url</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">url</span>&#x000A;                <span class="ruby-identifier">m</span>.<span class="ruby-identifier">add_field</span> <span class="ruby-identifier">field</span>(<span class="ruby-string">&#39;X-EVOLUTION-FILE-AS&#39;</span>, <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:file_under</span>)) <span class="ruby-keyword">if</span> <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:file_under</span>)&#x000A;&#x000A;                <span class="ruby-identifier">addr</span> = <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:email_email_address</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:email_original_display_name</span>)&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-identifier">addr</span>&#x000A;                        <span class="ruby-identifier">m</span>.<span class="ruby-identifier">add_email</span> <span class="ruby-identifier">addr</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>&#x000A;                                <span class="ruby-identifier">e</span>.<span class="ruby-identifier">format</span> =<span class="ruby-string">&#39;x400&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">props</span>.<span class="ruby-identifier">email_addr_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SMTP&#39;</span>&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-identifier">org</span> = <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:company_name</span>)&#x000A;                        <span class="ruby-identifier">m</span>.<span class="ruby-identifier">add_field</span> <span class="ruby-identifier">field</span>(<span class="ruby-string">&#39;ORG&#39;</span>, <span class="ruby-identifier">get_property</span>(<span class="ruby-value">:company_name</span>))&#x000A;                <span class="ruby-keyword">end</span>&#x000A;&#x000A;                <span class="ruby-comment"># TODO: imaddress</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-field'>
+<a name='method-i-field'></a>
+<div class='synopsis'>
+<span class='name'>field</span><span class='arguments'>(name, *args)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-field-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-field-source'><span class="ruby-comment"># File lib/mapi/convert/contact.rb, line 61</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">field</span> <span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>&#x000A;        <span class="ruby-constant">DirectoryInfo</span><span class="ruby-operator">::</span><span class="ruby-constant">Field</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">name</span>, <span class="ruby-constant">Vpim</span>.<span class="ruby-identifier">encode_text_list</span>(<span class="ruby-identifier">args</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-get_properties'>
+<a name='method-i-get_properties'></a>
+<div class='synopsis'>
+<span class='name'>get_properties</span><span class='arguments'>(hash)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_properties-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_properties-source'><span class="ruby-comment"># File lib/mapi/convert/contact.rb, line 80</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_properties</span> <span class="ruby-identifier">hash</span>&#x000A;        <span class="ruby-identifier">constants</span> = {}&#x000A;        <span class="ruby-identifier">others</span> = {}&#x000A;        <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">to</span>, <span class="ruby-identifier">from</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">from</span>&#x000A;                        <span class="ruby-identifier">constants</span>[<span class="ruby-identifier">to</span>] = <span class="ruby-identifier">from</span>&#x000A;                <span class="ruby-keyword">else</span>&#x000A;                        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">get_property</span> <span class="ruby-identifier">from</span>&#x000A;                        <span class="ruby-identifier">others</span>[<span class="ruby-identifier">to</span>] = <span class="ruby-identifier">value</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">others</span>.<span class="ruby-identifier">empty?</span>&#x000A;        <span class="ruby-identifier">others</span>.<span class="ruby-identifier">merge</span> <span class="ruby-identifier">constants</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-get_property'>
+<a name='method-i-get_property'></a>
+<div class='synopsis'>
+<span class='name'>get_property</span><span class='arguments'>(key)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_property-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_property-source'><span class="ruby-comment"># File lib/mapi/convert/contact.rb, line 65</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_property</span> <span class="ruby-identifier">key</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">key</span>&#x000A;                <span class="ruby-keyword">return</span> <span class="ruby-identifier">key</span>&#x000A;        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:call</span>&#x000A;                <span class="ruby-identifier">value</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">call</span> <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">props</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-identifier">value</span> = <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">props</span>[<span class="ruby-identifier">key</span>]&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">value</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">empty?</span>&#x000A;                <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-identifier">value</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

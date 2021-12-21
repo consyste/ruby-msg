@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>pst.rb</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>pst.rb
+</h1>
+<div class='paths'>
+lib/mapi/pst.rb
+</div>
+<div class='last-update'>
+Last Update:
+<span class='datetime'>2021-12-17 22:03:33 +0900</span>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Introduction">Introduction<span><a href="#label-Introduction">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>This file is mostly an attempt to port libpst to ruby, and simplify it in the process. It will leverage much of the existing MAPI =&gt; MIME conversion developed for Msg files, and as such is purely concerned with the file structure details.</p>
+
+<h1 id="label-TODO"><a href="../../TODO.html">TODO</a><span><a href="#label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<ol><li>
+<p>solve recipient table problem (test4). this is done. turns out it was due to id2 clashes. find better solution</p>
+</li><li>
+<p>check parse consistency. an initial conversion of a 30M file to pst, shows a number of messages conveting badly. compare with libpst too.</p>
+</li><li>
+<p>xattribs</p>
+</li><li>
+<p>generalise the <a href="../../../classes/Mapi.html"><code>Mapi</code></a> stuff better</p>
+</li><li>
+<p>refactor index load</p>
+</li><li>
+<p>msg serialization?</p>
+</li></ol>
+</div>
+<div id='context'>
+<div id='requires'>
+<h2>Required files</h2>
+<ol>
+<li>mapi</li>
+<li>enumerator</li>
+<li>ostruct</li>
+<li>ole/ranges_io</li>
+</ol>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

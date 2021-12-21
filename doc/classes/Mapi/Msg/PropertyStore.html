@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::Msg::PropertyStore</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::Msg::PropertyStore
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/mapi/msg_rb.html">lib/mapi/msg.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="../../Object.html">Object</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="class-Mapi::Msg::PropertyStore-label-Introduction">Introduction<span><a href="#class-Mapi::Msg::PropertyStore-label-Introduction">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>A big compononent of <code>Msg</code> files is the property store, which holds all the key/value pairs of properties. The message itself, and all its <code>Attachment</code>s and <code>Recipient</code>s have an instance of this class.</p>
+
+<h1 id="class-Mapi::Msg::PropertyStore-label-Storage+model">Storage model<span><a href="#class-Mapi::Msg::PropertyStore-label-Storage+model">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Property keys (tags?) can be either simple hex numbers, in the range 0x0000 - 0xffff, or they can be named properties. In fact, properties in the range 0x0000 to 0x7fff are supposed to be the non- named properties, and can be considered to be in the <code>PS_MAPI</code> namespace. (correct?)</p>
+
+<p>Named properties are serialized in the 0x8000 to 0xffff range, and are referenced as a guid and long/string pair.</p>
+
+<p>There are key ranges, which can be used to imply things generally about keys.</p>
+
+<p>Further, we can give symbolic names to most keys, coming from constants in various places. Eg:</p>
+
+<pre>0x0037 =&gt; subject&#x000A;{00062002-0000-0000-C000-000000000046}/0x8218 =&gt; response_status&#x000A;# displayed as categories in outlook&#x000A;{00020329-0000-0000-C000-000000000046}/&quot;Keywords&quot; =&gt; categories</pre>
+
+<p>Futher, there are completely different names, coming from other object models that get mapped to these things (CDO&#39;s model, Outlook&#39;s model etc). Eg “urn:schemas:httpmail:subject” I think these can be ignored though, as they aren&#39;t defined clearly in terms of mapi properties, and i&#39;m really just trying to make a mapi property store. (It should also be relatively easy to support them later.)</p>
+
+<h1 id="class-Mapi::Msg::PropertyStore-label-Usage">Usage<span><a href="#class-Mapi::Msg::PropertyStore-label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>The api is driven by a desire to have the simple stuff “just work”, ie</p>
+
+<pre class="ruby"><span class="ruby-identifier">properties</span>.<span class="ruby-identifier">subject</span>&#x000A;<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">display_name</span></pre>
+
+<p>There also needs to be a way to look up properties more specifically:</p>
+
+<pre class="ruby"><span class="ruby-identifier">properties</span>[<span class="ruby-value">0x0037</span>] <span class="ruby-comment"># =&gt; gets the subject</span>&#x000A;<span class="ruby-identifier">properties</span>[<span class="ruby-value">0x0037</span>, <span class="ruby-constant">PS_MAPI</span>] <span class="ruby-comment"># =&gt; still gets the subject</span>&#x000A;<span class="ruby-identifier">properties</span>[<span class="ruby-string">&#39;Keywords&#39;</span>, <span class="ruby-constant">PS_PUBLIC_STRINGS</span>] <span class="ruby-comment"># =&gt; gets outlook&#39;s categories array</span></pre>
+
+<p>The abbreviated versions work by “resolving” the symbols to full keys:</p>
+
+<pre class="ruby">          <span class="ruby-comment"># the guid here is just PS_PUBLIC_STRINGS</span>&#x000A;<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">resolve</span> <span class="ruby-value">:keywords</span> <span class="ruby-comment"># =&gt; #&lt;Key {00020329-0000-0000-c000-000000000046}/&quot;Keywords&quot;&gt;</span>&#x000A;<span class="ruby-comment"># the result here is actually also a key</span>&#x000A;<span class="ruby-identifier">k</span> = <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">resolve</span> <span class="ruby-value">:subject</span>  <span class="ruby-comment"># =&gt; 0x0037</span>&#x000A;<span class="ruby-comment"># it has a guid</span>&#x000A;<span class="ruby-identifier">k</span>.<span class="ruby-identifier">guid</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Msg</span><span class="ruby-operator">::</span><span class="ruby-constant">Properties</span><span class="ruby-operator">::</span><span class="ruby-constant">PS_MAPI</span> <span class="ruby-comment"># =&gt; true</span></pre>
+
+<h1 id="class-Mapi::Msg::PropertyStore-label-Parsing">Parsing<span><a href="#class-Mapi::Msg::PropertyStore-label-Parsing">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>There are three objects that need to be parsed to load a <code>Msg</code> property store:</p>
+<ol><li>
+<p>The <code>nameid</code> directory (<code>Properties.parse_nameid</code>)</p>
+</li><li>
+<p>The many <code>substg</code> objects, whose names should match <code>Properties::SUBSTG_RX</code> (<code>Properties#parse_substg</code>)</p>
+</li><li>
+<p>The <code>properties</code> file (<code>Properties#parse_properties</code>)</p>
+</li></ol>
+
+<p>Understanding of the formats is by no means perfect.</p>
+
+<h1 id="class-Mapi::Msg::PropertyStore-label-TODO"><a href="../../../files/TODO.html">TODO</a><span><a href="#class-Mapi::Msg::PropertyStore-label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<ul><li>
+<p>While the key objects are sufficient, the value objects are just plain ruby types. It currently isn&#39;t possible to write to the values, or to know which encoding the value had.</p>
+</li><li>
+<p>Update this doc.</p>
+</li><li>
+<p>Perhaps change from eager loading, to be load-on-demand.</p>
+</li></ul>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-load">load</a></li>
+<li><a href="#method-c-new">new</a></li>
+<li><a href="#method-c-parse_nameid">parse_nameid</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-add_property">add_property</a></li>
+<li><a href="#method-i-load">load</a></li>
+<li><a href="#method-i-method_missing">method_missing</a></li>
+<li><a href="#attribute-i-nameid">nameid</a></li>
+<li><a href="#method-i-parse_properties">parse_properties</a></li>
+<li><a href="#method-i-parse_substg">parse_substg</a></li>
+</ol>
+</div>
+<div id='context'>
+<div id='includes'>
+<h2>Included modules</h2>
+<ol>
+<li><a href="../PropertySet/Constants.html">PropertySet::Constants</a></li>
+</ol>
+</div>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>ENCODINGS</td>
+<td>=</td>
+<td class='context-item-value'>{
+0x000d =>   proc { |obj| obj }, # seems to be used when its going to be a directory instead of a file. eg nested ole. 3701 usually. in which case we shouldn't get here right?
+0x001f =>   proc { |obj| Ole::Types::FROM_UTF16.iconv obj.read }, # unicode
+# ascii
+# FIXME hack did a[0..-2] before, seems right sometimes, but for some others it chopped the text. chomp
+0x001e =>   proc { |obj| obj.read.chomp 0.chr },
+0x0102 =>   proc { |obj| obj.open }, # binary?
+:default => proc { |obj| obj.open }
+}</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>note that binary and default both use obj.open. not the block form. this means we should close it later, which we don&#39;t. as we&#39;re only reading though, it shouldn&#39;t matter right? not really good though FIXME change these to use mapi symbolic const names</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>Key</td>
+<td>=</td>
+<td class='context-item-value'>PropertySet::Key</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>NAMEID_RX</td>
+<td>=</td>
+<td class='context-item-value'>/^__nameid_version1\.0$/</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>PROPERTIES_RX</td>
+<td>=</td>
+<td class='context-item-value'>/^__properties_version1\.0$/</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>SUBSTG_RX</td>
+<td>=</td>
+<td class='context-item-value'>/^__substg1\.0_([0-9A-F]{4})([0-9A-F]{4})(?:-([0-9A-F]{8}))?$/</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>VALID_RX</td>
+<td>=</td>
+<td class='context-item-value'>/#{SUBSTG_RX}|#{PROPERTIES_RX}|#{NAMEID_RX}/</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-nameid'>nameid</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-load'>
+<a name='method-c-load'></a>
+<div class='synopsis'>
+<span class='name'>load</span><span class='arguments'>(obj)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-load-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-load-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 128</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">load</span> <span class="ruby-identifier">obj</span>&#x000A;        <span class="ruby-identifier">prop</span> = <span class="ruby-identifier">new</span>&#x000A;        <span class="ruby-identifier">prop</span>.<span class="ruby-identifier">load</span> <span class="ruby-identifier">obj</span>&#x000A;        <span class="ruby-identifier">prop</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 118</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>&#x000A;        <span class="ruby-ivar">@nameid</span> = <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-comment"># not exactly a cache currently</span>&#x000A;        <span class="ruby-ivar">@cache</span> = {}&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-class method' id='method-method-c-parse_nameid'>
+<a name='method-c-parse_nameid'></a>
+<div class='synopsis'>
+<span class='name'>parse_nameid</span><span class='arguments'>(obj)</span>
+
+</div>
+<div class='description'>
+
+<p>Read nameid from the <code>Dirent</code> obj, which is used for mapping of named properties keys to proxy keys in the 0x8000 - 0xffff range. Returns a hash of integer -&gt; <a href="PropertyStore.html#Key"><code>Key</code></a>.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-parse_nameid-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-parse_nameid-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 165</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">parse_nameid</span> <span class="ruby-identifier">obj</span>&#x000A;        <span class="ruby-identifier">remaining</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">dup</span>&#x000A;        <span class="ruby-identifier">guids_obj</span>, <span class="ruby-identifier">props_obj</span>, <span class="ruby-identifier">names_obj</span> =&#x000A;                <span class="ruby-node">%w[__substg1.0_00020102 __substg1.0_00030102 __substg1.0_00040102]</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>&#x000A;                        <span class="ruby-identifier">remaining</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">obj</span><span class="ruby-operator">/</span><span class="ruby-identifier">name</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;&#x000A;        <span class="ruby-comment"># parse guids</span>&#x000A;        <span class="ruby-comment"># this is the guids for named properities (other than builtin ones)</span>&#x000A;        <span class="ruby-comment"># i think PS_PUBLIC_STRINGS, and PS_MAPI are builtin.</span>&#x000A;        <span class="ruby-comment"># Scan using an ascii pattern - it&#39;s binary data we&#39;re looking</span>&#x000A;        <span class="ruby-comment"># at, so we don&#39;t want to look for unicode characters</span>&#x000A;        <span class="ruby-identifier">guids</span> = [<span class="ruby-constant">PS_PUBLIC_STRINGS</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">guids_obj</span>.<span class="ruby-identifier">read</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/.{16}/mn</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-constant">Ole</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span>.<span class="ruby-identifier">load_guid</span> <span class="ruby-identifier">str</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;&#x000A;        <span class="ruby-comment"># parse names.</span>&#x000A;        <span class="ruby-comment"># the string ids for named properties</span>&#x000A;        <span class="ruby-comment"># they are no longer parsed, as they&#39;re referred to by offset not</span>&#x000A;        <span class="ruby-comment"># index. they are simply sequentially packed, as a long, giving</span>&#x000A;        <span class="ruby-comment"># the string length, then padding to 4 byte multiple, and repeat.</span>&#x000A;        <span class="ruby-identifier">names_data</span> = <span class="ruby-identifier">names_obj</span>.<span class="ruby-identifier">read</span>&#x000A;&#x000A;        <span class="ruby-comment"># parse actual props.</span>&#x000A;        <span class="ruby-comment"># not sure about any of this stuff really.</span>&#x000A;        <span class="ruby-comment"># should flip a few bits in the real msg, to get a better understanding of how this works.</span>&#x000A;        <span class="ruby-comment"># Scan using an ascii pattern - it&#39;s binary data we&#39;re looking</span>&#x000A;        <span class="ruby-comment"># at, so we don&#39;t want to look for unicode characters</span>&#x000A;        <span class="ruby-identifier">props</span> = <span class="ruby-identifier">props_obj</span>.<span class="ruby-identifier">read</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/.{8}/mn</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-identifier">flags</span>, <span class="ruby-identifier">offset</span> = <span class="ruby-identifier">str</span>[<span class="ruby-value">4</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">unpack</span> <span class="ruby-string">&#39;v2&#39;</span>&#x000A;                <span class="ruby-comment"># the property will be serialised as this pseudo property, mapping it to this named property</span>&#x000A;                <span class="ruby-identifier">pseudo_prop</span> = <span class="ruby-value">0x8000</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">offset</span>&#x000A;                <span class="ruby-identifier">named</span> = <span class="ruby-identifier">flags</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>&#x000A;                <span class="ruby-identifier">prop</span> = <span class="ruby-keyword">if</span> <span class="ruby-identifier">named</span>&#x000A;                        <span class="ruby-identifier">str_off</span> = <span class="ruby-identifier">str</span>.<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;V&#39;</span>).<span class="ruby-identifier">first</span>&#x000A;                        <span class="ruby-identifier">len</span> = <span class="ruby-identifier">names_data</span>[<span class="ruby-identifier">str_off</span>, <span class="ruby-value">4</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;V&#39;</span>).<span class="ruby-identifier">first</span>&#x000A;                        <span class="ruby-constant">Ole</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span><span class="ruby-operator">::</span><span class="ruby-constant">FROM_UTF16</span>.<span class="ruby-identifier">iconv</span> <span class="ruby-identifier">names_data</span>[<span class="ruby-identifier">str_off</span> <span class="ruby-operator">+</span> <span class="ruby-value">4</span>, <span class="ruby-identifier">len</span>]&#x000A;                <span class="ruby-keyword">else</span>&#x000A;                        <span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span> = <span class="ruby-identifier">str</span>.<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;v2&#39;</span>)&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;b not 0&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">b</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>&#x000A;                        <span class="ruby-identifier">a</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-comment"># a bit sus</span>&#x000A;                <span class="ruby-identifier">guid_off</span> = <span class="ruby-identifier">flags</span> <span class="ruby-operator">&gt;&gt;</span> <span class="ruby-value">1</span>&#x000A;                <span class="ruby-comment"># missing a few builtin PS_*</span>&#x000A;                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;guid off &lt; 2 (#{guid_off})&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">guid_off</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span>&#x000A;                <span class="ruby-identifier">guid</span> = <span class="ruby-identifier">guids</span>[<span class="ruby-identifier">guid_off</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>]&#x000A;                [<span class="ruby-identifier">pseudo_prop</span>, <span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">prop</span>, <span class="ruby-identifier">guid</span>)]&#x000A;        <span class="ruby-keyword">end</span>&#x000A;&#x000A;        <span class="ruby-comment">#Log.warn &quot;* ignoring #{remaining.length} objects in nameid&quot; unless remaining.empty?</span>&#x000A;        <span class="ruby-comment"># this leaves a bunch of other unknown chunks of data with completely unknown meaning.</span>&#x000A;        <span class="ruby-comment"># pp [:unknown, child.name, child.data.unpack(&#39;H*&#39;)[0].scan(/.{16}/m)]</span>&#x000A;        <span class="ruby-constant">Hash</span>[<span class="ruby-operator">*</span><span class="ruby-identifier">props</span>.<span class="ruby-identifier">flatten</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-add_property'>
+<a name='method-i-add_property'></a>
+<div class='synopsis'>
+<span class='name'>add_property</span><span class='arguments'>(key, value, pos=nil)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-add_property-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-add_property-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 290</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_property</span> <span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">pos</span>=<span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-comment"># map keys in the named property range through nameid</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-constant">Integer</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">key</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0x8000</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@nameid</span>&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;no nameid section yet named properties used&quot;</span>&#x000A;                        <span class="ruby-identifier">key</span> = <span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">key</span>&#x000A;                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">real_key</span> = <span class="ruby-ivar">@nameid</span>[<span class="ruby-identifier">key</span>]&#x000A;                        <span class="ruby-identifier">key</span> = <span class="ruby-identifier">real_key</span>&#x000A;                <span class="ruby-keyword">else</span>&#x000A;                        <span class="ruby-comment"># i think i hit these when i have a named property, in the PS_MAPI</span>&#x000A;                        <span class="ruby-comment"># guid</span>&#x000A;                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;property in named range not in nameid #{key.inspect}&quot;</span>&#x000A;                        <span class="ruby-identifier">key</span> = <span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">key</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-identifier">key</span> = <span class="ruby-constant">Key</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">key</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">pos</span>&#x000A;                <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">||=</span> []&#x000A;                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;duplicate property&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">Array</span> <span class="ruby-operator">===</span> <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>]&#x000A;                <span class="ruby-comment"># ^ this is actually a trickier problem. the issue is more that they must all be of</span>&#x000A;                <span class="ruby-comment"># the same type.</span>&#x000A;                <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>][<span class="ruby-identifier">pos</span>] = <span class="ruby-identifier">value</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-comment"># take the last.</span>&#x000A;                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;duplicate property #{key.inspect}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>]&#x000A;                <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">value</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-load'>
+<a name='method-i-load'></a>
+<div class='synopsis'>
+<span class='name'>load</span><span class='arguments'>(obj)</span>
+
+</div>
+<div class='description'>
+
+<p>Parse properties from the <code>Dirent</code> obj</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-load-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-load-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 135</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">load</span> <span class="ruby-identifier">obj</span>&#x000A;        <span class="ruby-comment"># we need to do the nameid first, as it provides the map for later user defined properties</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">nameid_obj</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">find</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">NAMEID_RX</span> }&#x000A;                <span class="ruby-ivar">@nameid</span> = <span class="ruby-constant">PropertyStore</span>.<span class="ruby-identifier">parse_nameid</span> <span class="ruby-identifier">nameid_obj</span>&#x000A;                <span class="ruby-comment"># hack to make it available to all msg files from the same ole storage object</span>&#x000A;                <span class="ruby-comment"># FIXME - come up with a neater way</span>&#x000A;                <span class="ruby-keyword">class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">ole</span>&#x000A;                        <span class="ruby-identifier">attr_accessor</span> <span class="ruby-value">:msg_nameid</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">ole</span>.<span class="ruby-identifier">msg_nameid</span> = <span class="ruby-ivar">@nameid</span>&#x000A;        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">ole</span>&#x000A;                <span class="ruby-ivar">@nameid</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">ole</span>.<span class="ruby-identifier">msg_nameid</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-comment"># now parse the actual properties. i think dirs that match the substg should be decoded</span>&#x000A;        <span class="ruby-comment"># as properties to. 0x000d is just another encoding, the dir encoding. it should match</span>&#x000A;        <span class="ruby-comment"># whether the object is file / dir. currently only example is embedded msgs anyway</span>&#x000A;        <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">file?</span>&#x000A;                <span class="ruby-keyword">case</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">name</span>&#x000A;                <span class="ruby-keyword">when</span> <span class="ruby-constant">PROPERTIES_RX</span>&#x000A;                        <span class="ruby-identifier">parse_properties</span> <span class="ruby-identifier">child</span>&#x000A;                <span class="ruby-keyword">when</span> <span class="ruby-constant">SUBSTG_RX</span>&#x000A;                        <span class="ruby-identifier">parse_substg</span>(<span class="ruby-operator">*</span>(<span class="ruby-identifier">$~</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">num</span><span class="ruby-operator">|</span> <span class="ruby-identifier">num</span>.<span class="ruby-identifier">hex</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span> } <span class="ruby-operator">+</span> [<span class="ruby-identifier">child</span>]))&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-method_missing'>
+<a name='method-i-method_missing'></a>
+<div class='synopsis'>
+<span class='name'>method_missing</span><span class='arguments'>(name, *args, &block)</span>
+
+</div>
+<div class='description'>
+
+<p>delegate to cache</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-method_missing-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-method_missing-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 321</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">method_missing</span> <span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>&#x000A;        <span class="ruby-ivar">@cache</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-parse_properties'>
+<a name='method-i-parse_properties'></a>
+<div class='synopsis'>
+<span class='name'>parse_properties</span><span class='arguments'>(obj)</span>
+
+</div>
+<div class='description'>
+
+<p>For parsing the <code>properties</code> file. Smaller properties are serialized in one chunk, such as longs, bools, times etc. The parsing has problems.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-parse_properties-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-parse_properties-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 252</span>&#x000A;                        <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parse_properties</span> <span class="ruby-identifier">obj</span>&#x000A;                                <span class="ruby-identifier">data</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">read</span>&#x000A;                                <span class="ruby-comment"># don&#39;t really understand this that well...</span>&#x000A;                                &#x000A;                                <span class="ruby-identifier">pad</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">%</span> <span class="ruby-value">16</span>&#x000A;                                <span class="ruby-keyword">unless</span> (<span class="ruby-identifier">pad</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">pad</span> <span class="ruby-operator">==</span> <span class="ruby-value">8</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">data</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">pad</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\000&quot;</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">pad</span>&#x000A;                                        <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;padding was not as expected #{pad} (#{data.length}) -&gt; #{data[0...pad].inspect}&quot;</span>&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-comment"># Scan using an ascii pattern - it&#39;s binary data we&#39;re looking</span>&#x000A;                                <span class="ruby-comment"># at, so we don&#39;t want to look for unicode characters</span>&#x000A;                                <span class="ruby-identifier">data</span>[<span class="ruby-identifier">pad</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/.{16}/mn</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">data</span><span class="ruby-operator">|</span>&#x000A;                                        <span class="ruby-identifier">property</span>, <span class="ruby-identifier">encoding</span> = (<span class="ruby-string">&#39;%08x&#39;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;V&#39;</span>)).<span class="ruby-identifier">scan</span> <span class="ruby-regexp">/.{4}/</span>&#x000A;                                        <span class="ruby-identifier">key</span> = <span class="ruby-identifier">property</span>.<span class="ruby-identifier">hex</span>&#x000A;                                        <span class="ruby-comment"># doesn&#39;t make any sense to me. probably because its a serialization of some internal</span>&#x000A;                                        <span class="ruby-comment"># outlook structure...</span>&#x000A;                                        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">property</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;0000&#39;</span>&#x000A;                                        <span class="ruby-keyword">case</span> <span class="ruby-identifier">encoding</span>&#x000A;                                        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;0102&#39;</span>, <span class="ruby-string">&#39;001e&#39;</span>, <span class="ruby-string">&#39;001f&#39;</span>, <span class="ruby-string">&#39;101e&#39;</span>, <span class="ruby-string">&#39;101f&#39;</span>, <span class="ruby-string">&#39;000d&#39;</span>&#x000A;                                                <span class="ruby-comment"># ignore on purpose. not sure what its for</span>&#x000A;                                                <span class="ruby-comment"># multivalue versions ignored also</span>&#x000A;                                        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;0003&#39;</span> <span class="ruby-comment"># long</span>&#x000A;                                                <span class="ruby-comment"># don&#39;t know what all the other data is for</span>&#x000A;                                                <span class="ruby-identifier">add_property</span> <span class="ruby-identifier">key</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">data</span>[<span class="ruby-value">8</span>, <span class="ruby-value">4</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;V&#39;</span>)&#x000A;                                        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;000b&#39;</span> <span class="ruby-comment"># boolean</span>&#x000A;                                                <span class="ruby-comment"># again, heaps more data than needed. and its not always 0 or 1.</span>&#x000A;                                                <span class="ruby-comment"># they are in fact quite big numbers. this is wrong.</span>&#x000A;<span class="ruby-comment">#                                       p [property, data[4..-1].unpack(&#39;H*&#39;)[0]]</span>&#x000A;                                                <span class="ruby-identifier">add_property</span> <span class="ruby-identifier">key</span>, <span class="ruby-identifier">data</span>[<span class="ruby-value">8</span>, <span class="ruby-value">4</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;V&#39;</span>)[<span class="ruby-value">0</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>&#x000A;                                        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;0040&#39;</span> <span class="ruby-comment"># systime</span>&#x000A;                                                <span class="ruby-comment"># seems to work:</span>&#x000A;                                                <span class="ruby-identifier">add_property</span> <span class="ruby-identifier">key</span>, <span class="ruby-constant">Ole</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span>.<span class="ruby-identifier">load_time</span>(<span class="ruby-identifier">data</span>[<span class="ruby-value">8</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>])&#x000A;                                        <span class="ruby-keyword">else</span>&#x000A;                                                <span class="ruby-comment">#Log.warn &quot;ignoring data in __properties section, encoding: #{encoding}&quot;</span>&#x000A;                                                <span class="ruby-comment">#Log &lt;&lt; data.unpack(&#39;H*&#39;).inspect + &quot;\n&quot;</span>&#x000A;                                        <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-parse_substg'>
+<a name='method-i-parse_substg'></a>
+<div class='synopsis'>
+<span class='name'>parse_substg</span><span class='arguments'>(key, encoding, offset, obj)</span>
+
+</div>
+<div class='description'>
+
+<p>Parse an <code>Dirent</code>, as per <code>msgconvert.pl</code>. This is how larger properties, such as strings, binary blobs, and other ole sub-directories (eg nested <a href="../Msg.html"><code>Msg</code></a>) are stored.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-parse_substg-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-parse_substg-source'><span class="ruby-comment"># File lib/mapi/msg.rb, line 223</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parse_substg</span> <span class="ruby-identifier">key</span>, <span class="ruby-identifier">encoding</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">obj</span>&#x000A;        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">encoding</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0x1000</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">offset</span>&#x000A;                        <span class="ruby-comment"># there is typically one with no offset first, whose data is a series of numbers</span>&#x000A;                        <span class="ruby-comment"># equal to the lengths of all the sub parts. gives an implied array size i suppose.</span>&#x000A;                        <span class="ruby-comment"># maybe you can initialize the array at this time. the sizes are the same as all the</span>&#x000A;                        <span class="ruby-comment"># ole object sizes anyway, its to pre-allocate i suppose.</span>&#x000A;                        <span class="ruby-comment">#p obj.data.unpack(&#39;V*&#39;)</span>&#x000A;                        <span class="ruby-comment"># ignore this one</span>&#x000A;                        <span class="ruby-keyword">return</span>&#x000A;                <span class="ruby-keyword">else</span>&#x000A;                        <span class="ruby-comment"># remove multivalue flag for individual pieces</span>&#x000A;                        <span class="ruby-identifier">encoding</span> <span class="ruby-operator">&amp;=</span> <span class="ruby-operator">~</span><span class="ruby-value">0x1000</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;offset specified for non-multivalue encoding #{obj.name}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span>&#x000A;                <span class="ruby-identifier">offset</span> = <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-comment"># offset is for multivalue encodings.</span>&#x000A;        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">encoder</span> = <span class="ruby-constant">ENCODINGS</span>[<span class="ruby-identifier">encoding</span>]&#x000A;                <span class="ruby-constant">Log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;unknown encoding #{encoding}&quot;</span>&#x000A;                <span class="ruby-comment">#encoder = proc { |obj| obj.io } #.read }. maybe not a good idea</span>&#x000A;                <span class="ruby-identifier">encoder</span> = <span class="ruby-constant">ENCODINGS</span>[<span class="ruby-value">:default</span>]&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-identifier">add_property</span> <span class="ruby-identifier">key</span>, <span class="ruby-identifier">encoder</span>[<span class="ruby-identifier">obj</span>], <span class="ruby-identifier">offset</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

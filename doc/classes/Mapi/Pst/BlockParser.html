@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::Pst::BlockParser</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::Pst::BlockParser
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/mapi/pst_rb.html">lib/mapi/pst.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="../../Object.html">Object</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>the job of this class, is to take a desc record, and be able to enumerate through the mapi properties of the associated thing.</p>
+
+<p>corresponds to</p>
+<ul><li>
+<p>_pst_parse_block</p>
+</li><li>
+<p>_pst_process (in some ways. although perhaps thats more the Item::Properties#add_property)</p>
+</li></ul>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#attribute-i-data">data</a></li>
+<li><a href="#attribute-i-data_chunks">data_chunks</a></li>
+<li><a href="#attribute-i-desc">desc</a></li>
+<li><a href="#method-i-get_data_indirect">get_data_indirect</a></li>
+<li><a href="#method-i-get_data_indirect_io">get_data_indirect_io</a></li>
+<li><a href="#method-i-handle_indirect_values">handle_indirect_values</a></li>
+<li><a href="#method-i-idx2">idx2</a></li>
+<li><a href="#method-i-load_header">load_header</a></li>
+<li><a href="#attribute-i-offset_tables">offset_tables</a></li>
+</ol>
+</div>
+<div id='context'>
+<div id='includes'>
+<h2>Included modules</h2>
+<ol>
+<li><a href="../Types/Constants.html">Mapi::Types::Constants</a></li>
+</ol>
+</div>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>ID2_ATTACHMENTS</td>
+<td>=</td>
+<td class='context-item-value'>0x671</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>the attachment and recipient arrays appear to be always stored with these fixed id2 values. seems strange. are there other extra streams? can find out by making higher level IO wrapper, which has the id2 value, and doing the diff of available id2 values versus used id2 values in properties of an item.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>ID2_RECIPIENTS</td>
+<td>=</td>
+<td class='context-item-value'>0x692</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>IMMEDIATE_TYPES</td>
+<td>=</td>
+<td class='context-item-value'>[
+PT_SHORT, PT_LONG, PT_BOOLEAN
+]</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>these lists are very incomplete. think they are largely copied from libpst</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>INDIRECT_TYPES</td>
+<td>=</td>
+<td class='context-item-value'>[
+PT_DOUBLE, PT_OBJECT,
+0x0014, # whats this? probably something like PT_LONGLONG, given the correspondence with the
+# ole variant types. (= VT_I8)
+PT_STRING8, PT_UNICODE, # unicode isn't in libpst, but added here for outlook 2003 down the track
+PT_SYSTIME,
+0x0048, # another unknown
+0x0102, # this is PT_BINARY vs PT_CLSID
+#0x1003, # these are vector types, but they're commented out for now because i'd expect that
+#0x1014, # there's extra decoding needed that i'm not doing. (probably just need a simple
+#        # PT_* => unpack string mapping for the immediate types, and just do unpack('V*') etc
+#0x101e,
+#0x1102
+]</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>PR_BODY_HTML</td>
+<td>=</td>
+<td class='context-item-value'>PropertySet::TAGS.find { |num, (name, type)| name == 'PR_BODY_HTML' }.first.hex</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>PR_SUBJECT</td>
+<td>=</td>
+<td class='context-item-value'>PropertySet::TAGS.find { |num, (name, type)| name == 'PR_SUBJECT' }.first.hex</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>TYPES</td>
+<td>=</td>
+<td class='context-item-value'>{
+0xbcec => 1,
+0x7cec => 2,
+# type 3 is removed. an artifact of not handling the indirect blocks properly in libpst.
+}</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-data'>data</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-data_chunks'>data_chunks</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-desc'>desc</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-offset_tables'>offset_tables</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(desc)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 991</span>&#x000A;                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span> <span class="ruby-identifier">desc</span>&#x000A;                        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span>, <span class="ruby-node">&quot;unable to get associated index record for #{desc.inspect}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">desc</span>&#x000A;                        <span class="ruby-ivar">@desc</span> = <span class="ruby-identifier">desc</span>&#x000A;                        <span class="ruby-comment">#@data = desc.desc.read</span>&#x000A;                        <span class="ruby-keyword">if</span> <span class="ruby-constant">Pst</span><span class="ruby-operator">::</span><span class="ruby-constant">Index</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">desc</span>&#x000A;                                <span class="ruby-comment">#@data = RangesIOIdxChain.new(desc.pst, desc.desc).read</span>&#x000A;                                <span class="ruby-identifier">idxs</span> = <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>.<span class="ruby-identifier">id2_block_idx_chain</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">desc</span>&#x000A;                                <span class="ruby-comment"># this gets me the plain index chain.</span>&#x000A;                        <span class="ruby-keyword">else</span>&#x000A;                                <span class="ruby-comment"># fake desc</span>&#x000A;                                <span class="ruby-comment">#@data = desc.desc.read</span>&#x000A;                                <span class="ruby-identifier">idxs</span> = [<span class="ruby-identifier">desc</span>.<span class="ruby-identifier">desc</span>]&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;&#x000A;                        <span class="ruby-ivar">@data_chunks</span> = <span class="ruby-identifier">idxs</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">idx</span><span class="ruby-operator">|</span> <span class="ruby-identifier">idx</span>.<span class="ruby-identifier">read</span> }&#x000A;                        <span class="ruby-ivar">@data</span> = <span class="ruby-ivar">@data_chunks</span>.<span class="ruby-identifier">first</span>&#x000A;&#x000A;                        <span class="ruby-identifier">load_header</span>&#x000A;&#x000A;                        <span class="ruby-ivar">@index_offsets</span> = [<span class="ruby-ivar">@index_offset</span>] <span class="ruby-operator">+</span> <span class="ruby-ivar">@data_chunks</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">chunk</span><span class="ruby-operator">|</span> <span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;v&#39;</span>)[<span class="ruby-value">0</span>] }&#x000A;                        <span class="ruby-ivar">@offset_tables</span> = []&#x000A;                        <span class="ruby-ivar">@ignored</span> = []&#x000A;                        <span class="ruby-ivar">@data_chunks</span>.<span class="ruby-identifier">zip</span>(<span class="ruby-ivar">@index_offsets</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chunk</span>, <span class="ruby-identifier">offset</span><span class="ruby-operator">|</span>&#x000A;                                <span class="ruby-identifier">ignore</span> = <span class="ruby-identifier">chunk</span>[<span class="ruby-identifier">offset</span>, <span class="ruby-value">2</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;v&#39;</span>)[<span class="ruby-value">0</span>]&#x000A;                                <span class="ruby-ivar">@ignored</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ignore</span>&#x000A;<span class="ruby-comment">#                               p ignore</span>&#x000A;                                <span class="ruby-ivar">@offset_tables</span>.<span class="ruby-identifier">push</span> <span class="ruby-identifier">offset_table</span> = []&#x000A;                                <span class="ruby-comment"># maybe its ok if there aren&#39;t to be any values ?</span>&#x000A;                                <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>&#x000A;                                <span class="ruby-identifier">offsets</span> = <span class="ruby-identifier">chunk</span>[<span class="ruby-identifier">offset</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;v*&#39;</span>)&#x000A;                                <span class="ruby-comment">#p offsets</span>&#x000A;                                <span class="ruby-identifier">offsets</span>[<span class="ruby-value">0</span>, <span class="ruby-identifier">ignore</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span>].<span class="ruby-identifier">each_cons</span> <span class="ruby-value">2</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span><span class="ruby-operator">|</span>&#x000A;                                        <span class="ruby-comment">#next if to == 0</span>&#x000A;                                        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span>, [<span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>].<span class="ruby-identifier">inspect</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">to</span>&#x000A;                                        <span class="ruby-identifier">offset_table</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>]&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;&#x000A;                        <span class="ruby-ivar">@offset_table</span> = <span class="ruby-ivar">@offset_tables</span>.<span class="ruby-identifier">first</span>&#x000A;                        <span class="ruby-ivar">@idxs</span> = <span class="ruby-identifier">idxs</span>&#x000A;&#x000A;                        <span class="ruby-comment"># now, we may have multiple different blocks</span>&#x000A;                <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-get_data_indirect'>
+<a name='method-i-get_data_indirect'></a>
+<div class='synopsis'>
+<span class='name'>get_data_indirect</span><span class='arguments'>(offset)</span>
+
+</div>
+<div class='description'>
+
+<p>based on the value of offset, return either some data from buf, or some data from the id2 chain id2, where offset is some key into a lookup table that is stored as the id2 chain. i think i may need to create a <a href="BlockParser.html"><code>BlockParser</code></a> class that wraps up all this mess.</p>
+
+<p>corresponds to:</p>
+<ul><li>
+<p>_pst_getBlockOffsetPointer</p>
+</li><li>
+<p>_pst_getBlockOffset</p>
+</li></ul>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_data_indirect-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_data_indirect-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1057</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_data_indirect</span> <span class="ruby-identifier">offset</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-identifier">get_data_indirect_io</span>(<span class="ruby-identifier">offset</span>).<span class="ruby-identifier">read</span>&#x000A;&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>&#x000A;                <span class="ruby-keyword">nil</span>&#x000A;        <span class="ruby-keyword">elsif</span> (<span class="ruby-identifier">offset</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0xf</span>) <span class="ruby-operator">==</span> <span class="ruby-value">0xf</span>&#x000A;                <span class="ruby-constant">RangesIOID2</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">idx2</span>).<span class="ruby-identifier">read</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-identifier">low</span>, <span class="ruby-identifier">high</span> = <span class="ruby-identifier">offset</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0xf</span>, <span class="ruby-identifier">offset</span> <span class="ruby-operator">&gt;&gt;</span> <span class="ruby-value">4</span>&#x000A;                <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">low</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-keyword">or</span> (<span class="ruby-identifier">high</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0x1</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-keyword">or</span> (<span class="ruby-identifier">high</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@offset_table</span>.<span class="ruby-identifier">length</span>&#x000A;                <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span> = <span class="ruby-ivar">@offset_table</span>[<span class="ruby-identifier">high</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>]&#x000A;                <span class="ruby-identifier">data</span>[<span class="ruby-identifier">from</span><span class="ruby-operator">...</span><span class="ruby-identifier">to</span>]&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-get_data_indirect_io'>
+<a name='method-i-get_data_indirect_io'></a>
+<div class='synopsis'>
+<span class='name'>get_data_indirect_io</span><span class='arguments'>(offset)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_data_indirect_io-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_data_indirect_io-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1072</span>&#x000A;                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_data_indirect_io</span> <span class="ruby-identifier">offset</span>&#x000A;                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>&#x000A;                                <span class="ruby-keyword">nil</span>&#x000A;                        <span class="ruby-keyword">elsif</span> (<span class="ruby-identifier">offset</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0xf</span>) <span class="ruby-operator">==</span> <span class="ruby-value">0xf</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">idx2</span>[<span class="ruby-identifier">offset</span>]&#x000A;                                        <span class="ruby-constant">RangesIOID2</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">idx2</span>&#x000A;                                <span class="ruby-keyword">else</span>&#x000A;                                        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;tried to get idx2 record for #{offset} but failed&quot;</span>&#x000A;                                        <span class="ruby-keyword">return</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;&#39;</span>)&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-keyword">else</span>&#x000A;                                <span class="ruby-identifier">low</span>, <span class="ruby-identifier">high</span> = <span class="ruby-identifier">offset</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0xf</span>, <span class="ruby-identifier">offset</span> <span class="ruby-operator">&gt;&gt;</span> <span class="ruby-value">4</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">low</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-keyword">or</span> (<span class="ruby-identifier">high</span> <span class="ruby-operator">&amp;</span> <span class="ruby-value">0x1</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>&#x000A;<span class="ruby-comment">#                               raise FormatError,</span>&#x000A;                                        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;bad - #{low} #{high} (1)&quot;</span> &#x000A;                                        <span class="ruby-keyword">return</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;&#39;</span>)&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-comment"># lets see which block it should come from.</span>&#x000A;                                <span class="ruby-identifier">block_idx</span>, <span class="ruby-identifier">i</span> = <span class="ruby-identifier">high</span>.<span class="ruby-identifier">divmod</span> <span class="ruby-value">4096</span>&#x000A;                                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_idx</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@data_chunks</span>.<span class="ruby-identifier">length</span>&#x000A;                                        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;bad - block_idx to high (not #{block_idx} &lt; #{@data_chunks.length})&quot;</span>&#x000A;                                        <span class="ruby-keyword">return</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;&#39;</span>)&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-identifier">data_chunk</span>, <span class="ruby-identifier">offset_table</span> = <span class="ruby-ivar">@data_chunks</span>[<span class="ruby-identifier">block_idx</span>], <span class="ruby-ivar">@offset_tables</span>[<span class="ruby-identifier">block_idx</span>]&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">offset_table</span>.<span class="ruby-identifier">length</span>&#x000A;                                        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;bad - #{low} #{high} - #{i / 2} &gt;= #{offset_table.length} (2)&quot;</span>&#x000A;                                        <span class="ruby-keyword">return</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;&#39;</span>)&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-comment">#warn &quot;ok  - #{low} #{high} #{offset_table.length}&quot;</span>&#x000A;                                <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span> = <span class="ruby-identifier">offset_table</span>[<span class="ruby-identifier">i</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>]&#x000A;                                <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">data_chunk</span>[<span class="ruby-identifier">from</span><span class="ruby-operator">...</span><span class="ruby-identifier">to</span>]&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-handle_indirect_values'>
+<a name='method-i-handle_indirect_values'></a>
+<div class='synopsis'>
+<span class='name'>handle_indirect_values</span><span class='arguments'>(key, type, value)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-handle_indirect_values-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-handle_indirect_values-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1106</span>&#x000A;                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">handle_indirect_values</span> <span class="ruby-identifier">key</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">value</span>&#x000A;                        <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>&#x000A;                        <span class="ruby-keyword">when</span> <span class="ruby-constant">PT_BOOLEAN</span>&#x000A;                                <span class="ruby-identifier">value</span> = <span class="ruby-identifier">value</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>&#x000A;                        <span class="ruby-keyword">when</span> <span class="ruby-operator">*</span><span class="ruby-constant">IMMEDIATE_TYPES</span> <span class="ruby-comment"># not including PT_BOOLEAN which we just did above</span>&#x000A;                                <span class="ruby-comment"># no processing current applied (needed?).</span>&#x000A;                        <span class="ruby-keyword">when</span> <span class="ruby-operator">*</span><span class="ruby-constant">INDIRECT_TYPES</span>&#x000A;                                <span class="ruby-comment"># the value is a pointer</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">value</span> <span class="ruby-comment"># ie, value size &gt; 4 above</span>&#x000A;                                        <span class="ruby-identifier">value</span> = <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">value</span>&#x000A;                                <span class="ruby-keyword">else</span>&#x000A;                                        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">get_data_indirect_io</span>(<span class="ruby-identifier">value</span>)&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-comment"># keep strings as immediate values for now, for compatability with how i set up</span>&#x000A;                                <span class="ruby-comment"># Msg::Properties::ENCODINGS</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>&#x000A;                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PT_STRING8</span>&#x000A;                                                <span class="ruby-identifier">value</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">read</span>&#x000A;                                        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PT_UNICODE</span>&#x000A;                                                <span class="ruby-identifier">value</span> = <span class="ruby-constant">Ole</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span><span class="ruby-operator">::</span><span class="ruby-constant">FROM_UTF16</span>.<span class="ruby-identifier">iconv</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">read</span>&#x000A;                                        <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-comment"># special subject handling</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PR_BODY_HTML</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">value</span>&#x000A;                                        <span class="ruby-comment"># to keep the msg code happy, which thinks body_html will be an io</span>&#x000A;                                        <span class="ruby-comment"># although, in 2003 version, they are 0102 already</span>&#x000A;                                        <span class="ruby-identifier">value</span> = <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">value</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:read</span>)&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PR_SUBJECT</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">value</span>&#x000A;                                        <span class="ruby-identifier">ignore</span>, <span class="ruby-identifier">offset</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">unpack</span> <span class="ruby-string">&#39;C2&#39;</span>&#x000A;                                        <span class="ruby-identifier">offset</span> = (<span class="ruby-identifier">offset</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">-</span> <span class="ruby-value">3</span>)&#x000A;                                        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">value</span>[<span class="ruby-value">2</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]&#x000A;<span class="ruby-comment">=begin&#x000A;                                        index = value =~ /^[A-Z]*:/ ? $~[0].length - 1 : nil&#x000A;                                        unless ignore == 1 and offset == index&#x000A;                                                warn &#39;something wrong with subject hack&#39; &#x000A;                                                $x = [ignore, offset, value]&#x000A;                                                require &#39;irb&#39;&#x000A;                                                IRB.start&#x000A;                                                exit&#x000A;                                        end&#x000A;=end</span>&#x000A;<span class="ruby-comment">=begin&#x000A;new idea:&#x000A;&#x000A;making sense of the \001\00[156] i&#39;ve seen prefixing subject. i think its to do with the placement&#x000A;of the &#39;:&#39;, or the &#39; &#39;. And perhaps an optimization to do with thread topic, and ignoring the prefixes&#x000A;added by mailers. thread topic is equal to subject with all that crap removed.&#x000A;&#x000A;can test by creating some mails with bizarre subjects.&#x000A;&#x000A;subject=&quot;\001\005RE: blah blah&quot;&#x000A;subject=&quot;\001\001blah blah&quot;&#x000A;subject=&quot;\001\032Out of Office AutoReply: blah blah&quot;&#x000A;subject=&quot;\001\020Undeliverable: blah blah&quot;&#x000A;&#x000A;looks like it&#x000A;&#x000A;=end</span>&#x000A;&#x000A;                                        <span class="ruby-comment"># now what i think, is that perhaps, value[offset..-1] ...</span>&#x000A;                                        <span class="ruby-comment"># or something like that should be stored as a special tag. ie, do a double yield</span>&#x000A;                                        <span class="ruby-comment"># for this case. probably PR_CONVERSATION_TOPIC, in which case i&#39;d write instead:</span>&#x000A;                                        <span class="ruby-comment"># yield [PR_SUBJECT, ref_type, value]</span>&#x000A;                                        <span class="ruby-comment"># yield [PR_CONVERSATION_TOPIC, ref_type, value[offset..-1]</span>&#x000A;                                        <span class="ruby-comment"># next # to skip the yield.</span>&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;&#x000A;                                <span class="ruby-comment"># special handling for embedded objects</span>&#x000A;                                <span class="ruby-comment"># used for attach_data for attached messages. in which case attach_method should == 5,</span>&#x000A;                                <span class="ruby-comment"># for embedded object.</span>&#x000A;                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PT_OBJECT</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">value</span>&#x000A;                                        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">read</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:read</span>)&#x000A;                                        <span class="ruby-identifier">id2</span>, <span class="ruby-identifier">unknown</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">unpack</span> <span class="ruby-string">&#39;V2&#39;</span>&#x000A;                                        <span class="ruby-identifier">io</span> = <span class="ruby-constant">RangesIOID2</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>, <span class="ruby-identifier">id2</span>, <span class="ruby-identifier">idx2</span>&#x000A;&#x000A;                                        <span class="ruby-comment"># hacky</span>&#x000A;                                        <span class="ruby-identifier">desc2</span> = <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:desc</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">io</span>, <span class="ruby-value">:pst</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>, <span class="ruby-value">:list_index</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">list_index</span>, <span class="ruby-value">:children</span> <span class="ruby-operator">=&gt;</span> [])&#x000A;                                        <span class="ruby-comment"># put nil instead of desc.list_index, otherwise the attachment is attached to itself ad infinitum.</span>&#x000A;                                        <span class="ruby-comment"># should try and fix that FIXME</span>&#x000A;                                        <span class="ruby-comment"># this shouldn&#39;t be done always. for an attached message, yes, but for an attached</span>&#x000A;                                        <span class="ruby-comment"># meta file, for example, it shouldn&#39;t. difference between embedded_ole vs embedded_msg</span>&#x000A;                                        <span class="ruby-comment"># really.</span>&#x000A;                                        <span class="ruby-comment"># note that in the case where its a embedded ole, you actually get a regular serialized ole</span>&#x000A;                                        <span class="ruby-comment"># object, so i need to create an ole storage object on a rangesioidxchain!</span>&#x000A;                                        <span class="ruby-comment"># eg:</span>&#x000A;<span class="ruby-comment">=begin&#x000A;att.props.display_name # =&gt; &quot;Picture (Metafile)&quot;&#x000A;io = att.props.attach_data&#x000A;io.read(32).unpack(&#39;H*&#39;) # =&gt; [&quot;d0cf11e0a1b11ae100000.... note the docfile signature.&#x000A;# plug some missing rangesio holes:&#x000A;def io.rewind; seek 0; end&#x000A;def io.flush; raise IOError; end&#x000A;ole = Ole::Storage.open io&#x000A;puts ole.root.to_tree&#x000A;&#x000A;- #&lt;Dirent:&quot;Root Entry&quot;&gt;&#x000A;  |- #&lt;Dirent:&quot;\001Ole&quot; size=20 data=&quot;\001\000\000\002\000...&quot;&gt;&#x000A;  |- #&lt;Dirent:&quot;CONTENTS&quot; size=65696 data=&quot;\327\315\306\232\000...&quot;&gt;&#x000A;  \- #&lt;Dirent:&quot;\003MailStream&quot; size=12 data=&quot;\001\000\000\000[...&quot;&gt;&#x000A;=end</span>&#x000A;                                        <span class="ruby-comment"># until properly fixed, i have disabled this code here, so this will break</span>&#x000A;                                        <span class="ruby-comment"># nested messages temporarily.</span>&#x000A;                                        <span class="ruby-comment">#value = Item.new desc2, RawPropertyStore.new(desc2).to_a</span>&#x000A;                                        <span class="ruby-comment">#desc2.list_index = nil</span>&#x000A;                                        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">io</span>&#x000A;                                <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-comment"># this is PT_MV_STRING8, i guess.</span>&#x000A;                        <span class="ruby-comment"># should probably have the 0x1000 flag, and do the or-ring.</span>&#x000A;                        <span class="ruby-comment"># example of 0x1102 is PR_OUTLOOK_2003_ENTRYIDS. less sure about that one.</span>&#x000A;                        <span class="ruby-keyword">when</span> <span class="ruby-value">0x101e</span>, <span class="ruby-value">0x1102</span> &#x000A;                                <span class="ruby-comment"># example data:</span>&#x000A;                                <span class="ruby-comment"># 0x802b &quot;\003\000\000\000\020\000\000\000\030\000\000\000#\000\000\000BusinessCompetitionFavorites&quot;</span>&#x000A;                                <span class="ruby-comment"># this 0x802b would be an extended attribute for categories / keywords.</span>&#x000A;                                <span class="ruby-identifier">value</span> = <span class="ruby-identifier">get_data_indirect_io</span>(<span class="ruby-identifier">value</span>).<span class="ruby-identifier">read</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">value</span>&#x000A;                                <span class="ruby-identifier">num</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">unpack</span>(<span class="ruby-string">&#39;V&#39;</span>)[<span class="ruby-value">0</span>]&#x000A;                                <span class="ruby-identifier">offsets</span> = <span class="ruby-identifier">value</span>[<span class="ruby-value">4</span>, <span class="ruby-value">4</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">num</span>].<span class="ruby-identifier">unpack</span>(<span class="ruby-node">&quot;V#{num}&quot;</span>)&#x000A;                                <span class="ruby-identifier">value</span> = (<span class="ruby-identifier">offsets</span> <span class="ruby-operator">+</span> [<span class="ruby-identifier">value</span>.<span class="ruby-identifier">length</span>]).<span class="ruby-identifier">to_enum</span>(<span class="ruby-value">:each_cons</span>, <span class="ruby-value">2</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span><span class="ruby-operator">|</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">from</span><span class="ruby-operator">...</span><span class="ruby-identifier">to</span>] }&#x000A;                                <span class="ruby-identifier">value</span>.<span class="ruby-identifier">map!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span> <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">str</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">0x1102</span>&#x000A;                        <span class="ruby-keyword">else</span>&#x000A;                                <span class="ruby-identifier">name</span> = <span class="ruby-constant">Mapi</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span><span class="ruby-operator">::</span><span class="ruby-constant">DATA</span>[<span class="ruby-identifier">type</span>].<span class="ruby-identifier">first</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>&#x000A;                                <span class="ruby-identifier">warn</span> <span class="ruby-string">&#39;0x%04x %p&#39;</span> <span class="ruby-operator">%</span> [<span class="ruby-identifier">key</span>, <span class="ruby-identifier">get_data_indirect_io</span>(<span class="ruby-identifier">value</span>).<span class="ruby-identifier">read</span>]&#x000A;                                <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&#39;unsupported mapi property type - 0x%04x (%p)&#39;</span> <span class="ruby-operator">%</span> [<span class="ruby-identifier">type</span>, <span class="ruby-identifier">name</span>]&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                        [<span class="ruby-identifier">key</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">value</span>]&#x000A;                <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-idx2'>
+<a name='method-i-idx2'></a>
+<div class='synopsis'>
+<span class='name'>idx2</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>a given desc record may or may not have associated idx2 data. we lazily load it here, so it will never actually be requested unless <a href="BlockParser.html#method-i-get_data_indirect"><code>get_data_indirect</code></a> actually needs to use it.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-idx2-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-idx2-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1037</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">idx2</span>&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@idx2</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@idx2</span>&#x000A;        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span>, <span class="ruby-string">&#39;idx2 requested but no idx2 available&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">list_index</span>&#x000A;        <span class="ruby-comment"># should check this can&#39;t return nil</span>&#x000A;        <span class="ruby-ivar">@idx2</span> = <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">pst</span>.<span class="ruby-identifier">load_idx2</span> <span class="ruby-identifier">desc</span>.<span class="ruby-identifier">list_index</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-load_header'>
+<a name='method-i-load_header'></a>
+<div class='synopsis'>
+<span class='name'>load_header</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-load_header-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-load_header-source'><span class="ruby-comment"># File lib/mapi/pst.rb, line 1044</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">load_header</span>&#x000A;        <span class="ruby-ivar">@index_offset</span>, <span class="ruby-identifier">type</span>, <span class="ruby-ivar">@offset1</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">unpack</span> <span class="ruby-string">&#39;vvV&#39;</span>&#x000A;        <span class="ruby-identifier">raise</span> <span class="ruby-constant">FormatError</span>, <span class="ruby-string">&#39;unknown block type signature 0x%04x&#39;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">type</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">TYPES</span>[<span class="ruby-identifier">type</span>]&#x000A;        <span class="ruby-ivar">@type</span> = <span class="ruby-constant">TYPES</span>[<span class="ruby-identifier">type</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

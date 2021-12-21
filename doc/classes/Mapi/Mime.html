@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Mapi::Mime</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Mapi::Mime
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/mapi/mime_rb.html">lib/mapi/mime.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="../Object.html">Object</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'></div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-make_boundary">make_boundary</a></li>
+<li><a href="#method-c-new">new</a></li>
+<li><a href="#method-c-split_header">split_header</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#attribute-i-body">body</a></li>
+<li><a href="#attribute-i-content_type">content_type</a></li>
+<li><a href="#attribute-i-epilogue">epilogue</a></li>
+<li><a href="#attribute-i-headers">headers</a></li>
+<li><a href="#method-i-inspect">inspect</a></li>
+<li><a href="#method-i-multipart-3F">multipart?</a></li>
+<li><a href="#attribute-i-parts">parts</a></li>
+<li><a href="#attribute-i-preamble">preamble</a></li>
+<li><a href="#method-i-to_s">to_s</a></li>
+<li><a href="#method-i-to_tree">to_tree</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-body'>body</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-content_type'>content_type</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-epilogue'>epilogue</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-headers'>headers</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-parts'>parts</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='attribute-i-preamble'>preamble</a>
+</td>
+<td class='context-item-value'>[R]</td>
+<td class='context-item-desc'></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='public-class method' id='method-method-c-make_boundary'>
+<a name='method-c-make_boundary'></a>
+<div class='synopsis'>
+<span class='name'>make_boundary</span><span class='arguments'>(i, extra_obj = Mime)</span>
+
+</div>
+<div class='description'>
+
+<p><code>i</code> is some value that should be unique for all multipart boundaries for a given message</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-make_boundary-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-make_boundary-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 132</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">make_boundary</span> <span class="ruby-identifier">i</span>, <span class="ruby-identifier">extra_obj</span> = <span class="ruby-constant">Mime</span>&#x000A;        <span class="ruby-node">&quot;----_=_NextPart_#{&#39;%03d&#39; % i}_#{&#39;%08x&#39; % extra_obj.object_id}.#{&#39;%08x&#39; % Time.now}&quot;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-class method' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(str, ignore_body=false)</span>
+
+</div>
+<div class='description'>
+
+<p>Create a <a href="Mime.html"><code>Mime</code></a> object using <code>str</code> as an initial serialization, which must contain headers and a body (even if empty). Needs work.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 29</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span> <span class="ruby-identifier">str</span>, <span class="ruby-identifier">ignore_body</span>=<span class="ruby-keyword">false</span>&#x000A;        <span class="ruby-identifier">headers</span>, <span class="ruby-ivar">@body</span> = <span class="ruby-identifier">$~</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">str</span>[<span class="ruby-regexp">/(.*?\r?\n)(?:\r?\n(.*))?\Z/m</span>]&#x000A;&#x000A;        <span class="ruby-ivar">@headers</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span>, <span class="ruby-identifier">key</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">key</span>] = [] }&#x000A;        <span class="ruby-ivar">@body</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>&#x000A;        <span class="ruby-identifier">headers</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/^\S+:\s*.*(?:\n\t.*)*/</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">header</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-ivar">@headers</span>[<span class="ruby-identifier">header</span>[<span class="ruby-regexp">/(\S+):/</span>, <span class="ruby-value">1</span>]] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header</span>[<span class="ruby-regexp">/\S+:\s*(.*)/m</span>, <span class="ruby-value">1</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\s+/m</span>, <span class="ruby-string">&#39; &#39;</span>).<span class="ruby-identifier">strip</span> <span class="ruby-comment"># this is kind of wrong</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;&#x000A;        <span class="ruby-comment"># don&#39;t have to have content type i suppose</span>&#x000A;        <span class="ruby-ivar">@content_type</span>, <span class="ruby-identifier">attrs</span> = <span class="ruby-keyword">nil</span>, {}&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">content_type</span> = <span class="ruby-ivar">@headers</span>[<span class="ruby-string">&#39;Content-Type&#39;</span>][<span class="ruby-value">0</span>]&#x000A;                <span class="ruby-ivar">@content_type</span>, <span class="ruby-identifier">attrs</span> = <span class="ruby-constant">Mime</span>.<span class="ruby-identifier">split_header</span> <span class="ruby-identifier">content_type</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ignore_body</span>&#x000A;&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">multipart?</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-identifier">body</span>.<span class="ruby-identifier">empty?</span>&#x000A;                        <span class="ruby-ivar">@preamble</span> = <span class="ruby-string">&#39;&#39;</span>&#x000A;                        <span class="ruby-ivar">@epilogue</span> = <span class="ruby-string">&#39;&#39;</span>&#x000A;                        <span class="ruby-ivar">@parts</span> = []&#x000A;                <span class="ruby-keyword">else</span>&#x000A;                        <span class="ruby-comment"># we need to split the message at the boundary</span>&#x000A;                        <span class="ruby-identifier">boundary</span> = <span class="ruby-identifier">attrs</span>[<span class="ruby-string">&#39;boundary&#39;</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;no boundary for multipart message&quot;</span>&#x000A;&#x000A;                        <span class="ruby-comment"># splitting the body:</span>&#x000A;                        <span class="ruby-identifier">parts</span> = <span class="ruby-identifier">body</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/--#{Regexp.quote boundary}/m</span>)&#x000A;                        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">parts</span>[<span class="ruby-value">-1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^--/</span>; <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;bad multipart boundary (missing trailing --)&quot;</span>&#x000A;                        <span class="ruby-keyword">else</span> <span class="ruby-identifier">parts</span>[<span class="ruby-value">-1</span>][<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">1</span>] = <span class="ruby-string">&#39;&#39;</span>&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">part</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>&#x000A;                                <span class="ruby-identifier">part</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^(\r?\n)?(.*?)(\r?\n)?\Z/m</span>&#x000A;                                <span class="ruby-identifier">part</span>.<span class="ruby-identifier">replace</span> <span class="ruby-node">$2</span>&#x000A;                                <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;bad multipart boundary&quot;</span> <span class="ruby-keyword">if</span> (<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">parts</span>.<span class="ruby-identifier">length</span><span class="ruby-value">-1</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">and</span> <span class="ruby-operator">!</span>(<span class="ruby-node">$1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-node">$3</span>)&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                        <span class="ruby-ivar">@preamble</span> = <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">shift</span>&#x000A;                        <span class="ruby-ivar">@epilogue</span> = <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">pop</span>&#x000A;                        <span class="ruby-ivar">@parts</span> = <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">part</span><span class="ruby-operator">|</span> <span class="ruby-constant">Mime</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">part</span> }&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-class method' id='method-method-c-split_header'>
+<a name='method-c-split_header'></a>
+<div class='synopsis'>
+<span class='name'>split_header</span><span class='arguments'>(header)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-split_header-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-split_header-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 114</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">split_header</span> <span class="ruby-identifier">header</span>&#x000A;        <span class="ruby-comment"># FIXME: haven&#39;t read standard. not sure what its supposed to do with &quot; in the name, or if other</span>&#x000A;        <span class="ruby-comment"># escapes are allowed. can&#39;t test on windows as &quot; isn&#39;t allowed anyway. can be fixed with more</span>&#x000A;        <span class="ruby-comment"># accurate parser later.</span>&#x000A;        <span class="ruby-comment"># maybe move to some sort of Header class. but not all headers should be of it i suppose.</span>&#x000A;        <span class="ruby-comment"># at least add a join_header then, taking name and {}. for use in Mime#to_s (for boundary</span>&#x000A;        <span class="ruby-comment"># rewrite), and Attachment#to_mime, among others...</span>&#x000A;        <span class="ruby-identifier">attrs</span> = {}&#x000A;        <span class="ruby-identifier">header</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/;\s*([^\s=]+)\s*=\s*(&quot;[^&quot;]*&quot;|[^\s;]*)\s*/m</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-keyword">if</span> <span class="ruby-identifier">attrs</span>[<span class="ruby-identifier">key</span>]; <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;ignoring duplicate header attribute #{key.inspect}&quot;</span>&#x000A;                <span class="ruby-keyword">else</span> <span class="ruby-identifier">attrs</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">value</span>[<span class="ruby-regexp">/^&quot;/</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">value</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;&#x000A;        [<span class="ruby-identifier">header</span>[<span class="ruby-regexp">/^[^;]+/</span>].<span class="ruby-identifier">strip</span>, <span class="ruby-identifier">attrs</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='public-instance method' id='method-method-i-inspect'>
+<a name='method-i-inspect'></a>
+<div class='synopsis'>
+<span class='name'>inspect</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-inspect-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-inspect-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 76</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inspect</span>&#x000A;        <span class="ruby-comment"># add some extra here.</span>&#x000A;        <span class="ruby-node">&quot;#&lt;Mime content_type=#{@content_type.inspect}&gt;&quot;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-multipart-3F'>
+<a name='method-i-multipart-3F'></a>
+<div class='synopsis'>
+<span class='name'>multipart?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-multipart-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-multipart-3F-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 72</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">multipart?</span>&#x000A;        <span class="ruby-ivar">@content_type</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@content_type</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^multipart/</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-to_s'>
+<a name='method-i-to_s'></a>
+<div class='synopsis'>
+<span class='name'>to_s</span><span class='arguments'>(opts={})</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-to_s-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-to_s-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 96</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_s</span> <span class="ruby-identifier">opts</span>={}&#x000A;        <span class="ruby-identifier">opts</span> = {<span class="ruby-value">:boundary_counter</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0</span>}.<span class="ruby-identifier">merge</span> <span class="ruby-identifier">opts</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">multipart?</span>&#x000A;                <span class="ruby-identifier">boundary</span> = <span class="ruby-constant">Mime</span>.<span class="ruby-identifier">make_boundary</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:boundary_counter</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>, <span class="ruby-keyword">self</span>&#x000A;                <span class="ruby-ivar">@body</span> = [<span class="ruby-identifier">preamble</span>, <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">part</span><span class="ruby-operator">|</span> <span class="ruby-string">&quot;\r\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">to_s</span>(<span class="ruby-identifier">opts</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\r\n&quot;</span> }, <span class="ruby-string">&quot;--\r\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">epilogue</span>].&#x000A;                        <span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\r\n--&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">boundary</span>)&#x000A;                <span class="ruby-identifier">content_type</span>, <span class="ruby-identifier">attrs</span> = <span class="ruby-constant">Mime</span>.<span class="ruby-identifier">split_header</span> <span class="ruby-ivar">@headers</span>[<span class="ruby-string">&#39;Content-Type&#39;</span>][<span class="ruby-value">0</span>]&#x000A;                <span class="ruby-identifier">attrs</span>[<span class="ruby-string">&#39;boundary&#39;</span>] = <span class="ruby-identifier">boundary</span>&#x000A;                <span class="ruby-ivar">@headers</span>[<span class="ruby-string">&#39;Content-Type&#39;</span>] = [([<span class="ruby-identifier">content_type</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">val</span><span class="ruby-operator">|</span> <span class="ruby-node">%{#{key}=&quot;#{val}&quot;}</span> }).<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;; &#39;</span>)]&#x000A;        <span class="ruby-keyword">end</span>&#x000A;&#x000A;        <span class="ruby-identifier">str</span> = <span class="ruby-string">&#39;&#39;</span>&#x000A;        <span class="ruby-ivar">@headers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">vals</span><span class="ruby-operator">|</span>&#x000A;                <span class="ruby-identifier">vals</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">val</span><span class="ruby-operator">|</span> <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{key}: #{val}\r\n&quot;</span> }&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\r\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@body</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='public-instance method' id='method-method-i-to_tree'>
+<a name='method-i-to_tree'></a>
+<div class='synopsis'>
+<span class='name'>to_tree</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-to_tree-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-to_tree-source'><span class="ruby-comment"># File lib/mapi/mime.rb, line 81</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_tree</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">multipart?</span>&#x000A;                <span class="ruby-identifier">str</span> = <span class="ruby-node">&quot;- #{inspect}\n&quot;</span>&#x000A;                <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">part</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>&#x000A;                        <span class="ruby-identifier">last</span> = <span class="ruby-identifier">i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>&#x000A;                        <span class="ruby-identifier">part</span>.<span class="ruby-identifier">to_tree</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\n/</span>).<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span>, <span class="ruby-identifier">j</span><span class="ruby-operator">|</span>&#x000A;                                <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;  #{last ? (j == 0 ? &quot;\\&quot; : &#39; &#39;) : &#39;|&#39;}&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>&#x000A;                        <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-keyword">end</span>&#x000A;                <span class="ruby-identifier">str</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;                <span class="ruby-node">&quot;- #{inspect}\n&quot;</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>
