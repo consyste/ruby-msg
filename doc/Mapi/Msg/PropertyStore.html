@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: Mapi::Msg::PropertyStore
+  
+    &mdash; Documentation by YARD 0.9.27
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "Mapi::Msg::PropertyStore";
+  relpath = '../../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../../_index.html">Index (P)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Mapi.html" title="Mapi (module)">Mapi</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span>
+     &raquo; 
+    <span class="title">PropertyStore</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Class: Mapi::Msg::PropertyStore
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Mapi::Msg::PropertyStore</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd><span class='object_link'><a href="../PropertySet/Constants.html" title="Mapi::PropertySet::Constants (module)">PropertySet::Constants</a></span></dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/mapi/msg.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<h1 id="label-Introduction">Introduction</h1>
+
+<p>A big compononent of <code>Msg</code> files is the property store, which holds all the key/value pairs of properties. The message itself, and all its <code>Attachment</code>s and <code>Recipient</code>s have an instance of this class.</p>
+
+<h1 id="label-Storage+model">Storage model</h1>
+
+<p>Property keys (tags?) can be either simple hex numbers, in the range 0x0000 - 0xffff, or they can be named properties. In fact, properties in the range 0x0000 to 0x7fff are supposed to be the non- named properties, and can be considered to be in the <code>PS_MAPI</code> namespace. (correct?)</p>
+
+<p>Named properties are serialized in the 0x8000 to 0xffff range, and are referenced as a guid and long/string pair.</p>
+
+<p>There are key ranges, which can be used to imply things generally about keys.</p>
+
+<p>Further, we can give symbolic names to most keys, coming from constants in various places. Eg:</p>
+
+<pre class="code ruby"><code class="ruby">0x0037 =&gt; subject
+{00062002-0000-0000-C000-000000000046}/0x8218 =&gt; response_status
+# displayed as categories in outlook
+{00020329-0000-0000-C000-000000000046}/&quot;Keywords&quot; =&gt; categories
+</code></pre>
+
+<p>Futher, there are completely different names, coming from other object models that get mapped to these things (CDO&#39;s model, Outlook&#39;s model etc). Eg “urn:schemas:httpmail:subject” I think these can be ignored though, as they aren&#39;t defined clearly in terms of mapi properties, and i&#39;m really just trying to make a mapi property store. (It should also be relatively easy to support them later.)</p>
+
+<h1 id="label-Usage">Usage</h1>
+
+<p>The api is driven by a desire to have the simple stuff “just work”, ie</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_subject'>subject</span>
+<span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_display_name'>display_name</span>
+</code></pre>
+
+<p>There also needs to be a way to look up properties more specifically:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='int'>0x0037</span><span class='rbracket'>]</span> <span class='comment'># =&gt; gets the subject
+</span><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='int'>0x0037</span><span class='comma'>,</span> <span class='const'>PS_MAPI</span><span class='rbracket'>]</span> <span class='comment'># =&gt; still gets the subject
+</span><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Keywords</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='const'>PS_PUBLIC_STRINGS</span><span class='rbracket'>]</span> <span class='comment'># =&gt; gets outlook&#39;s categories array
+</span></code></pre>
+
+<p>The abbreviated versions work by “resolving” the symbols to full keys:</p>
+
+<p>	# the guid here is just PS_PUBLIC_STRINGS</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_resolve'>resolve</span> <span class='symbol'>:keywords</span> <span class='comment'># =&gt; #&lt;Key {00020329-0000-0000-c000-000000000046}/&quot;Keywords&quot;&gt;
+</span><span class='comment'># the result here is actually also a key
+</span><span class='id identifier rubyid_k'>k</span> <span class='op'>=</span> <span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_resolve'>resolve</span> <span class='symbol'>:subject</span>  <span class='comment'># =&gt; 0x0037
+</span><span class='comment'># it has a guid
+</span><span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='op'>::</span><span class='const'>Properties</span><span class='op'>::</span><span class='const'>PS_MAPI</span> <span class='comment'># =&gt; true
+</span></code></pre>
+
+<h1 id="label-Parsing">Parsing</h1>
+
+<p>There are three objects that need to be parsed to load a <code>Msg</code> property store:</p>
+<ol><li>
+<p>The <code>nameid</code> directory (<code>Properties.parse_nameid</code>)</p>
+</li><li>
+<p>The many <code>substg</code> objects, whose names should match <code>Properties::SUBSTG_RX</code> (<code>Properties#parse_substg</code>)</p>
+</li><li>
+<p>The <code>properties</code> file (<code>Properties#parse_properties</code>)</p>
+</li></ol>
+
+<p>Understanding of the formats is by no means perfect.</p>
+
+<h1 id="label-TODO">TODO</h1>
+<ul><li>
+<p>While the key objects are sufficient, the value objects are just plain ruby types. It currently isn&#39;t possible to write to the values, or to know which encoding the value had.</p>
+</li><li>
+<p>Update this doc.</p>
+</li><li>
+<p>Perhaps change from eager loading, to be load-on-demand.</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="Key-constant" class="">Key =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../PropertySet/Key.html" title="Mapi::PropertySet::Key (class)">Key</a></span></span></pre></dd>
+      
+        <dt id="ENCODINGS-constant" class="">ENCODINGS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>note that binary and default both use obj.open. not the block form. this means we should #close it later, which we don&#39;t. as we&#39;re only reading though, it shouldn&#39;t matter right? not really good though FIXME change these to use mapi symbolic const names</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+	<span class='int'>0x000d</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># seems to be used when its going to be a directory instead of a file. eg nested ole. 3701 usually. in which case we shouldn&#39;t get here right?
+</span>	<span class='int'>0x001f</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='const'>Ole</span><span class='op'>::</span><span class='const'>Types</span><span class='op'>::</span><span class='const'>FROM_UTF16</span><span class='period'>.</span><span class='id identifier rubyid_iconv'>iconv</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># unicode
+</span>	<span class='comment'># ascii
+</span>	<span class='comment'># FIXME hack did a[0..-2] before, seems right sometimes, but for some others it chopped the text. chomp
+</span>	<span class='int'>0x001e</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='period'>.</span><span class='id identifier rubyid_chomp'>chomp</span> <span class='int'>0</span><span class='period'>.</span><span class='id identifier rubyid_chr'>chr</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+	<span class='int'>0x0102</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># binary?
+</span>	<span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='rbrace'>}</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+        <dt id="SUBSTG_RX-constant" class="">SUBSTG_RX =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^__substg1\.0_([0-9A-F]{4})([0-9A-F]{4})(?:-([0-9A-F]{8}))?$</span><span class='regexp_end'>/</span></span></pre></dd>
+      
+        <dt id="PROPERTIES_RX-constant" class="">PROPERTIES_RX =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^__properties_version1\.0$</span><span class='regexp_end'>/</span></span></pre></dd>
+      
+        <dt id="NAMEID_RX-constant" class="">NAMEID_RX =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^__nameid_version1\.0$</span><span class='regexp_end'>/</span></span></pre></dd>
+      
+        <dt id="VALID_RX-constant" class="">VALID_RX =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#SUBSTG_RX-constant" title="Mapi::Msg::PropertyStore::SUBSTG_RX (constant)">SUBSTG_RX</a></span></span><span class='embexpr_end'>}</span><span class='tstring_content'>|</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#PROPERTIES_RX-constant" title="Mapi::Msg::PropertyStore::PROPERTIES_RX (constant)">PROPERTIES_RX</a></span></span><span class='embexpr_end'>}</span><span class='tstring_content'>|</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#NAMEID_RX-constant" title="Mapi::Msg::PropertyStore::NAMEID_RX (constant)">NAMEID_RX</a></span></span><span class='embexpr_end'>}</span><span class='regexp_end'>/</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#nameid-instance_method" title="#nameid (instance method)">#<strong>nameid</strong>  &#x21d2; Hash </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#load-class_method" title="load (class method)">.<strong>load</strong>(obj)  &#x21d2; PropertyStore </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The parsing methods.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse_nameid-class_method" title="parse_nameid (class method)">.<strong>parse_nameid</strong>(obj)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Read nameid from the <code>Dirent</code> obj, which is used for mapping of named properties keys to proxy keys in the 0x8000 - 0xffff range.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#add_property-instance_method" title="#add_property (instance method)">#<strong>add_property</strong>(key, value, pos = nil)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>  &#x21d2; PropertyStore </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of PropertyStore.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#load-instance_method" title="#load (instance method)">#<strong>load</strong>(obj)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Parse properties from the <code>Dirent</code> obj.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#method_missing-instance_method" title="#method_missing (instance method)">#<strong>method_missing</strong>(name, *args, &amp;block)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>delegate to cache.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse_properties-instance_method" title="#parse_properties (instance method)">#<strong>parse_properties</strong>(obj)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>For parsing the <code>properties</code> file.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse_substg-instance_method" title="#parse_substg (instance method)">#<strong>parse_substg</strong>(key, encoding, offset, obj)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Parse an <code>Dirent</code>, as per <code>msgconvert.pl</code>.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    #<strong>initialize</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of PropertyStore.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+119
+120
+121
+122
+123</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 119</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+	<span class='ivar'>@nameid</span> <span class='op'>=</span> <span class='kw'>nil</span>
+	<span class='comment'># not exactly a cache currently
+</span>	<span class='ivar'>@cache</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice this">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+  </p>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="method_missing-instance_method">
+  
+    #<strong>method_missing</strong>(name, *args, &amp;block)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>delegate to cache</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+336
+337
+338</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 336</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
+	<span class='ivar'>@cache</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="nameid-instance_method">
+  
+    #<strong>nameid</strong>  &#x21d2; <tt>Hash</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+117
+118
+119</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 117</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_nameid'>nameid</span>
+  <span class='ivar'>@nameid</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="load-class_method">
+  
+    .<strong>load</strong>(obj)  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The parsing methods</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Ole::Storage::Dirent</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+129
+130
+131
+132
+133</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 129</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
+	<span class='id identifier rubyid_prop'>prop</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span>
+	<span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
+	<span class='id identifier rubyid_prop'>prop</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="parse_nameid-class_method">
+  
+    .<strong>parse_nameid</strong>(obj)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Read nameid from the <code>Dirent</code> obj, which is used for mapping of named properties keys to proxy keys in the 0x8000 - 0xffff range. Returns a hash of integer -&gt; Key.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Ole::Storage::Dirent</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 170</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_nameid'>parse_nameid</span> <span class='id identifier rubyid_obj'>obj</span>
+	<span class='id identifier rubyid_remaining'>remaining</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
+	<span class='id identifier rubyid_guids_obj'>guids_obj</span><span class='comma'>,</span> <span class='id identifier rubyid_props_obj'>props_obj</span><span class='comma'>,</span> <span class='id identifier rubyid_names_obj'>names_obj</span> <span class='op'>=</span>
+		<span class='qwords_beg'>%w[</span><span class='tstring_content'>__substg1.0_00020102</span><span class='words_sep'> </span><span class='tstring_content'>__substg1.0_00030102</span><span class='words_sep'> </span><span class='tstring_content'>__substg1.0_00040102</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='op'>|</span>
+			<span class='id identifier rubyid_remaining'>remaining</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span> <span class='id identifier rubyid_obj'>obj</span><span class='op'>/</span><span class='id identifier rubyid_name'>name</span>
+		<span class='kw'>end</span>
+
+	<span class='comment'># parse guids
+</span>	<span class='comment'># this is the guids for named properities (other than builtin ones)
+</span>	<span class='comment'># i think PS_PUBLIC_STRINGS, and PS_MAPI are builtin.
+</span>	<span class='comment'># Scan using an ascii pattern - it&#39;s binary data we&#39;re looking
+</span>	<span class='comment'># at, so we don&#39;t want to look for unicode characters
+</span>	<span class='id identifier rubyid_guids'>guids</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='const'>PS_PUBLIC_STRINGS</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_guids_obj'>guids_obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>.{16}</span><span class='regexp_end'>/mn</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_str'>str</span><span class='op'>|</span>
+		<span class='const'>Ole</span><span class='op'>::</span><span class='const'>Types</span><span class='period'>.</span><span class='id identifier rubyid_load_guid'>load_guid</span> <span class='id identifier rubyid_str'>str</span>
+	<span class='kw'>end</span>
+
+	<span class='comment'># parse names.
+</span>	<span class='comment'># the string ids for named properties
+</span>	<span class='comment'># they are no longer parsed, as they&#39;re referred to by offset not
+</span>	<span class='comment'># index. they are simply sequentially packed, as a long, giving
+</span>	<span class='comment'># the string length, then padding to 4 byte multiple, and repeat.
+</span>	<span class='id identifier rubyid_names_data'>names_data</span> <span class='op'>=</span> <span class='id identifier rubyid_names_obj'>names_obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span>
+
+	<span class='comment'># parse actual props.
+</span>	<span class='comment'># not sure about any of this stuff really.
+</span>	<span class='comment'># should flip a few bits in the real msg, to get a better understanding of how this works.
+</span>	<span class='comment'># Scan using an ascii pattern - it&#39;s binary data we&#39;re looking
+</span>	<span class='comment'># at, so we don&#39;t want to look for unicode characters
+</span>	<span class='id identifier rubyid_props'>props</span> <span class='op'>=</span> <span class='id identifier rubyid_props_obj'>props_obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>.{8}</span><span class='regexp_end'>/mn</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_str'>str</span><span class='op'>|</span>
+		<span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='lbracket'>[</span><span class='int'>4</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>v2</span><span class='tstring_end'>&#39;</span></span>
+		<span class='comment'># the property will be serialised as this pseudo property, mapping it to this named property
+</span>		<span class='id identifier rubyid_pseudo_prop'>pseudo_prop</span> <span class='op'>=</span> <span class='int'>0x8000</span> <span class='op'>+</span> <span class='id identifier rubyid_offset'>offset</span>
+		<span class='id identifier rubyid_named'>named</span> <span class='op'>=</span> <span class='id identifier rubyid_flags'>flags</span> <span class='op'>&amp;</span> <span class='int'>1</span> <span class='op'>==</span> <span class='int'>1</span>
+		<span class='id identifier rubyid_prop'>prop</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_named'>named</span>
+			<span class='id identifier rubyid_str_off'>str_off</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+			<span class='id identifier rubyid_len'>len</span> <span class='op'>=</span> <span class='id identifier rubyid_names_data'>names_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_str_off'>str_off</span><span class='comma'>,</span> <span class='int'>4</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+			<span class='const'>Ole</span><span class='op'>::</span><span class='const'>Types</span><span class='op'>::</span><span class='const'>FROM_UTF16</span><span class='period'>.</span><span class='id identifier rubyid_iconv'>iconv</span> <span class='id identifier rubyid_names_data'>names_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_str_off'>str_off</span> <span class='op'>+</span> <span class='int'>4</span><span class='comma'>,</span> <span class='id identifier rubyid_len'>len</span><span class='rbracket'>]</span>
+		<span class='kw'>else</span>
+			<span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>v2</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+			<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>b not 0</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_b'>b</span> <span class='op'>!=</span> <span class='int'>0</span>
+			<span class='id identifier rubyid_a'>a</span>
+		<span class='kw'>end</span>
+		<span class='comment'># a bit sus
+</span>		<span class='id identifier rubyid_guid_off'>guid_off</span> <span class='op'>=</span> <span class='id identifier rubyid_flags'>flags</span> <span class='op'>&gt;&gt;</span> <span class='int'>1</span>
+		<span class='comment'># missing a few builtin PS_*
+</span>		<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>guid off &lt; 2 (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_guid_off'>guid_off</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_guid_off'>guid_off</span> <span class='op'>&lt;</span> <span class='int'>2</span>
+		<span class='id identifier rubyid_guid'>guid</span> <span class='op'>=</span> <span class='id identifier rubyid_guids'>guids</span><span class='lbracket'>[</span><span class='id identifier rubyid_guid_off'>guid_off</span> <span class='op'>-</span> <span class='int'>2</span><span class='rbracket'>]</span>
+		<span class='lbracket'>[</span><span class='id identifier rubyid_pseudo_prop'>pseudo_prop</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#Key-constant" title="Mapi::Msg::PropertyStore::Key (constant)">Key</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="Mapi::Msg::PropertyStore#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_prop'>prop</span><span class='comma'>,</span> <span class='id identifier rubyid_guid'>guid</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+	<span class='kw'>end</span>
+
+	<span class='comment'>#Log.warn &quot;* ignoring #{remaining.length} objects in nameid&quot; unless remaining.empty?
+</span>	<span class='comment'># this leaves a bunch of other unknown chunks of data with completely unknown meaning.
+</span>	<span class='comment'># pp [:unknown, child.name, child.data.unpack(&#39;H*&#39;)[0].scan(/.{16}/m)]
+</span>	<span class='const'>Hash</span><span class='lbracket'>[</span><span class='op'>*</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="add_property-instance_method">
+  
+    #<strong>add_property</strong>(key, value, pos = nil)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt>Number</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pos</span>
+      
+      
+        <span class='type'>(<tt>Number</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 305</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_pos'>pos</span><span class='op'>=</span><span class='kw'>nil</span>
+	<span class='comment'># map keys in the named property range through nameid
+</span>	<span class='kw'>if</span> <span class='const'>Integer</span> <span class='op'>===</span> <span class='id identifier rubyid_key'>key</span> <span class='kw'>and</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>&gt;=</span> <span class='int'>0x8000</span>
+		<span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@nameid</span>
+			<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>no nameid section yet named properties used</span><span class='tstring_end'>&quot;</span></span>
+			<span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#Key-constant" title="Mapi::Msg::PropertyStore::Key (constant)">Key</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="Mapi::Msg::PropertyStore#initialize (method)">new</a></span></span> <span class='id identifier rubyid_key'>key</span>
+		<span class='kw'>elsif</span> <span class='id identifier rubyid_real_key'>real_key</span> <span class='op'>=</span> <span class='ivar'>@nameid</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>
+			<span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='id identifier rubyid_real_key'>real_key</span>
+		<span class='kw'>else</span>
+			<span class='comment'># i think i hit these when i have a named property, in the PS_MAPI
+</span>			<span class='comment'># guid
+</span>			<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>property in named range not in nameid </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_key'>key</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+			<span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#Key-constant" title="Mapi::Msg::PropertyStore::Key (constant)">Key</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="Mapi::Msg::PropertyStore#initialize (method)">new</a></span></span> <span class='id identifier rubyid_key'>key</span>
+		<span class='kw'>end</span>
+	<span class='kw'>else</span>
+		<span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#Key-constant" title="Mapi::Msg::PropertyStore::Key (constant)">Key</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="Mapi::Msg::PropertyStore#initialize (method)">new</a></span></span> <span class='id identifier rubyid_key'>key</span>
+	<span class='kw'>end</span>
+	<span class='kw'>if</span> <span class='id identifier rubyid_pos'>pos</span>
+		<span class='ivar'>@cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+		<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>duplicate property</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='const'>Array</span> <span class='op'>===</span> <span class='ivar'>@cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>
+		<span class='comment'># ^ this is actually a trickier problem. the issue is more that they must all be of
+</span>		<span class='comment'># the same type.
+</span>		<span class='ivar'>@cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_pos'>pos</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
+	<span class='kw'>else</span>
+		<span class='comment'># take the last.
+</span>		<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>duplicate property </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_key'>key</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>
+		<span class='ivar'>@cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
+	<span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="load-instance_method">
+  
+    #<strong>load</strong>(obj)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Parse properties from the <code>Dirent</code> obj</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Ole::Storage::Dirent</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 138</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
+	<span class='comment'># we need to do the nameid first, as it provides the map for later user defined properties
+</span>	<span class='kw'>if</span> <span class='id identifier rubyid_nameid_obj'>nameid_obj</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_child'>child</span><span class='op'>|</span> <span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=~</span> <span class='const'><span class='object_link'><a href="#NAMEID_RX-constant" title="Mapi::Msg::PropertyStore::NAMEID_RX (constant)">NAMEID_RX</a></span></span> <span class='rbrace'>}</span>
+		<span class='ivar'>@nameid</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></span><span class='period'>.</span><span class='id identifier rubyid_parse_nameid'><span class='object_link'><a href="#parse_nameid-class_method" title="Mapi::Msg::PropertyStore.parse_nameid (method)">parse_nameid</a></span></span> <span class='id identifier rubyid_nameid_obj'>nameid_obj</span>
+		<span class='comment'># hack to make it available to all msg files from the same ole storage object
+</span>		<span class='comment'># FIXME - come up with a neater way
+</span>		<span class='kw'>class</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_ole'>ole</span>
+			<span class='id identifier rubyid_attr_accessor'>attr_accessor</span> <span class='symbol'>:msg_nameid</span>
+		<span class='kw'>end</span>
+		<span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_ole'>ole</span><span class='period'>.</span><span class='id identifier rubyid_msg_nameid'>msg_nameid</span> <span class='op'>=</span> <span class='ivar'>@nameid</span>
+	<span class='kw'>elsif</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_ole'>ole</span>
+		<span class='ivar'>@nameid</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_ole'>ole</span><span class='period'>.</span><span class='id identifier rubyid_msg_nameid'>msg_nameid</span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
+	<span class='kw'>end</span>
+	<span class='comment'># now parse the actual properties. i think dirs that match the substg should be decoded
+</span>	<span class='comment'># as properties to. 0x000d is just another encoding, the dir encoding. it should match
+</span>	<span class='comment'># whether the object is file / dir. currently only example is embedded msgs anyway
+</span>	<span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_child'>child</span><span class='op'>|</span>
+		<span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_file?'>file?</span>
+		<span class='kw'>case</span> <span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>
+		<span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#PROPERTIES_RX-constant" title="Mapi::Msg::PropertyStore::PROPERTIES_RX (constant)">PROPERTIES_RX</a></span></span>
+			<span class='id identifier rubyid_parse_properties'>parse_properties</span> <span class='id identifier rubyid_child'>child</span>
+		<span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#SUBSTG_RX-constant" title="Mapi::Msg::PropertyStore::SUBSTG_RX (constant)">SUBSTG_RX</a></span></span>
+			<span class='id identifier rubyid_parse_substg'>parse_substg</span><span class='lparen'>(</span><span class='op'>*</span><span class='lparen'>(</span><span class='gvar'>$~</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_num'>num</span><span class='op'>|</span> <span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_hex'>hex</span> <span class='kw'>rescue</span> <span class='kw'>nil</span> <span class='rbrace'>}</span> <span class='op'>+</span> <span class='lbracket'>[</span><span class='id identifier rubyid_child'>child</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+		<span class='kw'>end</span>
+	<span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="parse_properties-instance_method">
+  
+    #<strong>parse_properties</strong>(obj)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>For parsing the <code>properties</code> file. Smaller properties are serialized in one chunk, such as longs, bools, times etc. The parsing has problems.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Ole::Storage::Dirent</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 264</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_parse_properties'>parse_properties</span> <span class='id identifier rubyid_obj'>obj</span>
+	<span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span>
+	<span class='comment'># don&#39;t really understand this that well...
+</span>	
+	<span class='id identifier rubyid_pad'>pad</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>%</span> <span class='int'>16</span>
+	<span class='kw'>unless</span> <span class='lparen'>(</span><span class='id identifier rubyid_pad'>pad</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>||</span> <span class='id identifier rubyid_pad'>pad</span> <span class='op'>==</span> <span class='int'>8</span><span class='rparen'>)</span> <span class='kw'>and</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='id identifier rubyid_pad'>pad</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\000</span><span class='tstring_end'>&quot;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_pad'>pad</span>
+		<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>padding was not as expected </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_pad'>pad</span><span class='embexpr_end'>}</span><span class='tstring_content'> (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'>) -&gt; </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='id identifier rubyid_pad'>pad</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+	<span class='kw'>end</span>
+	<span class='comment'># Scan using an ascii pattern - it&#39;s binary data we&#39;re looking
+</span>	<span class='comment'># at, so we don&#39;t want to look for unicode characters
+</span>	<span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='id identifier rubyid_pad'>pad</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>.{16}</span><span class='regexp_end'>/mn</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
+		<span class='id identifier rubyid_property'>property</span><span class='comma'>,</span> <span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%08x</span><span class='tstring_end'>&#39;</span></span> <span class='op'>%</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>.{4}</span><span class='regexp_end'>/</span></span>
+		<span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='id identifier rubyid_property'>property</span><span class='period'>.</span><span class='id identifier rubyid_hex'>hex</span>
+		<span class='comment'># doesn&#39;t make any sense to me. probably because its a serialization of some internal
+</span>		<span class='comment'># outlook structure...
+</span>		<span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_property'>property</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0000</span><span class='tstring_end'>&#39;</span></span>
+		<span class='kw'>case</span> <span class='id identifier rubyid_encoding'>encoding</span>
+		<span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0102</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>001e</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>001f</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>101e</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>101f</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>000d</span><span class='tstring_end'>&#39;</span></span>
+			<span class='comment'># ignore on purpose. not sure what its for
+</span>			<span class='comment'># multivalue versions ignored also
+</span>		<span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0003</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># long
+</span>			<span class='comment'># don&#39;t know what all the other data is for
+</span>			<span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='int'>8</span><span class='comma'>,</span> <span class='int'>4</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+		<span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>000b</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># boolean
+</span>			<span class='comment'># again, heaps more data than needed. and its not always 0 or 1.
+</span>			<span class='comment'># they are in fact quite big numbers. this is wrong.
+</span>			<span class='comment'># p [property, data[4..-1].unpack(&#39;H*&#39;)[0]]
+</span>			<span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='int'>8</span><span class='comma'>,</span> <span class='int'>4</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>V</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='int'>0</span>
+		<span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0040</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># systime
+</span>			<span class='comment'># seems to work:
+</span>			<span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='const'>Ole</span><span class='op'>::</span><span class='const'>Types</span><span class='period'>.</span><span class='id identifier rubyid_load_time'>load_time</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='int'>8</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+		<span class='kw'>else</span>
+			<span class='comment'>#Log.warn &quot;ignoring data in __properties section, encoding: #{encoding}&quot;
+</span>			<span class='comment'>#Log &lt;&lt; data.unpack(&#39;H*&#39;).inspect + &quot;\n&quot;
+</span>		<span class='kw'>end</span>
+	<span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="parse_substg-instance_method">
+  
+    #<strong>parse_substg</strong>(key, encoding, offset, obj)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Parse an <code>Dirent</code>, as per <code>msgconvert.pl</code>. This is how larger properties, such as strings, binary blobs, and other ole sub-directories (eg nested Msg) are stored.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt>Number</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>encoding</span>
+      
+      
+        <span class='type'>(<tt>Number</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>offset</span>
+      
+      
+        <span class='type'>(<tt>Number</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Ole::Storage::Dirent</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 233</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_parse_substg'>parse_substg</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoding'>encoding</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span><span class='comma'>,</span> <span class='id identifier rubyid_obj'>obj</span>
+	<span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>&amp;</span> <span class='int'>0x1000</span><span class='rparen'>)</span> <span class='op'>!=</span> <span class='int'>0</span>
+		<span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_offset'>offset</span>
+			<span class='comment'># there is typically one with no offset first, whose data is a series of numbers
+</span>			<span class='comment'># equal to the lengths of all the sub parts. gives an implied array size i suppose.
+</span>			<span class='comment'># maybe you can initialize the array at this time. the sizes are the same as all the
+</span>			<span class='comment'># ole object sizes anyway, its to pre-allocate i suppose.
+</span>			<span class='comment'>#p obj.data.unpack(&#39;V*&#39;)
+</span>			<span class='comment'># ignore this one
+</span>			<span class='kw'>return</span>
+		<span class='kw'>else</span>
+			<span class='comment'># remove multivalue flag for individual pieces
+</span>			<span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>&amp;=</span> <span class='op'>~</span><span class='int'>0x1000</span>
+		<span class='kw'>end</span>
+	<span class='kw'>else</span>
+		<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>offset specified for non-multivalue encoding </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_offset'>offset</span>
+		<span class='id identifier rubyid_offset'>offset</span> <span class='op'>=</span> <span class='kw'>nil</span>
+	<span class='kw'>end</span>
+	<span class='comment'># offset is for multivalue encodings.
+</span>	<span class='kw'>unless</span> <span class='id identifier rubyid_encoder'>encoder</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#ENCODINGS-constant" title="Mapi::Msg::PropertyStore::ENCODINGS (constant)">ENCODINGS</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_encoding'>encoding</span><span class='rbracket'>]</span>
+		<span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>unknown encoding </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_encoding'>encoding</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+		<span class='comment'>#encoder = proc { |obj| obj.io } #.read }. maybe not a good idea
+</span>		<span class='id identifier rubyid_encoder'>encoder</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#ENCODINGS-constant" title="Mapi::Msg::PropertyStore::ENCODINGS (constant)">ENCODINGS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
+	<span class='kw'>end</span>
+	<span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoder'>encoder</span><span class='lbracket'>[</span><span class='id identifier rubyid_obj'>obj</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Wed Dec 22 00:59:41 2021 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-2.6.5).
+</div>
+
+    </div>
+  </body>
+</html>
