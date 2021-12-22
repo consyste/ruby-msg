@@ -212,13 +212,13 @@
 </div>
         </dt>
         <dd><pre class="code"><span class='lbrace'>{</span>
-	<span class='int'>0x000d</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># seems to be used when its going to be a directory instead of a file. eg nested ole. 3701 usually. in which case we shouldn&#39;t get here right?
-</span>	<span class='int'>0x001f</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='const'>Ole</span><span class='op'>::</span><span class='const'>Types</span><span class='op'>::</span><span class='const'>FROM_UTF16</span><span class='period'>.</span><span class='id identifier rubyid_iconv'>iconv</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># unicode
+	<span class='int'>0x000d</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># seems to be used when its going to be a directory instead of a file. eg nested ole. 3701 usually. in which case we shouldn&#39;t get here right?
+</span>	<span class='int'>0x001f</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='op'>|</span> <span class='const'>Ole</span><span class='op'>::</span><span class='const'>Types</span><span class='op'>::</span><span class='const'>FROM_UTF16</span><span class='period'>.</span><span class='id identifier rubyid_iconv'>iconv</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># unicode
 </span>	<span class='comment'># ascii
 </span>	<span class='comment'># FIXME hack did a[0..-2] before, seems right sometimes, but for some others it chopped the text. chomp
-</span>	<span class='int'>0x001e</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='period'>.</span><span class='id identifier rubyid_chomp'>chomp</span> <span class='int'>0</span><span class='period'>.</span><span class='id identifier rubyid_chr'>chr</span> <span class='rbrace'>}</span><span class='comma'>,</span>
-	<span class='int'>0x0102</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># binary?
-</span>	<span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='rbrace'>}</span>
+</span>	<span class='int'>0x001e</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='op'>|</span> <span class='id identifier rubyid_helper'>helper</span><span class='period'>.</span><span class='id identifier rubyid_convert_ansi_str'>convert_ansi_str</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='period'>.</span><span class='id identifier rubyid_chomp'>chomp</span> <span class='int'>0</span><span class='period'>.</span><span class='id identifier rubyid_chr'>chr</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+	<span class='int'>0x0102</span> <span class='op'>=&gt;</span>   <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># binary?
+</span>	<span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='op'>|</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='rbrace'>}</span>
 <span class='rbrace'>}</span></pre></dd>
       
         <dt id="SUBSTG_RX-constant" class="">SUBSTG_RX =
@@ -249,6 +249,33 @@
 
   <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#helper-instance_method" title="#helper (instance method)">#<strong>helper</strong>  &#x21d2; Helper </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
     
       <li class="public ">
   <span class="summary_signature">
@@ -293,7 +320,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#load-class_method" title="load (class method)">.<strong>load</strong>(obj)  &#x21d2; PropertyStore </a>
+      <a href="#load-class_method" title="load (class method)">.<strong>load</strong>(obj, helper)  &#x21d2; PropertyStore </a>
     
 
     
@@ -372,7 +399,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>  &#x21d2; PropertyStore </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(helper)  &#x21d2; PropertyStore </a>
     
 
     
@@ -506,7 +533,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt> 
+    #<strong>initialize</strong>(helper)  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt> 
   
 
   
@@ -521,7 +548,22 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>helper</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Helper.html" title="Mapi::Helper (class)">Helper</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -529,17 +571,19 @@
       <pre class="lines">
 
 
-119
-120
-121
 122
-123</pre>
+123
+124
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 122</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='ivar'>@nameid</span> <span class='op'>=</span> <span class='kw'>nil</span>
+	<span class='ivar'>@helper</span> <span class='op'>=</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='comment'># not exactly a cache currently
 </span>	<span class='ivar'>@cache</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
@@ -582,12 +626,12 @@
       <pre class="lines">
 
 
-336
-337
-338</pre>
+341
+342
+343</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 336</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 341</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
 	<span class='ivar'>@cache</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -605,7 +649,61 @@
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="nameid-instance_method">
+  <h3 class="signature first" id="helper-instance_method">
+  
+    #<strong>helper</strong>  &#x21d2; <tt><span class='object_link'><a href="../Helper.html" title="Mapi::Helper (class)">Helper</a></span></tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Helper.html" title="Mapi::Helper (class)">Helper</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+119
+120
+121</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 119</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_helper'>helper</span>
+  <span class='ivar'>@helper</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="nameid-instance_method">
   
     #<strong>nameid</strong>  &#x21d2; <tt>Hash</tt>  <span class="extras">(readonly)</span>
   
@@ -666,7 +764,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="load-class_method">
   
-    .<strong>load</strong>(obj)  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt> 
+    .<strong>load</strong>(obj, helper)  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></tt> 
   
 
   
@@ -695,6 +793,17 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>helper</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Helper.html" title="Mapi::Helper (class)">Helper</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -717,17 +826,17 @@
       <pre class="lines">
 
 
-129
-130
-131
-132
-133</pre>
+134
+135
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 134</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
-	<span class='id identifier rubyid_prop'>prop</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span>
+	<span class='id identifier rubyid_prop'>prop</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_prop'>prop</span>
 <span class='kw'>end</span></pre>
@@ -777,11 +886,6 @@
       <pre class="lines">
 
 
-170
-171
-172
-173
-174
 175
 176
 177
@@ -831,10 +935,15 @@
 221
 222
 223
-224</pre>
+224
+225
+226
+227
+228
+229</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_nameid'>parse_nameid</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_remaining'>remaining</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
@@ -965,11 +1074,6 @@
       <pre class="lines">
 
 
-305
-306
-307
-308
-309
 310
 311
 312
@@ -993,10 +1097,15 @@
 330
 331
 332
-333</pre>
+333
+334
+335
+336
+337
+338</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 305</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 310</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_pos'>pos</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='comment'># map keys in the named property range through nameid
@@ -1073,11 +1182,6 @@
       <pre class="lines">
 
 
-138
-139
-140
-141
-142
 143
 144
 145
@@ -1098,10 +1202,15 @@
 160
 161
 162
-163</pre>
+163
+164
+165
+166
+167
+168</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='comment'># we need to do the nameid first, as it provides the map for later user defined properties
@@ -1175,11 +1284,6 @@
       <pre class="lines">
 
 
-264
-265
-266
-267
-268
 269
 270
 271
@@ -1211,10 +1315,15 @@
 297
 298
 299
-300</pre>
+300
+301
+302
+303
+304
+305</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 264</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 269</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_properties'>parse_properties</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span>
@@ -1332,11 +1441,6 @@
       <pre class="lines">
 
 
-233
-234
-235
-236
-237
 238
 239
 240
@@ -1357,10 +1461,15 @@
 255
 256
 257
-258</pre>
+258
+259
+260
+261
+262
+263</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 233</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 238</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_substg'>parse_substg</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoding'>encoding</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span><span class='comma'>,</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>&amp;</span> <span class='int'>0x1000</span><span class='rparen'>)</span> <span class='op'>!=</span> <span class='int'>0</span>
@@ -1386,7 +1495,7 @@
 		<span class='comment'>#encoder = proc { |obj| obj.io } #.read }. maybe not a good idea
 </span>		<span class='id identifier rubyid_encoder'>encoder</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#ENCODINGS-constant" title="Mapi::Msg::PropertyStore::ENCODINGS (constant)">ENCODINGS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
 	<span class='kw'>end</span>
-	<span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoder'>encoder</span><span class='lbracket'>[</span><span class='id identifier rubyid_obj'>obj</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span>
+	<span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoder'>encoder</span><span class='lbracket'>[</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='ivar'>@helper</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1398,7 +1507,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 17:00:32 2021 by
+  Generated on Wed Dec 22 21:41:52 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

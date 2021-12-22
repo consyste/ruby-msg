@@ -201,7 +201,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(obj)  &#x21d2; Recipient </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(obj, helper)  &#x21d2; Recipient </a>
     
 
     
@@ -250,7 +250,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(obj)  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::Recipient (class)">Recipient</a></span></tt> 
+    #<strong>initialize</strong>(obj, helper)  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Msg::Recipient (class)">Recipient</a></span></tt> 
   
 
   
@@ -279,6 +279,17 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>helper</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Helper.html" title="Mapi::Helper (class)">Helper</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
 </ul>
 
 
@@ -288,18 +299,18 @@
       <pre class="lines">
 
 
-470
-471
-472
-473
-474</pre>
+484
+485
+486
+487
+488</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 470</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 484</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_obj'>obj</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='ivar'>@obj</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span>
-	<span class='kw'>super</span> <span class='const'><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../PropertySet.html#initialize-instance_method" title="Mapi::PropertySet#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="PropertyStore.html" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></span><span class='period'>.</span><span class='id identifier rubyid_load'><span class='object_link'><a href="PropertyStore.html#load-class_method" title="Mapi::Msg::PropertyStore.load (method)">load</a></span></span><span class='lparen'>(</span><span class='ivar'>@obj</span><span class='rparen'>)</span><span class='rparen'>)</span>
+	<span class='kw'>super</span> <span class='const'><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../PropertySet.html#initialize-instance_method" title="Mapi::PropertySet#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="PropertyStore.html" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></span><span class='period'>.</span><span class='id identifier rubyid_load'><span class='object_link'><a href="PropertyStore.html#load-class_method" title="Mapi::Msg::PropertyStore.load (method)">load</a></span></span><span class='lparen'>(</span><span class='ivar'>@obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='rparen'>)</span><span class='rparen'>)</span>
 	<span class='const'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn_unknown'><span class='object_link'><a href="../Msg.html#warn_unknown-class_method" title="Mapi::Msg.warn_unknown (method)">warn_unknown</a></span></span> <span class='ivar'>@obj</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -351,12 +362,12 @@
       <pre class="lines">
 
 
-465
-466
-467</pre>
+478
+479
+480</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 465</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 478</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_obj'>obj</span>
   <span class='ivar'>@obj</span>
@@ -398,12 +409,12 @@
       <pre class="lines">
 
 
-466
-467
-468</pre>
+479
+480
+481</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 466</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 479</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_properties'>properties</span>
   <span class='ivar'>@properties</span>
@@ -419,7 +430,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 17:00:32 2021 by
+  Generated on Wed Dec 22 21:41:52 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
