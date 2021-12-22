@@ -287,7 +287,16 @@
 271
 272
 273
-274</pre>
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/mapi/rtf.rb', line 229</span>
@@ -297,6 +306,15 @@
 	<span class='comment'># require \fromhtml. is this worth keeping? apparently you see \\fromtext if it
 </span>	<span class='comment'># was converted from plain text. 
 </span>	<span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_rtf'>rtf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\\fromhtml</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+
+	<span class='id identifier rubyid_last_pos'>last_pos</span> <span class='op'>=</span> <span class='id identifier rubyid_scan'>scan</span><span class='period'>.</span><span class='id identifier rubyid_pos'>pos</span>
+	<span class='kw'>if</span> <span class='id identifier rubyid_scan'>scan</span><span class='period'>.</span><span class='id identifier rubyid_scan_until'>scan_until</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\\ansicpg</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+		<span class='id identifier rubyid_code_page'>code_page</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cp</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_scan'>scan</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+	<span class='kw'>else</span>
+		<span class='id identifier rubyid_code_page'>code_page</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ascii</span><span class='tstring_end'>&#39;</span></span>
+	<span class='kw'>end</span>			
+	<span class='id identifier rubyid_scan'>scan</span><span class='period'>.</span><span class='id identifier rubyid_pos'>pos</span> <span class='op'>=</span> <span class='id identifier rubyid_last_pos'>last_pos</span>
+
 	<span class='id identifier rubyid_html'>html</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
 	<span class='id identifier rubyid_ignore_tag'>ignore_tag</span> <span class='op'>=</span> <span class='kw'>nil</span>
 	<span class='comment'># skip up to the first htmltag. return nil if we don&#39;t ever find one
@@ -336,7 +354,7 @@
 			<span class='id identifier rubyid_p'>p</span> <span class='symbol'>:wtf</span>
 		<span class='kw'>end</span>
 	<span class='kw'>end</span>
-	<span class='id identifier rubyid_html'>html</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='id identifier rubyid_html'>html</span>
+	<span class='id identifier rubyid_html'>html</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='id identifier rubyid_html'>html</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='id identifier rubyid_code_page'>code_page</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -477,7 +495,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 13:41:57 2021 by
+  Generated on Wed Dec 22 17:00:32 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

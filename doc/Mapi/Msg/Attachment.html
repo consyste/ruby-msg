@@ -140,7 +140,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#properties-instance_method" title="#properties (instance method)">#<strong>properties</strong>  &#x21d2; Object </a>
+      <a href="#properties-instance_method" title="#properties (instance method)">#<strong>properties</strong>  &#x21d2; PropertySet </a>
     
 
     
@@ -161,9 +161,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute properties.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -293,7 +291,6 @@
       <pre class="lines">
 
 
-414
 415
 416
 417
@@ -326,10 +323,11 @@
 444
 445
 446
-447</pre>
+447
+448</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 414</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 415</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='ivar'>@obj</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span>
@@ -434,7 +432,7 @@
       <div class="method_details ">
   <h3 class="signature " id="properties-instance_method">
   
-    #<strong>properties</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>properties</strong>  &#x21d2; <tt><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -447,13 +445,24 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute properties.</p>
-
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -461,12 +470,12 @@
       <pre class="lines">
 
 
-410
 411
-412</pre>
+412
+413</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 410</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 411</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_properties'>properties</span>
   <span class='ivar'>@properties</span>
@@ -520,14 +529,14 @@
       <pre class="lines">
 
 
-450
 451
 452
 453
-454</pre>
+454
+455</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 450</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 451</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid?'>valid?</span>
 	<span class='comment'># something i started to notice when handling embedded ole object attachments is
@@ -544,7 +553,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 13:41:57 2021 by
+  Generated on Wed Dec 22 17:00:32 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
