@@ -225,7 +225,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#raw-instance_method" title="#raw (instance method)">#<strong>raw</strong>  &#x21d2; Object </a>
+      <a href="#raw-instance_method" title="#raw (instance method)">#<strong>raw</strong>  &#x21d2; Hash </a>
     
 
     
@@ -244,9 +244,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute raw.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -311,7 +309,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#body-instance_method" title="#body (instance method)">#<strong>body</strong>  &#x21d2; Object </a>
+      <a href="#body-instance_method" title="#body (instance method)">#<strong>body</strong>  &#x21d2; String<sup>?</sup> </a>
     
 
     
@@ -335,7 +333,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#body_html-instance_method" title="#body_html (instance method)">#<strong>body_html</strong>  &#x21d2; Object </a>
+      <a href="#body_html-instance_method" title="#body_html (instance method)">#<strong>body_html</strong>  &#x21d2; String<sup>?</sup> </a>
     
 
     
@@ -359,7 +357,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#body_rtf-instance_method" title="#body_rtf (instance method)">#<strong>body_rtf</strong>  &#x21d2; Object </a>
+      <a href="#body_rtf-instance_method" title="#body_rtf (instance method)">#<strong>body_rtf</strong>  &#x21d2; String<sup>?</sup> </a>
     
 
     
@@ -475,7 +473,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#resolve-instance_method" title="#resolve (instance method)">#<strong>resolve</strong>(arg, guid = nil)  &#x21d2; Object </a>
+      <a href="#resolve-instance_method" title="#resolve (instance method)">#<strong>resolve</strong>(arg, guid = nil)  &#x21d2; Key </a>
     
 
     
@@ -499,7 +497,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#sym_to_key-instance_method" title="#sym_to_key (instance method)">#<strong>sym_to_key</strong>  &#x21d2; Object </a>
+      <a href="#sym_to_key-instance_method" title="#sym_to_key (instance method)">#<strong>sym_to_key</strong>  &#x21d2; Hash{Symbol =&gt; Key} </a>
     
 
     
@@ -594,7 +592,22 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>raw</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -602,12 +615,12 @@
       <pre class="lines">
 
 
-149
-150
-151</pre>
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 164</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_raw'>raw</span>
 	<span class='ivar'>@raw</span> <span class='op'>=</span> <span class='id identifier rubyid_raw'>raw</span>
@@ -640,18 +653,18 @@
       <pre class="lines">
 
 
-211
-212
-213
-214
-215
-216
-217
-218
-219</pre>
+232
+233
+234
+235
+236
+237
+238
+239
+240</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 211</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 232</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span>
 	<span class='kw'>if</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>!~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\=$</span><span class='regexp_end'>/</span></span> <span class='kw'>and</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -677,7 +690,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="raw-instance_method">
   
-    #<strong>raw</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>raw</strong>  &#x21d2; <tt>Hash</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -686,13 +699,24 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute raw.</p>
-
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -700,12 +724,12 @@
       <pre class="lines">
 
 
-145
-146
-147</pre>
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_raw'>raw</span>
   <span class='ivar'>@raw</span>
@@ -737,12 +761,12 @@
       <pre class="lines">
 
 
-199
-200
-201</pre>
+220
+221
+222</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 199</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='op'>[]</span> <span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='id identifier rubyid_guid'>guid</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='id identifier rubyid_raw'>raw</span><span class='lbracket'>[</span><span class='id identifier rubyid_resolve'>resolve</span><span class='lparen'>(</span><span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='id identifier rubyid_guid'>guid</span><span class='rparen'>)</span><span class='rbracket'>]</span>
@@ -767,16 +791,16 @@
       <pre class="lines">
 
 
-203
-204
-205
-206
-207
-208
-209</pre>
+224
+225
+226
+227
+228
+229
+230</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 203</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 224</span>
 
 <span class='kw'>def</span> <span class='op'>[]=</span> <span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span>
 	<span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_unshift'>unshift</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>1</span>
@@ -793,7 +817,7 @@
       <div class="method_details ">
   <h3 class="signature " id="body-instance_method">
   
-    #<strong>body</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>body</strong>  &#x21d2; <tt>String</tt><sup>?</sup> 
   
 
   
@@ -809,6 +833,19 @@
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -816,19 +853,19 @@
       <pre class="lines">
 
 
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246</pre>
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 237</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 260</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_body'>body</span>
 	<span class='kw'>return</span> <span class='ivar'>@body</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='ivar'>@body</span><span class='rparen'>)</span>
@@ -848,7 +885,7 @@
       <div class="method_details ">
   <h3 class="signature " id="body_html-instance_method">
   
-    #<strong>body_html</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>body_html</strong>  &#x21d2; <tt>String</tt><sup>?</sup> 
   
 
   
@@ -864,6 +901,19 @@
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -871,32 +921,32 @@
       <pre class="lines">
 
 
-263
-264
-265
-266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282
-283
-284
-285</pre>
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 263</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 290</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_body_html'>body_html</span>
 	<span class='kw'>return</span> <span class='ivar'>@body_html</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='ivar'>@body_html</span><span class='rparen'>)</span>
@@ -929,7 +979,7 @@
       <div class="method_details ">
   <h3 class="signature " id="body_rtf-instance_method">
   
-    #<strong>body_rtf</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>body_rtf</strong>  &#x21d2; <tt>String</tt><sup>?</sup> 
   
 
   
@@ -945,6 +995,19 @@
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -952,21 +1015,21 @@
       <pre class="lines">
 
 
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259
-260</pre>
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 249</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 274</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_body_rtf'>body_rtf</span>
 	<span class='kw'>return</span> <span class='ivar'>@body_rtf</span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='ivar'>@body_rtf</span><span class='rparen'>)</span>
@@ -1000,15 +1063,15 @@
       <pre class="lines">
 
 
-225
-226
-227
-228
-229
-230</pre>
+246
+247
+248
+249
+250
+251</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 225</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 246</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
 	<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span>
@@ -1036,12 +1099,12 @@
       <pre class="lines">
 
 
-191
-192
-193</pre>
+212
+213
+214</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 191</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 212</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_keys'>keys</span>
 	<span class='id identifier rubyid_sym_to_key'>sym_to_key</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span>
@@ -1054,7 +1117,7 @@
       <div class="method_details ">
   <h3 class="signature " id="resolve-instance_method">
   
-    #<strong>resolve</strong>(arg, guid = nil)  &#x21d2; <tt>Object</tt> 
+    #<strong>resolve</strong>(arg, guid = nil)  &#x21d2; <tt><span class='object_link'><a href="PropertySet/Key.html" title="Mapi::PropertySet::Key (class)">Key</a></span></tt> 
   
 
   
@@ -1069,7 +1132,48 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>arg</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>guid</span>
+      
+      
+        <span class='type'>(<tt>Ole::Types::Clsid</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="PropertySet/Key.html" title="Mapi::PropertySet::Key (class)">Key</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1077,19 +1181,19 @@
       <pre class="lines">
 
 
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164</pre>
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 174</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_resolve'>resolve</span> <span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='id identifier rubyid_guid'>guid</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='kw'>if</span> <span class='id identifier rubyid_guid'>guid</span><span class='semicolon'>;</span>        <span class='const'><span class='object_link'><a href="PropertySet/Key.html" title="Mapi::PropertySet::Key (class)">Key</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="PropertySet/Key.html#initialize-instance_method" title="Mapi::PropertySet::Key#initialize (method)">new</a></span></span> <span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='id identifier rubyid_guid'>guid</span>
@@ -1109,7 +1213,7 @@
       <div class="method_details ">
   <h3 class="signature " id="sym_to_key-instance_method">
   
-    #<strong>sym_to_key</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>sym_to_key</strong>  &#x21d2; <tt>Hash{Symbol =&gt; <span class='object_link'><a href="PropertySet/Key.html" title="Mapi::PropertySet::Key (class)">Key</a></span>}</tt> 
   
 
   
@@ -1125,6 +1229,19 @@
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol =&gt; <span class='object_link'><a href="PropertySet/Key.html" title="Mapi::PropertySet::Key (class)">Key</a></span>}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1132,29 +1249,29 @@
       <pre class="lines">
 
 
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189</pre>
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 191</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sym_to_key'>sym_to_key</span>
 	<span class='kw'>return</span> <span class='ivar'>@sym_to_key</span> <span class='kw'>if</span> <span class='ivar'>@sym_to_key</span>
@@ -1196,12 +1313,12 @@
       <pre class="lines">
 
 
-221
-222
-223</pre>
+242
+243
+244</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 221</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 242</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_h'>to_h</span>
 	<span class='id identifier rubyid_sym_to_key'>sym_to_key</span><span class='period'>.</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_hash'>hash</span><span class='comma'>,</span> <span class='lparen'>(</span><span class='id identifier rubyid_sym'>sym</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span><span class='op'>|</span> <span class='id identifier rubyid_hash'>hash</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span> <span class='id identifier rubyid_sym'>sym</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_raw'>raw</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
@@ -1226,12 +1343,12 @@
       <pre class="lines">
 
 
-195
-196
-197</pre>
+216
+217
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 195</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/property_set.rb', line 216</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_values'>values</span>
 	<span class='id identifier rubyid_sym_to_key'>sym_to_key</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='op'>|</span> <span class='id identifier rubyid_raw'>raw</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
@@ -1246,7 +1363,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 00:59:43 2021 by
+  Generated on Wed Dec 22 13:41:59 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
