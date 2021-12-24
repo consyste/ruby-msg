@@ -546,40 +546,40 @@
       <pre class="lines">
 
 
-1719
-1720
-1721
-1722
-1723
-1724
-1725
-1726
-1727
-1728
-1729
-1730
-1731
-1732
-1733
-1734
-1735
-1736
-1737
-1738
-1739
-1740
-1741
-1742
-1743
-1744
-1745
-1746
-1747
-1748
-1749</pre>
+1563
+1564
+1565
+1566
+1567
+1568
+1569
+1570
+1571
+1572
+1573
+1574
+1575
+1576
+1577
+1578
+1579
+1580
+1581
+1582
+1583
+1584
+1585
+1586
+1587
+1588
+1589
+1590
+1591
+1592
+1593</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1719</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1563</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='id identifier rubyid_list'>list</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='ivar'>@node</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span>
@@ -650,12 +650,12 @@
       <pre class="lines">
 
 
-1714
-1715
-1716</pre>
+1558
+1559
+1560</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1714</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1558</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parent'>parent</span>
   <span class='ivar'>@parent</span>
@@ -693,12 +693,12 @@
       <pre class="lines">
 
 
-1713
-1714
-1715</pre>
+1557
+1558
+1559</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1713</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1557</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
   <span class='ivar'>@type</span>
@@ -741,12 +741,12 @@
       <pre class="lines">
 
 
-1832
-1833
-1834</pre>
+1676
+1677
+1678</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1832</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1676</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attachments'>attachments</span>
 	<span class='ivar'>@attachments</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="AttachmentTable.html" title="Mapi::Pst::AttachmentTable (class)">AttachmentTable</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="AttachmentTable.html#initialize-instance_method" title="Mapi::Pst::AttachmentTable#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@node</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'><span class='object_link'><a href="AttachmentTable.html#to_a-instance_method" title="Mapi::Pst::AttachmentTable#to_a (method)">to_a</a></span></span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_list'>list</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="Attachment.html" title="Mapi::Pst::Attachment (class)">Attachment</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Attachment.html#initialize-instance_method" title="Mapi::Pst::Attachment#initialize (method)">new</a></span></span> <span class='id identifier rubyid_list'>list</span> <span class='rbrace'>}</span>
@@ -793,12 +793,12 @@
       <pre class="lines">
 
 
-1789
-1790
-1791</pre>
+1633
+1634
+1635</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1789</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1633</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_children'>children</span>
 	<span class='id identifier rubyid_to_enum'>to_enum</span><span class='lparen'>(</span><span class='symbol'>:each_child</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span>
@@ -823,36 +823,36 @@
       <pre class="lines">
 
 
-1751
-1752
-1753
-1754
-1755
-1756
-1757
-1758
-1759
-1760
-1761
-1762
-1763
-1764
-1765
-1766
-1767
-1768
-1769
-1770
-1771
-1772
-1773
-1774
-1775
-1776
-1777</pre>
+1595
+1596
+1597
+1598
+1599
+1600
+1601
+1602
+1603
+1604
+1605
+1606
+1607
+1608
+1609
+1610
+1611
+1612
+1613
+1614
+1615
+1616
+1617
+1618
+1619
+1620
+1621</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1751</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1595</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each_child'>each_child</span>
 	<span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='id identifier rubyid_ipm_subtree_entryid'>ipm_subtree_entryid</span>
@@ -901,17 +901,17 @@
       <pre class="lines">
 
 
-1841
-1842
-1843
-1844
-1845
-1846
-1847
-1848</pre>
+1685
+1686
+1687
+1688
+1689
+1690
+1691
+1692</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1841</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1685</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each_recursive'>each_recursive</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 	<span class='comment'>#p :self =&gt; self
@@ -952,12 +952,12 @@
       <pre class="lines">
 
 
-1806
-1807
-1808</pre>
+1650
+1651
+1652</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1806</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1650</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_finder_entryid'>finder_entryid</span>
 	<span class='ivar'>@finder_entryid</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Item/EntryID.html#initialize-instance_method" title="Mapi::Pst::Item::EntryID#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_finder_entryid'>finder_entryid</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_id'><span class='object_link'><a href="Item/EntryID.html#id-instance_method" title="Mapi::Pst::Item::EntryID#id (method)">id</a></span></span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
@@ -982,19 +982,19 @@
       <pre class="lines">
 
 
-1850
-1851
-1852
-1853
-1854
-1855
-1856
-1857
-1858
-1859</pre>
+1694
+1695
+1696
+1697
+1698
+1699
+1700
+1701
+1702
+1703</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1850</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1694</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
 	<span class='id identifier rubyid_attrs'>attrs</span> <span class='op'>=</span> <span class='qwords_beg'>%w[</span><span class='tstring_content'>display_name</span><span class='words_sep'> </span><span class='tstring_content'>subject</span><span class='words_sep'> </span><span class='tstring_content'>sender_name</span><span class='words_sep'> </span><span class='tstring_content'>subfolders</span><span class='tstring_end'>]</span></span>
@@ -1037,12 +1037,12 @@
       <pre class="lines">
 
 
-1796
-1797
-1798</pre>
+1640
+1641
+1642</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1796</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1640</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ipm_subtree_entryid'>ipm_subtree_entryid</span>
 	<span class='ivar'>@ipm_subtree_entryid</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Item/EntryID.html#initialize-instance_method" title="Mapi::Pst::Item::EntryID#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_ipm_subtree_entryid'>ipm_subtree_entryid</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_id'><span class='object_link'><a href="Item/EntryID.html#id-instance_method" title="Mapi::Pst::Item::EntryID#id (method)">id</a></span></span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
@@ -1078,12 +1078,12 @@
       <pre class="lines">
 
 
-1801
-1802
-1803</pre>
+1645
+1646
+1647</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1801</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1645</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ipm_wastebasket_entryid'>ipm_wastebasket_entryid</span>
 	<span class='ivar'>@ipm_wastebasket_entryid</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Item/EntryID.html#initialize-instance_method" title="Mapi::Pst::Item::EntryID#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_ipm_wastebasket_entryid'>ipm_wastebasket_entryid</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_id'><span class='object_link'><a href="Item/EntryID.html#id-instance_method" title="Mapi::Pst::Item::EntryID#id (method)">id</a></span></span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
@@ -1130,16 +1130,16 @@
       <pre class="lines">
 
 
-1780
-1781
-1782
-1783
-1784
-1785
-1786</pre>
+1624
+1625
+1626
+1627
+1628
+1629
+1630</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1780</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1624</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span>
 	<span class='id identifier rubyid_parents'>parents</span><span class='comma'>,</span> <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='kw'>self</span>
@@ -1168,13 +1168,13 @@
       <pre class="lines">
 
 
-1836
-1837
-1838
-1839</pre>
+1680
+1681
+1682
+1683</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1836</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1680</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_recipients'>recipients</span>
 	<span class='comment'>#[]
@@ -1190,7 +1190,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 19:29:32 2021 by
+  Generated on Fri Dec 24 22:03:39 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
