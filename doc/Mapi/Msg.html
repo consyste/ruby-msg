@@ -521,16 +521,16 @@
       <pre class="lines">
 
 
-384
 385
 386
 387
 388
 389
-390</pre>
+390
+391</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 384</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 385</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='ivar'>@root</span> <span class='op'>=</span> <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span>
@@ -588,12 +588,12 @@
       <pre class="lines">
 
 
-359
 360
-361</pre>
+361
+362</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 359</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 360</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_close_parent'>close_parent</span>
   <span class='ivar'>@close_parent</span>
@@ -642,12 +642,12 @@
       <pre class="lines">
 
 
-357
 358
-359</pre>
+359
+360</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 357</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 358</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_helper'>helper</span>
   <span class='ivar'>@helper</span>
@@ -696,12 +696,12 @@
       <pre class="lines">
 
 
-355
 356
-357</pre>
+357
+358</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 355</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 356</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span>
   <span class='ivar'>@root</span>
@@ -798,7 +798,6 @@
       <pre class="lines">
 
 
-368
 369
 370
 371
@@ -808,10 +807,11 @@
 375
 376
 377
-378</pre>
+378
+379</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 368</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 369</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span> <span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='id identifier rubyid_mode'>mode</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='id identifier rubyid_msg'>msg</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span> <span class='const'>Ole</span><span class='op'>::</span><span class='const'>Storage</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='id identifier rubyid_arg'>arg</span><span class='comma'>,</span> <span class='id identifier rubyid_mode'>mode</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="Helper.html" title="Mapi::Helper (class)">Helper</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Helper.html#initialize-instance_method" title="Mapi::Helper#initialize (method)">new</a></span></span>
@@ -868,15 +868,15 @@
       <pre class="lines">
 
 
-393
 394
 395
 396
 397
-398</pre>
+398
+399</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 393</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 394</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_warn_unknown'>warn_unknown</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='comment'># bit of validation. not important if there is extra stuff, though would be
@@ -932,15 +932,15 @@
       <pre class="lines">
 
 
-405
 406
 407
 408
 409
-410</pre>
+410
+411</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 405</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 406</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attachments'>attachments</span>
 	<span class='ivar'>@attachments</span> <span class='op'>||=</span> <span class='ivar'>@root</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span>
@@ -968,12 +968,12 @@
       <pre class="lines">
 
 
-400
 401
-402</pre>
+402
+403</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 400</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 401</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_close'>close</span>
 	<span class='ivar'>@root</span><span class='period'>.</span><span class='id identifier rubyid_ole'>ole</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span> <span class='kw'>if</span> <span class='ivar'>@close_parent</span>
@@ -1062,14 +1062,14 @@
       <pre class="lines">
 
 
-413
 414
 415
 416
-417</pre>
+417
+418</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 413</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 414</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_recipients'>recipients</span>
 	<span class='ivar'>@recipients</span> <span class='op'>||=</span> <span class='ivar'>@root</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span>
@@ -1086,7 +1086,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 21:41:51 2021 by
+  Generated on Fri Dec 24 19:29:30 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

@@ -571,15 +571,15 @@
       <pre class="lines">
 
 
-122
 123
 124
 125
 126
-127</pre>
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='ivar'>@nameid</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -626,12 +626,12 @@
       <pre class="lines">
 
 
-341
 342
-343</pre>
+343
+344</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 341</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 342</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
 	<span class='ivar'>@cache</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -685,12 +685,12 @@
       <pre class="lines">
 
 
-119
 120
-121</pre>
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_helper'>helper</span>
   <span class='ivar'>@helper</span>
@@ -739,12 +739,12 @@
       <pre class="lines">
 
 
-117
 118
-119</pre>
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 118</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_nameid'>nameid</span>
   <span class='ivar'>@nameid</span>
@@ -826,14 +826,14 @@
       <pre class="lines">
 
 
-134
 135
 136
 137
-138</pre>
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='id identifier rubyid_prop'>prop</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_helper'>helper</span>
@@ -886,7 +886,6 @@
       <pre class="lines">
 
 
-175
 176
 177
 178
@@ -940,10 +939,11 @@
 226
 227
 228
-229</pre>
+229
+230</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 175</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 176</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_nameid'>parse_nameid</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_remaining'>remaining</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
@@ -1074,7 +1074,6 @@
       <pre class="lines">
 
 
-310
 311
 312
 313
@@ -1102,10 +1101,11 @@
 335
 336
 337
-338</pre>
+338
+339</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 310</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 311</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_pos'>pos</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='comment'># map keys in the named property range through nameid
@@ -1182,7 +1182,6 @@
       <pre class="lines">
 
 
-143
 144
 145
 146
@@ -1207,10 +1206,11 @@
 165
 166
 167
-168</pre>
+168
+169</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='comment'># we need to do the nameid first, as it provides the map for later user defined properties
@@ -1284,7 +1284,6 @@
       <pre class="lines">
 
 
-269
 270
 271
 272
@@ -1320,10 +1319,11 @@
 302
 303
 304
-305</pre>
+305
+306</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 269</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 270</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_properties'>parse_properties</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span>
@@ -1441,7 +1441,6 @@
       <pre class="lines">
 
 
-238
 239
 240
 241
@@ -1466,10 +1465,11 @@
 260
 261
 262
-263</pre>
+263
+264</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 238</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_substg'>parse_substg</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoding'>encoding</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span><span class='comma'>,</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>&amp;</span> <span class='int'>0x1000</span><span class='rparen'>)</span> <span class='op'>!=</span> <span class='int'>0</span>
@@ -1507,7 +1507,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 21:41:52 2021 by
+  Generated on Fri Dec 24 19:29:31 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

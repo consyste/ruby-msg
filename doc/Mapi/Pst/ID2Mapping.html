@@ -246,7 +246,33 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>pst</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Pst.html" title="Mapi::Pst (class)">Pst</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>list</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -254,22 +280,22 @@
       <pre class="lines">
 
 
-828
-829
-830
-831
-832
-833
-834
-835
-836
-837
-838
-839
-840</pre>
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 828</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 901</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_pst'>pst</span><span class='comma'>,</span> <span class='id identifier rubyid_list'>list</span>
 	<span class='ivar'>@pst</span> <span class='op'>=</span> <span class='id identifier rubyid_pst'>pst</span>
@@ -322,12 +348,12 @@
       <pre class="lines">
 
 
-827
-828
-829</pre>
+897
+898
+899</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 827</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 897</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_list'>list</span>
   <span class='ivar'>@list</span>
@@ -373,19 +399,19 @@
       <pre class="lines">
 
 
-849
-850
-851
-852
-853</pre>
+922
+923
+924
+925
+926</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 849</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 922</span>
 
 <span class='kw'>def</span> <span class='op'>[]</span> <span class='id identifier rubyid_id'>id</span>
 	<span class='comment'>#id2 = @list.find { |x| x.id2 == id }
 </span>	<span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='ivar'>@id_from_id2</span><span class='lbracket'>[</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span>
-	<span class='id identifier rubyid_id'>id</span> <span class='kw'>and</span> <span class='ivar'>@pst</span><span class='period'>.</span><span class='id identifier rubyid_idx_from_id'>idx_from_id</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_id'>id</span> <span class='kw'>and</span> <span class='ivar'>@pst</span><span class='period'>.</span><span class='id identifier rubyid_block_from_id'>block_from_id</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -418,12 +444,12 @@
       <pre class="lines">
 
 
-843
-844
-845</pre>
+916
+917
+918</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 843</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 916</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_warn'>warn</span> <span class='id identifier rubyid_s'>s</span>
 	<span class='const'><span class='object_link'><a href="../../Mapi.html" title="Mapi (module)">Mapi</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../../Mapi.html#Log-constant" title="Mapi::Log (constant)">Log</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='id identifier rubyid_s'>s</span>
@@ -438,7 +464,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Dec 22 21:41:53 2021 by
+  Generated on Fri Dec 24 19:29:31 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
