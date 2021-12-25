@@ -455,7 +455,7 @@ module Mapi
 							end
 						end
 						if @embedded_ole.embedded_type == 'Microsoft Office Outlook Message'
-							@embedded_msg = Msg.new @embedded_ole
+							@embedded_msg = Msg.new @embedded_ole, helper
 						end
 					end
 				end
