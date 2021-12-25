@@ -1162,8 +1162,10 @@ puts ole.root.to_tree
 				offsets = value[4, 4 * num].unpack("V#{num}")
 				value = (offsets + [value.length]).to_enum(:each_cons, 2).map { |from, to| value[from...to] }
 				value.map! { |str| Ole::Types::FROM_UTF16.iconv str }
-			when 0x1003
-				# PtypMultipleInteger32
+			when 0x1003 # uint32 array
+				value = get_data_indirect_io(value).read unless String === value
+				# there is no count field
+				value = value.unpack("V#{(value.length / 4)}")
 			else
 				name = Mapi::Types::DATA[type].first rescue nil
 				warn '0x%04x %p' % [key, get_data_indirect_io(value).read]
