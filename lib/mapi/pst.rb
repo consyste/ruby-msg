@@ -1070,10 +1070,12 @@ class Pst
 					# although, in 2003 version, they are 0102 already
 					value = StringIO.new value unless value.respond_to?(:read)
 				end
-				if key == PR_SUBJECT and value
-					ignore, offset = value.unpack 'C2'
-					offset = (offset == 1 ? nil : offset - 3)
-					value = value[2..-1]
+				if key == PR_SUBJECT and String === value and value.length >= 2
+					if value[0].ord == 1
+						# This 2 chars header tell us how to omit subject prefix like `Yes: `, `Re: `, etc.
+						# We need not to omit them.
+						value = value[2..-1]
+					end
 =begin
 					index = value =~ /^[A-Z]*:/ ? $~[0].length - 1 : nil
 					unless ignore == 1 and offset == index
