@@ -1,4 +1,7 @@
 module Mapi
+	# This is a helper class for {Pst} and {Msg}.
+	# Used to decode some data that depend on its user context.
+	# For example like ANSI encoding.
 	class Helper
 		# @return [String, nil]
 		attr_reader :ansi_encoding
@@ -12,10 +15,13 @@ module Mapi
 			@to_unicode = to_unicode
 		end
 
-		# Convert to requested format:
+		# Convert from `ASCII_8BIT` string into UTF_8 string or arbitrary object.
 		#
-		# - non Unicode string property
-		# - body (rtf, text)
+		# Use cases:
+		# 
+		# - Decode PT_STRING8 in {Pst}
+		# - Decode `0x001e` in {Msg}
+		# - Decode body (rtf, text) in {PropertySet}
 		#
 		# @param str [String]
 		# @return [Object]

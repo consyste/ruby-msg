@@ -39,7 +39,7 @@ class Mapitool
 					filter_path = filter_path.tr("\\", '/').gsub(/\/+/, '/').sub(/^\//, '').sub(/\/$/, '')
 				end
 				open filename do |io|
-					pst = Mapi::Pst.new io
+					pst = Mapi::Pst.new io, @helper
 					pst.each do |message|
 						next unless message.type == :message
 						if filter_path

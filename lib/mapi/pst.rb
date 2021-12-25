@@ -60,6 +60,7 @@ require 'mapi'
 require 'enumerator'
 require 'ostruct'
 require 'ole/ranges_io'
+require 'mapi/helper'
 
 module Mapi
 class Pst
@@ -284,15 +285,19 @@ class Pst
 	attr_reader :nodes
 	# @return [Hash]
 	attr_reader :special_folder_ids
+	# @return [Helper]
+	attr_reader :helper
 
 	# corresponds to
 	# * pst_open
 	# * pst_load_index
 	#
 	# @param io [IO]
-	def initialize io
+	# @param helper [Helper,nil]
+	def initialize io, helper=nil
 		@io = io
 		io.pos = 0
+		@helper = helper || Helper.new
 		@header = Header.new io.read(Header::SIZE)
 
 		# would prefer this to be in Header#validate, but it doesn't have the io size.
@@ -1054,7 +1059,7 @@ class Pst
 				# Msg::Properties::ENCODINGS
 				if value
 					if type == PT_STRING8
-						value = value.read
+						value = node.pst.helper.convert_ansi_str value.read
 					elsif type == PT_UNICODE
 						value = Ole::Types::FROM_UTF16.iconv value.read
 					end

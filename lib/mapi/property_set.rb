@@ -154,13 +154,13 @@ module Mapi
 			hash.update Key.new(key[0], const_get(key[1])) => value
 		end
 
-		# @return [PropertyStore]
+		# @return [Hash]
 		attr_reader :raw
 	
 		# +raw+ should be an hash-like object that maps <tt>Key</tt>s to values. Should respond_to?
 		# [], keys, values, each, and optionally []=, and delete.
 		#
-		# @param raw [PropertyStore]
+		# @param raw [Hash]
 		def initialize raw
 			@raw = raw
 		end
