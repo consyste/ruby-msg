@@ -298,7 +298,7 @@ class Pst
 	# @private
 	attr_reader :nodes
 
-	# @return [Hash]
+	# @return [Hash<Integer, Symbol>]
 	# @private
 	attr_reader :special_folder_ids
 
@@ -306,15 +306,13 @@ class Pst
 	# @private
 	attr_reader :helper
 
-	# Construct {Pst}
-	#
-	# corresponds to
-	# * pst_open
-	# * pst_load_index
-	#
 	# @param io [IO]
 	# @param helper [Helper,nil]
 	def initialize io, helper=nil
+		# corresponds to
+		# * pst_open
+		# * pst_load_index
+
 		@io = io
 		io.pos = 0
 		@helper = helper || Helper.new
@@ -933,6 +931,8 @@ class Pst
 	# corresponds to
 	# * _pst_parse_block
 	# * _pst_process (in some ways. although perhaps thats more the Item::Properties#add_property)
+	#
+	# @private
 	class BlockParser
 		include Mapi::Types::Constants
 
@@ -990,8 +990,11 @@ class Pst
 		USE_MAIN_DATA = -1
 
 		# @return [NodePtr]
+		# @private
 		attr_reader :node
+
 		# @return [Hash<Integer, String>] HID to data block
+		# @private
 		attr_reader :data_chunks
 
 		# @param node [NodePtr]
@@ -1297,6 +1300,8 @@ only remaining issue is test4 recipients of 200044. strange.
 	# otherwise you lookup the value in the indicies, where you get the offsets to use in the
 	# main data body. due to the indirect thing though, any of these parts could actually come
 	# from a separate stream.
+	#
+	# @private
 	class RawPropertyStore < BlockParser
 		include Enumerable
 
@@ -1346,6 +1351,8 @@ only remaining issue is test4 recipients of 200044. strange.
 	# RawPropertyStore.
 	# only used for the recipients array, and the attachments array. completely lazy, doesn't
 	# load any of the properties upon creation. 
+	#
+	# @private
 	class RawPropertyStoreTable < BlockParser
 		# TCOLDESC
 		# @private
@@ -1527,6 +1534,7 @@ only remaining issue is test4 recipients of 200044. strange.
 		end
 	end
 
+	# @private
 	class AttachmentTable < BlockParser
 		# a "fake" MAPI property name for this constant. if you get a mapi property with
 		# this value, it is the id2 value to use to get attachment data.
@@ -1583,6 +1591,8 @@ only remaining issue is test4 recipients of 200044. strange.
 
 	# there is no equivalent to this in libpst. ID2_RECIPIENTS was just guessed given the above
 	# AttachmentTable.
+	#
+	# @private
 	class RecipientTable < BlockParser
 		# @return [NodePtr]
 		# @private
@@ -1658,9 +1668,16 @@ only remaining issue is test4 recipients of 200044. strange.
 
 		include RecursivelyEnumerable
 
-		# @private
+		# Obtain item type
+		# 
+		# - `:folder`
+		# - `:message`
+		# - `:wastebasket`
+		#
+		# @return [Symbol]
 		attr_accessor :type
-		# @private
+
+		# @return [Item]
 		attr_accessor :parent
 
 		# @param node [NodePtr]
@@ -1738,6 +1755,8 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 			parents.map { |item| item.props.display_name or raise 'unable to construct path' } * '/'
 		end
 
+		# Enumerate direct children
+		#
 		# @return [Array<Item>]
 		def children
 			to_enum(:each_child).to_a
@@ -1799,6 +1818,8 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 			@recipients ||= RecipientTable.new(@node).to_a.map { |list| Recipient.new list }
 		end
 
+		# Iterate children (except on this instance) recursively stored in this MessageStore.
+		#
 		# @yield [item]
 		# @yieldparam item [Item]
 		# @return [void]
@@ -1938,8 +1959,9 @@ which confirms my belief that the block size for idx and desc is more likely 512
 		item
 	end
 
+	# Obtain a root item
+	#
 	# @return [Item]
-	# @private
 	def root
 		root_item
 	end
@@ -1947,6 +1969,8 @@ which confirms my belief that the block size for idx and desc is more likely 512
 	# depth first search of all items
 	include Enumerable
 
+	# Iterate all kind of items recursively stored in this MessageStore.
+	#
 	# @yield [message]
 	# @yieldparam message [Item]
 	# @return [void]
@@ -1956,6 +1980,8 @@ which confirms my belief that the block size for idx and desc is more likely 512
 		root.each_recursive(&block)
 	end
 
+	# Get this MessageStore's display name.
+	#
 	# @return [String]
 	def name
 		@name ||= root_item.props.display_name
