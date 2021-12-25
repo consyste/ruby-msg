@@ -28,7 +28,13 @@ module Mapi
 		def convert_ansi_str str
 			if @ansi_encoding
 				if @to_unicode
-					str.force_encoding(@ansi_encoding).encode("UTF-8")
+					# assume we can convert this text to UTF-8
+					begin
+						str.force_encoding(@ansi_encoding).encode("UTF-8")
+					rescue Encoding::UndefinedConversionError => ex
+						# some text are already UTF-8 due to unknown reason
+						str.force_encoding("UTF-8").encode("UTF-8")
+					end
 				else
 					str.force_encoding(@ansi_encoding)
 				end
