@@ -472,7 +472,7 @@ class Pst
 		attr_reader :children
 
 		# @param data [String]
-		# @param is16 [Boolean]
+		# @param is64 [Boolean]
 		def initialize data, is64
 			super(*Pst.unpack(data, is64 ? UNPACK_STR64 : UNPACK_STR32))
 			@children = []

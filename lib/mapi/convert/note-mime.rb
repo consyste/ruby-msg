@@ -267,6 +267,7 @@ module Mapi
 	end
 
 	class Msg < Message
+		# @private
 		def populate_headers
 			super
 			if !headers.has_key?('Date')

@@ -5,27 +5,27 @@ require 'mapi/helper'
 
 module Mapi
 	#
-	# = Introduction
+	# # Introduction
 	#
 	# Primary class interface to the vagaries of .msg files.
 	#
-	# The core of the work is done by the <tt>Msg::PropertyStore</tt> class.
+	# The core of the work is done by the {Msg::PropertyStore} class.
 	#
 	class Msg < Message
 		#
-		# = Introduction
+		# # Introduction
 		#
-		# A big compononent of +Msg+ files is the property store, which holds
+		# A big compononent of {Msg} files is the property store, which holds
 		# all the key/value pairs of properties. The message itself, and all
-		# its <tt>Attachment</tt>s and <tt>Recipient</tt>s have an instance of
+		# its {Attachment}s and {Recipient}s have an instance of
 		# this class.
 		#
-		# = Storage model
+		# # Storage model
 		#
 		# Property keys (tags?) can be either simple hex numbers, in the
 		# range 0x0000 - 0xffff, or they can be named properties. In fact,
 		# properties in the range 0x0000 to 0x7fff are supposed to be the non-
-		# named properties, and can be considered to be in the +PS_MAPI+
+		# named properties, and can be considered to be in the `PS_MAPI`
 		# namespace. (correct?)
 		# 
 		# Named properties are serialized in the 0x8000 to 0xffff range,
@@ -37,10 +37,12 @@ module Mapi
 		# Further, we can give symbolic names to most keys, coming from
 		# constants in various places. Eg:
 		# 
-		#   0x0037 => subject
-		#   {00062002-0000-0000-C000-000000000046}/0x8218 => response_status
-		#   # displayed as categories in outlook
-		#   {00020329-0000-0000-C000-000000000046}/"Keywords" => categories
+		# ```
+		# 0x0037 => subject
+		# {00062002-0000-0000-C000-000000000046}/0x8218 => response_status
+		# # displayed as categories in outlook
+		# {00020329-0000-0000-C000-000000000046}/"Keywords" => categories
+		# ```
 		# 
 		# Futher, there are completely different names, coming from other
 		# object models that get mapped to these things (CDO's model,
@@ -50,40 +52,46 @@ module Mapi
 		# a mapi property store. (It should also be relatively easy to
 		# support them later.)
 		# 
-		# = Usage
+		# # Usage
 		#
 		# The api is driven by a desire to have the simple stuff "just work", ie
 		#
-		#   properties.subject
-		#   properties.display_name
+		# ```
+		# properties.subject
+		# properties.display_name
+		# ```
 		# 
 		# There also needs to be a way to look up properties more specifically:
 		# 
-		#   properties[0x0037] # => gets the subject
-		#   properties[0x0037, PS_MAPI] # => still gets the subject
-		#   properties['Keywords', PS_PUBLIC_STRINGS] # => gets outlook's categories array
+		# ```
+		# properties[0x0037] # => gets the subject
+		# properties[0x0037, PS_MAPI] # => still gets the subject
+		# properties['Keywords', PS_PUBLIC_STRINGS] # => gets outlook's categories array
+		# ```
 		# 
 		# The abbreviated versions work by "resolving" the symbols to full keys:
 		#
-		#		# the guid here is just PS_PUBLIC_STRINGS
-		#   properties.resolve :keywords # => #<Key {00020329-0000-0000-c000-000000000046}/"Keywords">
-		#   # the result here is actually also a key
-		#   k = properties.resolve :subject  # => 0x0037
-		#   # it has a guid
-		#   k.guid == Msg::Properties::PS_MAPI # => true
+		# ```
+		# # the guid here is just PS_PUBLIC_STRINGS
+		# properties.resolve :keywords # => #<Key {00020329-0000-0000-c000-000000000046}/"Keywords">
+		# # the result here is actually also a key
+		# k = properties.resolve :subject  # => 0x0037
+		# # it has a guid
+		# k.guid == Msg::Properties::PS_MAPI # => true
+		# ```
 		#
-		# = Parsing
+		# # Parsing
 		#
 		# There are three objects that need to be parsed to load a +Msg+ property store:
 		# 
-		# 1. The +nameid+ directory (<tt>Properties.parse_nameid</tt>)
-		# 2. The many +substg+ objects, whose names should match <tt>Properties::SUBSTG_RX</tt>
-		#    (<tt>Properties#parse_substg</tt>)
-		# 3. The +properties+ file (<tt>Properties#parse_properties</tt>)
+		# 1. The `nameid` directory (`Properties.parse_nameid`)
+		# 2. The many `substg` objects, whose names should match `Properties::SUBSTG_RX`
+		#    (`Properties#parse_substg`)
+		# 3. The `properties` file (`Properties#parse_properties`)
 		#
 		# Understanding of the formats is by no means perfect.
 		#
-		# = TODO
+		# # TODO
 		#
 		# * While the key objects are sufficient, the value objects are just plain
 		#   ruby types. It currently isn't possible to write to the values, or to know
@@ -91,6 +99,7 @@ module Mapi
 		# * Update this doc.
 		# * Perhaps change from eager loading, to be load-on-demand.
 		#
+		# @private
 		class PropertyStore
 			include PropertySet::Constants
 			Key = PropertySet::Key
@@ -345,22 +354,28 @@ module Mapi
 		end
 
 		# these 2 will actually be of the form
-		# 1\.0_#([0-9A-Z]{8}), where $1 is the 0 based index number in hex
+		# `1\.0_#([0-9A-Z]{8})`, where `$1` is the 0 based index number in hex
 		# should i parse that and use it as an index, or just return in
 		# file order? probably should use it later...
+
+		# @private
 		ATTACH_RX = /^__attach_version1\.0_.*/
+		# @private
 		RECIP_RX = /^__recip_version1\.0_.*/
+		# @private
 		VALID_RX = /#{PropertyStore::VALID_RX}|#{ATTACH_RX}|#{RECIP_RX}/
 
 		# @return [Ole::Storage::Dirent]
+		# @private
 		attr_reader :root 
 		# @return [Helper]
+		# @private
 		attr_reader :helper
 		# @return [Boolean]
 		attr_accessor :close_parent
 
-		# Alternate constructor, to create an +Msg+ directly from +arg+ and +mode+, passed
-		# directly to Ole::Storage (ie either filename or seekable IO object).
+		# Alternate constructor, to create an {Msg} directly from `arg` and `mode`, passed
+		# directly to {Ole::Storage} (ie either filename or seekable IO object).
 		#
 		# @param arg [Object]
 		# @param mode [Object]
@@ -378,7 +393,7 @@ module Mapi
 			end
 		end
 
-		# Create an Msg from +root+, an <tt>Ole::Storage::Dirent</tt> object
+		# Create an Msg from `root`, an {Ole::Storage::Dirent} object
 		#
 		# @param root [Ole::Storage::Dirent]
 		# @param helper [Helper]
@@ -391,6 +406,7 @@ module Mapi
 		end
 
 		# @param obj [Ole::Storage::Dirent]
+		# @private
 		def self.warn_unknown obj
 			# bit of validation. not important if there is extra stuff, though would be
 			# interested to know what it is. doesn't check dir/file stuff.
@@ -419,9 +435,12 @@ module Mapi
 
 		class Attachment < Mapi::Attachment
 			# @return [Ole::Storage::Dirent]
+			# @private
 			attr_reader :obj
+
 			# @return [PropertySet]
 			attr_reader :properties
+
 			alias props :properties
 
 			# @param obj [Ole::Storage::Dirent]
@@ -470,14 +489,18 @@ module Mapi
 		end
 
 		#
-		# +Recipient+ serves as a container for the +recip+ directories in the .msg.
+		# `Recipient` serves as a container for the `recip` directories in the `.msg`.
+		# 
 		# It has things like office_location, business_telephone_number, but I don't
 		# think enough to make a vCard out of?
 		#
 		class Recipient < Mapi::Recipient
 			# @return [Ole::Storage::Dirent]
+			# @private
 			attr_reader :obj
+
 			attr_reader :properties
+
 			alias props :properties
 
 			# @param obj [Ole::Storage::Dirent]
