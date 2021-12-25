@@ -101,9 +101,7 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>This is a helper class for <span class='object_link'><a href="Pst.html" title="Mapi::Pst (class)">Pst</a></span> and <span class='object_link'><a href="Msg.html" title="Mapi::Msg (class)">Msg</a></span>.
-Used to decode some data that depend on its user context.
-For example like ANSI encoding.</p>
+    <p>This is a helper class for <span class='object_link'><a href="Pst.html" title="Mapi::Pst (class)">Pst</a></span> and <span class='object_link'><a href="Msg.html" title="Mapi::Msg (class)">Msg</a></span>.</p>
 
 
   </div>
@@ -140,7 +138,7 @@ For example like ANSI encoding.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
+    <span class="summary_desc"><div class='inline'><p>Encoding name of ANSI string we assume.</p>
 </div></span>
   
 </li>
@@ -168,7 +166,7 @@ For example like ANSI encoding.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
+    <span class="summary_desc"><div class='inline'><p>Convert all ANSI string to UTF-8.</p>
 </div></span>
   
 </li>
@@ -204,7 +202,7 @@ For example like ANSI encoding.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Convert from <code>ASCII_8BIT</code> string into UTF_8 string or arbitrary object.</p>
+    <span class="summary_desc"><div class='inline'><p>Convert <code>ASCII_8BIT</code> string.</p>
 </div></span>
   
 </li>
@@ -296,13 +294,13 @@ For example like ANSI encoding.</p>
       <pre class="lines">
 
 
+12
 13
 14
-15
-16</pre>
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_ansi_encoding'>ansi_encoding</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_to_unicode'>to_unicode</span><span class='op'>=</span><span class='kw'>false</span>
 	<span class='ivar'>@ansi_encoding</span> <span class='op'>=</span> <span class='id identifier rubyid_ansi_encoding'>ansi_encoding</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>BINARY</span><span class='tstring_end'>&quot;</span></span>
@@ -331,7 +329,7 @@ For example like ANSI encoding.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Returns Encoding name of ANSI string we assume.</p>
 
 
   </div>
@@ -348,6 +346,10 @@ For example like ANSI encoding.</p>
       
       
       
+        &mdash;
+        <div class='inline'><p>Encoding name of ANSI string we assume</p>
+</div>
+      
     </li>
   
 </ul>
@@ -358,12 +360,12 @@ For example like ANSI encoding.</p>
       <pre class="lines">
 
 
-7
-8
-9</pre>
+5
+6
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ansi_encoding'>ansi_encoding</span>
   <span class='ivar'>@ansi_encoding</span>
@@ -386,7 +388,7 @@ For example like ANSI encoding.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Returns Convert all ANSI string to UTF-8.</p>
 
 
   </div>
@@ -403,6 +405,10 @@ For example like ANSI encoding.</p>
       
       
       
+        &mdash;
+        <div class='inline'><p>Convert all ANSI string to UTF-8</p>
+</div>
+      
     </li>
   
 </ul>
@@ -413,12 +419,12 @@ For example like ANSI encoding.</p>
       <pre class="lines">
 
 
+8
 9
-10
-11</pre>
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_unicode'>to_unicode</span>
   <span class='ivar'>@to_unicode</span>
@@ -446,7 +452,7 @@ For example like ANSI encoding.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Convert from <code>ASCII_8BIT</code> string into UTF_8 string or arbitrary object.</p>
+    <p>Convert <code>ASCII_8BIT</code> string. Maybe produce UTF_8 string, or arbitrary object</p>
 
 <p>Use cases:</p>
 
@@ -496,6 +502,7 @@ For example like ANSI encoding.</p>
       <pre class="lines">
 
 
+27
 28
 29
 30
@@ -506,15 +513,26 @@ For example like ANSI encoding.</p>
 35
 36
 37
-38</pre>
+38
+39
+40
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_convert_ansi_str'>convert_ansi_str</span> <span class='id identifier rubyid_str'>str</span>
 	<span class='kw'>if</span> <span class='ivar'>@ansi_encoding</span>
 		<span class='kw'>if</span> <span class='ivar'>@to_unicode</span>
-			<span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='ivar'>@ansi_encoding</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+			<span class='comment'># assume we can convert this text to UTF-8
+</span>			<span class='kw'>begin</span>
+				<span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='ivar'>@ansi_encoding</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+			<span class='kw'>rescue</span> <span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UndefinedConversionError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_ex'>ex</span>
+				<span class='comment'># some text are already UTF-8 due to unknown reason
+</span>				<span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+			<span class='kw'>end</span>
 		<span class='kw'>else</span>
 			<span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='ivar'>@ansi_encoding</span><span class='rparen'>)</span>
 		<span class='kw'>end</span>
@@ -532,7 +550,7 @@ For example like ANSI encoding.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 16:10:27 2021 by
+  Generated on Sat Dec 25 18:24:03 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

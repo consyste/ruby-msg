@@ -608,16 +608,16 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-438
-439
-440
-441</pre>
+443
+444
+445
+446</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 438</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 443</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_is64'>is64</span>
-	<span class='kw'>super</span><span class='lparen'>(</span><span class='op'>*</span><span class='const'><span class='object_link'><a href="../Pst.html" title="Mapi::Pst (class)">Pst</a></span></span><span class='period'>.</span><span class='id identifier rubyid_unpack'><span class='object_link'><a href="../Pst.html#unpack-class_method" title="Mapi::Pst.unpack (method)">unpack</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_is64'>is64</span> <span class='op'>?</span> <span class='const'><span class='object_link'><a href="#UNPACK_STR64-constant" title="Mapi::Pst::NodePtr::UNPACK_STR64 (constant)">UNPACK_STR64</a></span></span> <span class='op'>:</span> <span class='const'><span class='object_link'><a href="#UNPACK_STR32-constant" title="Mapi::Pst::NodePtr::UNPACK_STR32 (constant)">UNPACK_STR32</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+	<span class='kw'>super</span><span class='lparen'>(</span><span class='op'>*</span><span class='const'><span class='object_link'><a href="../Pst.html" title="Mapi::Pst (class)">Pst</a></span></span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_is64'>is64</span> <span class='op'>?</span> <span class='const'><span class='object_link'><a href="#UNPACK_STR64-constant" title="Mapi::Pst::NodePtr::UNPACK_STR64 (constant)">UNPACK_STR64</a></span></span> <span class='op'>:</span> <span class='const'><span class='object_link'><a href="#UNPACK_STR32-constant" title="Mapi::Pst::NodePtr::UNPACK_STR32 (constant)">UNPACK_STR32</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
 	<span class='ivar'>@children</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -674,12 +674,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-419
-420
-421</pre>
+424
+425
+426</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 424</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_block_id'>block_id</span>
   <span class='ivar'>@block_id</span>
@@ -729,12 +729,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-434
-435
-436</pre>
+439
+440
+441</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 434</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 439</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_children'>children</span>
   <span class='ivar'>@children</span>
@@ -788,12 +788,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-419
-420
-421</pre>
+424
+425
+426</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 424</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_node_id'>node_id</span>
   <span class='ivar'>@node_id</span>
@@ -847,12 +847,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-419
-420
-421</pre>
+424
+425
+426</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 424</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parent_node_id'>parent_node_id</span>
   <span class='ivar'>@parent_node_id</span>
@@ -902,12 +902,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-431
-432
-433</pre>
+436
+437
+438</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 431</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 436</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pst'>pst</span>
   <span class='ivar'>@pst</span>
@@ -961,12 +961,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-419
-420
-421</pre>
+424
+425
+426</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 424</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sub_block_id'>sub_block_id</span>
   <span class='ivar'>@sub_block_id</span>
@@ -1021,13 +1021,13 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-444
-445
-446
-447</pre>
+449
+450
+451
+452</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 444</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 449</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_block'>block</span>
 	<span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DO NOT USE</span><span class='tstring_end'>&quot;</span></span>
@@ -1076,14 +1076,14 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-477
-478
-479
-480
-481</pre>
+482
+483
+484
+485
+486</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 477</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 482</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_local_node_list'>get_local_node_list</span>
 	<span class='id identifier rubyid_list'>list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1148,13 +1148,13 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-487
-488
-489
-490</pre>
+492
+493
+494
+495</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 487</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 492</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_has_sub'>has_sub</span> <span class='id identifier rubyid_local_node_id'>local_node_id</span>
 	<span class='comment'>#TODO fixme
@@ -1190,12 +1190,12 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-493
-494
-495</pre>
+498
+499
+500</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 493</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 498</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
 	<span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>=(\d+)</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>=0x%x</span><span class='tstring_end'>&#39;</span></span> <span class='op'>%</span> <span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='rbrace'>}</span>
@@ -1243,16 +1243,16 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-458
-459
-460
-461
-462
 463
-464</pre>
+464
+465
+466
+467
+468
+469</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 458</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 463</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_main_array'>read_main_array</span>
 	<span class='ivar'>@read_main</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -1319,14 +1319,14 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-470
-471
-472
-473
-474</pre>
+475
+476
+477
+478
+479</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 470</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 475</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_sub_array'>read_sub_array</span> <span class='id identifier rubyid_local_node_id'>local_node_id</span>
 	<span class='id identifier rubyid_list'>list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1376,13 +1376,13 @@ another set of ids to index values</p>
       <pre class="lines">
 
 
-450
-451
-452
-453</pre>
+455
+456
+457
+458</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 450</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 455</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sub_block'>sub_block</span>
 	<span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DO NOT USE</span><span class='tstring_end'>&quot;</span></span>
@@ -1398,7 +1398,7 @@ another set of ids to index values</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 16:10:26 2021 by
+  Generated on Sat Dec 25 17:20:57 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

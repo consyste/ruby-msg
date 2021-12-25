@@ -108,16 +108,6 @@
   
 </div>
 
-<h2>Defined Under Namespace</h2>
-<p class="children">
-  
-    
-  
-    
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span>
-    
-  
-</p>
 
 
 
@@ -134,7 +124,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#parent-instance_method" title="#parent (instance method)">#<strong>parent</strong>  &#x21d2; Object </a>
+      <a href="#parent-instance_method" title="#parent (instance method)">#<strong>parent</strong>  &#x21d2; Item </a>
     
 
     
@@ -151,7 +141,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute parent.</p>
+    <span class="summary_desc"><div class='inline'>
 </div></span>
   
 </li>
@@ -160,7 +150,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#type-instance_method" title="#type (instance method)">#<strong>type</strong>  &#x21d2; Object </a>
+      <a href="#type-instance_method" title="#type (instance method)">#<strong>type</strong>  &#x21d2; Symbol </a>
     
 
     
@@ -177,7 +167,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute type.</p>
+    <span class="summary_desc"><div class='inline'><p>Obtain item type.</p>
 </div></span>
   
 </li>
@@ -204,30 +194,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#attachments-instance_method" title="#attachments (instance method)">#<strong>attachments</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>i think i will change these, so they can inherit the lazyness from RawPropertyStoreTable.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#children-instance_method" title="#children (instance method)">#<strong>children</strong>  &#x21d2; Array </a>
+      <a href="#attachments-instance_method" title="#attachments (instance method)">#<strong>attachments</strong>  &#x21d2; Array&lt;Attachment&gt; </a>
     
 
     
@@ -250,7 +217,30 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#each_child-instance_method" title="#each_child (instance method)">#<strong>each_child</strong>  &#x21d2; Object </a>
+      <a href="#children-instance_method" title="#children (instance method)">#<strong>children</strong>  &#x21d2; Array&lt;Item&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Enumerate direct children.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#each_child-instance_method" title="#each_child (instance method)">#<strong>each_child</strong> {|item| ... } &#x21d2; void </a>
     
 
     
@@ -273,7 +263,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#each_recursive-instance_method" title="#each_recursive (instance method)">#<strong>each_recursive</strong>(&amp;block)  &#x21d2; Object </a>
+      <a href="#each_recursive-instance_method" title="#each_recursive (instance method)">#<strong>each_recursive</strong> {|item| ... } &#x21d2; void </a>
     
 
     
@@ -287,30 +277,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#finder_entryid-instance_method" title="#finder_entryid (instance method)">#<strong>finder_entryid</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Search Root Record.</p>
+    <span class="summary_desc"><div class='inline'><p>Iterate children (except on this instance) recursively stored in this MessageStore.</p>
 </div></span>
   
 </li>
@@ -367,53 +334,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#ipm_subtree_entryid-instance_method" title="#ipm_subtree_entryid (instance method)">#<strong>ipm_subtree_entryid</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Top of Personal Folder Record.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#ipm_wastebasket_entryid-instance_method" title="#ipm_wastebasket_entryid (instance method)">#<strong>ipm_wastebasket_entryid</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Deleted Items Folder Record.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#path-instance_method" title="#path (instance method)">#<strong>path</strong>  &#x21d2; Array </a>
+      <a href="#path-instance_method" title="#path (instance method)">#<strong>path</strong>  &#x21d2; String </a>
     
 
     
@@ -436,7 +357,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#recipients-instance_method" title="#recipients (instance method)">#<strong>recipients</strong>  &#x21d2; Object </a>
+      <a href="#recipients-instance_method" title="#recipients (instance method)">#<strong>recipients</strong>  &#x21d2; Array&lt;Recipient&gt; </a>
     
 
     
@@ -505,7 +426,7 @@
         <span class='name'>node</span>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="NodePtr.html" title="Mapi::Pst::NodePtr (class)">NodePtr</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'>NodePtr</span></tt>)</span>
       
       
       
@@ -544,44 +465,44 @@
       <pre class="lines">
 
 
-1578
-1579
-1580
-1581
-1582
-1583
-1584
-1585
-1586
-1587
-1588
-1589
-1590
-1591
-1592
-1593
-1594
-1595
-1596
-1597
-1598
-1599
-1600
-1601
-1602
-1603
-1604
-1605
-1606
-1607
-1608</pre>
+1686
+1687
+1688
+1689
+1690
+1691
+1692
+1693
+1694
+1695
+1696
+1697
+1698
+1699
+1700
+1701
+1702
+1703
+1704
+1705
+1706
+1707
+1708
+1709
+1710
+1711
+1712
+1713
+1714
+1715
+1716</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1578</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1686</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='id identifier rubyid_list'>list</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='ivar'>@node</span> <span class='op'>=</span> <span class='id identifier rubyid_node'>node</span>
-	<span class='kw'>super</span> <span class='const'><span class='object_link'><a href="../Pst.html" title="Mapi::Pst (class)">Pst</a></span></span><span class='period'>.</span><span class='id identifier rubyid_make_property_set'><span class='object_link'><a href="../Pst.html#make_property_set-class_method" title="Mapi::Pst.make_property_set (method)">make_property_set</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_list'>list</span><span class='rparen'>)</span>
+	<span class='kw'>super</span> <span class='const'><span class='object_link'><a href="../Pst.html" title="Mapi::Pst (class)">Pst</a></span></span><span class='period'>.</span><span class='id identifier rubyid_make_property_set'>make_property_set</span><span class='lparen'>(</span><span class='id identifier rubyid_list'>list</span><span class='rparen'>)</span>
 
 	<span class='comment'># this is kind of weird, but the ids of the special folders are stored in a hash
 </span>	<span class='comment'># when the root item is loaded
@@ -625,138 +546,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="parent-instance_method">
   
-    #<strong>parent</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute parent.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-1573
-1574
-1575</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1573</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_parent'>parent</span>
-  <span class='ivar'>@parent</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id="type=-instance_method"></span>
-      <div class="method_details ">
-  <h3 class="signature " id="type-instance_method">
-  
-    #<strong>type</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute type.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-1572
-1573
-1574</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1572</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
-  <span class='ivar'>@type</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
-
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="attachments-instance_method">
-  
-    #<strong>attachments</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>i think i will change these, so they can inherit the lazyness from RawPropertyStoreTable.
-so if you want the last attachment, you can get it without creating the others perhaps.
-it just has to handle the no table at all case a bit more gracefully.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-1691
-1692
-1693</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1691</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_attachments'>attachments</span>
-	<span class='ivar'>@attachments</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="AttachmentTable.html" title="Mapi::Pst::AttachmentTable (class)">AttachmentTable</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="AttachmentTable.html#initialize-instance_method" title="Mapi::Pst::AttachmentTable#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@node</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'><span class='object_link'><a href="AttachmentTable.html#to_a-instance_method" title="Mapi::Pst::AttachmentTable#to_a (method)">to_a</a></span></span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_list'>list</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="Attachment.html" title="Mapi::Pst::Attachment (class)">Attachment</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Attachment.html#initialize-instance_method" title="Mapi::Pst::Attachment#initialize (method)">new</a></span></span> <span class='id identifier rubyid_list'>list</span> <span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="children-instance_method">
-  
-    #<strong>children</strong>  &#x21d2; <tt>Array</tt> 
+    #<strong>parent</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="Mapi::Pst::Item (class)">Item</a></span></tt> 
   
 
   
@@ -777,7 +567,7 @@ it just has to handle the no table at all case a bit more gracefully.</p>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Mapi::Pst::Item (class)">Item</a></span></tt>)</span>
       
       
       
@@ -791,12 +581,186 @@ it just has to handle the no table at all case a bit more gracefully.</p>
       <pre class="lines">
 
 
-1648
-1649
-1650</pre>
+1681
+1682
+1683</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1648</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1681</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_parent'>parent</span>
+  <span class='ivar'>@parent</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="type=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="type-instance_method">
+  
+    #<strong>type</strong>  &#x21d2; <tt>Symbol</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Obtain item type</p>
+
+<ul>
+  <li><code>:folder</code></li>
+  <li><code>:message</code></li>
+  <li><code>:wastebasket</code></li>
+</ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+1678
+1679
+1680</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1678</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
+  <span class='ivar'>@type</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="attachments-instance_method">
+  
+    #<strong>attachments</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="Attachment.html" title="Mapi::Pst::Attachment (class)">Attachment</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Attachment.html" title="Mapi::Pst::Attachment (class)">Attachment</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+1811
+1812
+1813</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1811</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_attachments'>attachments</span>
+	<span class='ivar'>@attachments</span> <span class='op'>||=</span> <span class='const'>AttachmentTable</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@node</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_list'>list</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="Attachment.html" title="Mapi::Pst::Attachment (class)">Attachment</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Attachment.html#initialize-instance_method" title="Mapi::Pst::Attachment#initialize (method)">new</a></span></span> <span class='id identifier rubyid_list'>list</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="children-instance_method">
+  
+    #<strong>children</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="" title="Mapi::Pst::Item (class)">Item</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Enumerate direct children</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="" title="Mapi::Pst::Item (class)">Item</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+1761
+1762
+1763</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1761</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_children'>children</span>
 	<span class='id identifier rubyid_to_enum'>to_enum</span><span class='lparen'>(</span><span class='symbol'>:each_child</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span>
@@ -809,48 +773,86 @@ it just has to handle the no table at all case a bit more gracefully.</p>
       <div class="method_details ">
   <h3 class="signature " id="each_child-instance_method">
   
-    #<strong>each_child</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>each_child</strong> {|item| ... } &#x21d2; <tt>void</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>item</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>item</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Mapi::Pst::Item (class)">Item</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-1610
-1611
-1612
-1613
-1614
-1615
-1616
-1617
-1618
-1619
-1620
-1621
-1622
-1623
-1624
-1625
-1626
-1627
-1628
-1629
-1630
-1631
-1632
-1633
-1634
-1635
-1636</pre>
+1721
+1722
+1723
+1724
+1725
+1726
+1727
+1728
+1729
+1730
+1731
+1732
+1733
+1734
+1735
+1736
+1737
+1738
+1739
+1740
+1741
+1742
+1743
+1744
+1745
+1746
+1747</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1610</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1721</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each_child'>each_child</span>
 	<span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='id identifier rubyid_ipm_subtree_entryid'>ipm_subtree_entryid</span>
@@ -887,29 +889,67 @@ it just has to handle the no table at all case a bit more gracefully.</p>
       <div class="method_details ">
   <h3 class="signature " id="each_recursive-instance_method">
   
-    #<strong>each_recursive</strong>(&amp;block)  &#x21d2; <tt>Object</tt> 
+    #<strong>each_recursive</strong> {|item| ... } &#x21d2; <tt>void</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p><p>Iterate children (except on this instance) recursively stored in this MessageStore.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>item</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>item</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Mapi::Pst::Item (class)">Item</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-1700
-1701
-1702
-1703
-1704
-1705
-1706
-1707</pre>
+1826
+1827
+1828
+1829
+1830
+1831
+1832
+1833</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1700</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1826</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each_recursive'>each_recursive</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 	<span class='comment'>#p :self =&gt; self
@@ -918,46 +958,6 @@ it just has to handle the no table at all case a bit more gracefully.</p>
 </span>		<span class='id identifier rubyid_block'>block</span><span class='lbracket'>[</span><span class='id identifier rubyid_child'>child</span><span class='rbracket'>]</span>
 		<span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_each_recursive'>each_recursive</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 	<span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="finder_entryid-instance_method">
-  
-    #<strong>finder_entryid</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Search Root Record</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-1665
-1666
-1667</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1665</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_finder_entryid'>finder_entryid</span>
-	<span class='ivar'>@finder_entryid</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Item/EntryID.html#initialize-instance_method" title="Mapi::Pst::Item::EntryID#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_finder_entryid'>finder_entryid</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_id'><span class='object_link'><a href="Item/EntryID.html#id-instance_method" title="Mapi::Pst::Item::EntryID#id (method)">id</a></span></span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -979,19 +979,19 @@ it just has to handle the no table at all case a bit more gracefully.</p>
       <pre class="lines">
 
 
-1709
-1710
-1711
-1712
-1713
-1714
-1715
-1716
-1717
-1718</pre>
+1835
+1836
+1837
+1838
+1839
+1840
+1841
+1842
+1843
+1844</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1709</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1835</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
 	<span class='id identifier rubyid_attrs'>attrs</span> <span class='op'>=</span> <span class='qwords_beg'>%w[</span><span class='tstring_content'>display_name</span><span class='words_sep'> </span><span class='tstring_content'>subject</span><span class='words_sep'> </span><span class='tstring_content'>sender_name</span><span class='words_sep'> </span><span class='tstring_content'>subfolders</span><span class='tstring_end'>]</span></span>
@@ -1009,89 +1009,9 @@ it just has to handle the no table at all case a bit more gracefully.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="ipm_subtree_entryid-instance_method">
-  
-    #<strong>ipm_subtree_entryid</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Top of Personal Folder Record</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-1655
-1656
-1657</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1655</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_ipm_subtree_entryid'>ipm_subtree_entryid</span>
-	<span class='ivar'>@ipm_subtree_entryid</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Item/EntryID.html#initialize-instance_method" title="Mapi::Pst::Item::EntryID#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_ipm_subtree_entryid'>ipm_subtree_entryid</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_id'><span class='object_link'><a href="Item/EntryID.html#id-instance_method" title="Mapi::Pst::Item::EntryID#id (method)">id</a></span></span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="ipm_wastebasket_entryid-instance_method">
-  
-    #<strong>ipm_wastebasket_entryid</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Deleted Items Folder Record</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-1660
-1661
-1662</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1660</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_ipm_wastebasket_entryid'>ipm_wastebasket_entryid</span>
-	<span class='ivar'>@ipm_wastebasket_entryid</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Item/EntryID.html" title="Mapi::Pst::Item::EntryID (class)">EntryID</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Item/EntryID.html#initialize-instance_method" title="Mapi::Pst::Item::EntryID#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_ipm_wastebasket_entryid'>ipm_wastebasket_entryid</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_id'><span class='object_link'><a href="Item/EntryID.html#id-instance_method" title="Mapi::Pst::Item::EntryID#id (method)">id</a></span></span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="path-instance_method">
   
-    #<strong>path</strong>  &#x21d2; <tt>Array</tt> 
+    #<strong>path</strong>  &#x21d2; <tt>String</tt> 
   
 
   
@@ -1112,7 +1032,7 @@ it just has to handle the no table at all case a bit more gracefully.</p>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -1126,16 +1046,16 @@ it just has to handle the no table at all case a bit more gracefully.</p>
       <pre class="lines">
 
 
-1639
-1640
-1641
-1642
-1643
-1644
-1645</pre>
+1750
+1751
+1752
+1753
+1754
+1755
+1756</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1639</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1750</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span>
 	<span class='id identifier rubyid_parents'>parents</span><span class='comma'>,</span> <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='kw'>self</span>
@@ -1152,29 +1072,52 @@ it just has to handle the no table at all case a bit more gracefully.</p>
       <div class="method_details ">
   <h3 class="signature " id="recipients-instance_method">
   
-    #<strong>recipients</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>recipients</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="Recipient.html" title="Mapi::Pst::Recipient (class)">Recipient</a></span>&gt;</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Recipient.html" title="Mapi::Pst::Recipient (class)">Recipient</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-1695
-1696
-1697
-1698</pre>
+1816
+1817
+1818
+1819</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1695</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1816</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_recipients'>recipients</span>
 	<span class='comment'>#[]
-</span>	<span class='ivar'>@recipients</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="RecipientTable.html" title="Mapi::Pst::RecipientTable (class)">RecipientTable</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="RecipientTable.html#initialize-instance_method" title="Mapi::Pst::RecipientTable#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@node</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'><span class='object_link'><a href="RecipientTable.html#to_a-instance_method" title="Mapi::Pst::RecipientTable#to_a (method)">to_a</a></span></span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_list'>list</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="Recipient.html" title="Mapi::Pst::Recipient (class)">Recipient</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Recipient.html#initialize-instance_method" title="Mapi::Pst::Recipient#initialize (method)">new</a></span></span> <span class='id identifier rubyid_list'>list</span> <span class='rbrace'>}</span>
+</span>	<span class='ivar'>@recipients</span> <span class='op'>||=</span> <span class='const'>RecipientTable</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@node</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_list'>list</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="Recipient.html" title="Mapi::Pst::Recipient (class)">Recipient</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Recipient.html#initialize-instance_method" title="Mapi::Pst::Recipient#initialize (method)">new</a></span></span> <span class='id identifier rubyid_list'>list</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1186,7 +1129,7 @@ it just has to handle the no table at all case a bit more gracefully.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 16:10:27 2021 by
+  Generated on Sat Dec 25 18:24:03 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
