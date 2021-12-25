@@ -12,6 +12,10 @@ require 'time'
 class Mapitool
 	attr_reader :files
 	attr_reader :opts
+
+	#FILTER_NON_FILE_NAME = /[^A-Za-z0-9.()\[\]{}-]/
+	FILTER_NON_FILE_NAME = /[\x00-0x1f"\/\\\?\*\|\<\>\:]/
+
 	def initialize files, opts
 		@files, @opts = files, opts
 		seen_pst = false
@@ -85,10 +89,10 @@ class Mapitool
 			end
 		when Mapi::Pst::Item
 			if opts[:individual]
-				filename = "#{message.subject.tr ' ', '_'}.#{pair.last}".gsub(/[^A-Za-z0-9.()\[\]{}-]/, '_')
+				filename = "#{message.subject.tr ' ', '_'}.#{pair.last}".gsub(FILTER_NON_FILE_NAME, '_')
 			else
 				filename = combined_map[pair.last] or raise NotImplementedError
-				filename = (message.path.tr(' /', '_.').gsub(/[^A-Za-z0-9.()\[\]{}-]/, '_') + '.' + File.extname(filename)).squeeze('.')
+				filename = (message.path.tr(' /', '_.').gsub(FILTER_NON_FILE_NAME, '_') + '.' + File.extname(filename)).squeeze('.')
 			end
 			dir = File.dirname(message.instance_variable_get(:@node).pst.io.path)
 			filename = File.join dir, filename
