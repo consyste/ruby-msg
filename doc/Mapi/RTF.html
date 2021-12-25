@@ -85,12 +85,12 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<h1 id="label-Introduction">Introduction</h1>
+    <p>= Introduction</p>
 
-<p>The <code>RTF</code> module contains a few helper functions for dealing with rtf in mapi messages: <code>rtfdecompr</code>, and <code>rtf2html</code>.</p>
+<p>The +RTF+ module contains a few helper functions for dealing with rtf
+in mapi messages: +rtfdecompr+, and <tt>rtf2html</tt>.</p>
 
-<p>Both were ported from their original C versions for simplicity&#39;s sake.</p>
+<p>Both were ported from their original C versions for simplicity’s sake.</p>
 
 
   </div>
@@ -160,8 +160,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Note, this is a conversion of the original C code.</p>
+    <span class="summary_desc"><div class='inline'><p>Note, this is a conversion of the original C code.</p>
 </div></span>
   
 </li>
@@ -184,8 +183,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Decompresses compressed rtf <code>data</code>, as found in the mapi property <code>PR_RTF_COMPRESSED</code>.</p>
+    <span class="summary_desc"><div class='inline'><p>Decompresses compressed rtf +data+, as found in the mapi property +PR_RTF_COMPRESSED+.</p>
 </div></span>
   
 </li>
@@ -211,24 +209,47 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Note, this is a conversion of the original C code. Not great - needs tests and some refactoring, and an attempt to correct some inaccuracies. Hacky but works.</p>
+    <p>Note, this is a conversion of the original C code. Not great - needs tests and
+some refactoring, and an attempt to correct some inaccuracies. Hacky but works.</p>
 
-<p>Returns <code>nil</code> if it doesn&#39;t look like an rtf encapsulated rtf.</p>
+<p>Returns +nil+ if it doesn’t look like an rtf encapsulated rtf.</p>
 
-<p>Some cases that the original didn&#39;t deal with have been patched up, eg from  this chunk, where there are tags outside of the htmlrtf ignore block.</p>
+<p>Some cases that the original didn’t deal with have been patched up, eg from 
+this chunk, where there are tags outside of the htmlrtf ignore block.</p>
 
-<p>“&lt;br /&gt;\htmlrtf \line \htmlrtf0 \line {*\htmltag84 &lt;a href…”</p>
+<p>”<br />\htmlrtf \line \htmlrtf0 \line {\</em>\htmltag84 &lt;a href…”</p>
 
-<p>We take the approach of ignoring all rtf tags not explicitly handled. A proper parse tree would be nicer to work with. will need to look for ruby rtf library</p>
+<p>We take the approach of ignoring all rtf tags not explicitly handled. A proper
+parse tree would be nicer to work with. will need to look for ruby rtf library</p>
 
 <p>Some of the original comment to the c code is excerpted here:</p>
 
-<p>Sometimes in MAPI, the PR_BODY_HTML property contains the HTML of a message. But more usually, the HTML is encoded inside the RTF body (which you get in the PR_RTF_COMPRESSED property). These routines concern the decoding of the HTML from this RTF body.</p>
+<p>Sometimes in MAPI, the PR_BODY_HTML property contains the HTML of a message.
+But more usually, the HTML is encoded inside the RTF body (which you get in the
+PR_RTF_COMPRESSED property). These routines concern the decoding of the HTML
+from this RTF body.</p>
 
-<p>An encoded htmlrtf file is a valid RTF document, but which contains additional html markup information in its comments, and sometimes contains the equivalent rtf markup outside the comments. Therefore, when it is displayed by a plain simple RTF reader, the html comments are ignored and only the rtf markup has effect. Typically, this rtf markup is not as rich as the html markup would have been. But for an html-aware reader (such as the code below), we can ignore all the rtf markup, and extract the html markup out of the comments, and get a valid html document.</p>
+<p>An encoded htmlrtf file is a valid RTF document, but which contains additional
+html markup information in its comments, and sometimes contains the equivalent
+rtf markup outside the comments. Therefore, when it is displayed by a plain
+simple RTF reader, the html comments are ignored and only the rtf markup has
+effect. Typically, this rtf markup is not as rich as the html markup would have been.
+But for an html-aware reader (such as the code below), we can ignore all the
+rtf markup, and extract the html markup out of the comments, and get a valid
+html document.</p>
 
-<p>There are actually two kinds of html markup in comments. Most of them are prefixed by “*htmltagNNN”, for some number NNN. But sometimes there&#39;s one prefixed by “*mhtmltagNNN” followed by “*htmltagNNN”. In this case, the two are equivalent, but the m-tag is for a MIME Multipart/Mixed Message and contains tags that refer to content-ids (e.g. img src=“cid:072344a7”) while the normal tag just refers to a name (e.g. img src=“fred.jpg”) The code below keeps the m-tag and discards the normal tag. If there are any m-tags like this, then the message also contains an attachment with a PR_CONTENT_ID property e.g. “072344a7”. Actually, sometimes the m-tag is e.g. img src=“<a href="http://outlook/welcome.html">outlook/welcome.html</a>” and the attachment has a PR_CONTENT_LOCATION “<a href="http://outlook/welcome.html">outlook/welcome.html</a>” instead of a PR_CONTENT_ID.</p>
+<p>There are actually two kinds of html markup in comments. Most of them are
+prefixed by “*\htmltagNNN”, for some number NNN. But sometimes there’s one
+prefixed by “*\mhtmltagNNN” followed by “*\htmltagNNN”. In this case,
+the two are equivalent, but the m-tag is for a MIME Multipart/Mixed Message
+and contains tags that refer to content-ids (e.g. img src=”cid:072344a7”)
+while the normal tag just refers to a name (e.g. img src=”fred.jpg”)
+The code below keeps the m-tag and discards the normal tag.
+If there are any m-tags like this, then the message also contains an
+attachment with a PR_CONTENT_ID property e.g. “072344a7”. Actually,
+sometimes the m-tag is e.g. img src=”http://outlook/welcome.html” and the
+attachment has a PR_CONTENT_LOCATION “http://outlook/welcome.html” instead
+of a PR_CONTENT_ID.</p>
 
 
   </div>
@@ -372,10 +393,14 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Decompresses compressed rtf <code>data</code>, as found in the mapi property <code>PR_RTF_COMPRESSED</code>. Code converted from my C version, which in turn I wrote from a Java source, in JTNEF I believe.</p>
+    <p>Decompresses compressed rtf +data+, as found in the mapi property
++PR_RTF_COMPRESSED+. Code converted from my C version, which in turn
+I wrote from a Java source, in JTNEF I believe.</p>
 
-<p>C version was modified to use circular buffer for back references, instead of the optimization of the Java version to index directly into output buffer. This was in preparation to support streaming in a read/write neutral fashion.</p>
+<p>C version was modified to use circular buffer for back references,
+instead of the optimization of the Java version to index directly into
+output buffer. This was in preparation to support streaming in a
+read/write neutral fashion.</p>
 
 
   </div>
@@ -495,7 +520,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 22:03:37 2021 by
+  Generated on Sat Dec 25 16:10:25 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

@@ -101,10 +101,10 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>compressible encryption! :D</p>
+    <p>compressible encryption! :D</p>
 
-<p>simple substitution. see libpst.c maybe test switch to using a String#tr!</p>
+<p>simple substitution. see libpst.c
+maybe test switch to using a String#tr!</p>
 
 
   </div>
@@ -198,7 +198,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -220,7 +221,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -242,7 +244,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -264,7 +267,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -293,12 +297,12 @@
       <pre class="lines">
 
 
-268
 269
-270</pre>
+270
+271</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 269</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_decrypt'>decrypt</span> <span class='id identifier rubyid_encrypted'>encrypted</span>
 	<span class='id identifier rubyid_encrypted'>encrypted</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span> <span class='const'>ENCRYPT_STR</span><span class='comma'>,</span> <span class='const'>DECRYPT_STR</span>
@@ -323,14 +327,14 @@
       <pre class="lines">
 
 
-250
 251
 252
 253
-254</pre>
+254
+255</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 250</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 251</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_decrypt_alt'>decrypt_alt</span> <span class='id identifier rubyid_encrypted'>encrypted</span>
 	<span class='id identifier rubyid_decrypted'>decrypted</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
@@ -357,12 +361,12 @@
       <pre class="lines">
 
 
-272
 273
-274</pre>
+274
+275</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 272</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 273</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_encrypt'>encrypt</span> <span class='id identifier rubyid_decrypted'>decrypted</span>
 	<span class='id identifier rubyid_decrypted'>decrypted</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span> <span class='const'>DECRYPT_STR</span><span class='comma'>,</span> <span class='const'>ENCRYPT_STR</span>
@@ -387,14 +391,14 @@
       <pre class="lines">
 
 
-256
 257
 258
 259
-260</pre>
+260
+261</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 256</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 257</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_encrypt_alt'>encrypt_alt</span> <span class='id identifier rubyid_decrypted'>decrypted</span>
 	<span class='id identifier rubyid_encrypted'>encrypted</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
@@ -411,7 +415,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 22:03:38 2021 by
+  Generated on Sat Dec 25 16:10:26 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

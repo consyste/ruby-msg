@@ -108,8 +108,10 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>pst_desc idx_id is a pointer to an idx record which gets the primary data stream for the Desc record. idx2_id gets you an idx record, that when read gives you an ID2 association list, which just maps another set of ids to index values</p>
+    <p>pst_desc
+idx_id is a pointer to an idx record which gets the primary data stream for the Desc record.
+idx2_id gets you an idx record, that when read gives you an ID2 association list, which just maps
+another set of ids to index values</p>
 
 
   </div>
@@ -149,8 +151,7 @@
         <dt id="BLOCK_SIZE-constant" class="">BLOCK_SIZE =
           <div class="docstring">
   <div class="discussion">
-    
-<p>descriptor blocks was 520 but bogus</p>
+    <p>descriptor blocks was 520 but bogus</p>
 
 
   </div>
@@ -170,8 +171,7 @@
         <dt id="COUNT_MAX32-constant" class="">COUNT_MAX32 =
           <div class="docstring">
   <div class="discussion">
-    
-<p>max active desc records (ITEM_COUNT_OFFSET / Desc::SIZE = 31)</p>
+    <p>max active desc records (ITEM_COUNT_OFFSET / Desc::SIZE = 31)</p>
 
 
   </div>
@@ -212,8 +212,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute block_id.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute block_id.</p>
 </div></span>
   
 </li>
@@ -241,7 +240,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -266,8 +266,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute node_id.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute node_id.</p>
 </div></span>
   
 </li>
@@ -293,8 +292,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute parent_node_id.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute parent_node_id.</p>
 </div></span>
   
 </li>
@@ -320,7 +318,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -345,8 +344,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute sub_block_id.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute sub_block_id.</p>
 </div></span>
   
 </li>
@@ -382,7 +380,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -404,7 +403,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -426,8 +426,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Check if there is a sub data exists, where it is identified by its local id.</p>
+    <span class="summary_desc"><div class='inline'><p>Check if there is a sub data exists, where it is identified by its local id.</p>
 </div></span>
   
 </li>
@@ -452,8 +451,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A new instance of NodePtr.</p>
+    <span class="summary_desc"><div class='inline'><p>A new instance of NodePtr.</p>
 </div></span>
   
 </li>
@@ -476,8 +474,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>show all numbers in hex.</p>
+    <span class="summary_desc"><div class='inline'><p>show all numbers in hex.</p>
 </div></span>
   
 </li>
@@ -500,8 +497,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Read node data.</p>
+    <span class="summary_desc"><div class='inline'><p>Read node data.</p>
 </div></span>
   
 </li>
@@ -524,8 +520,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Locate and read node sub data by its local id.</p>
+    <span class="summary_desc"><div class='inline'><p>Locate and read node sub data by its local id.</p>
 </div></span>
   
 </li>
@@ -548,7 +543,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -572,8 +568,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns a new instance of NodePtr.</p>
+    <p>Returns a new instance of NodePtr.</p>
 
 
   </div>
@@ -613,13 +608,13 @@
       <pre class="lines">
 
 
-433
-434
-435
-436</pre>
+438
+439
+440
+441</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 433</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 438</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_is64'>is64</span>
 	<span class='kw'>super</span><span class='lparen'>(</span><span class='op'>*</span><span class='const'><span class='object_link'><a href="../Pst.html" title="Mapi::Pst (class)">Pst</a></span></span><span class='period'>.</span><span class='id identifier rubyid_unpack'><span class='object_link'><a href="../Pst.html#unpack-class_method" title="Mapi::Pst.unpack (method)">unpack</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_is64'>is64</span> <span class='op'>?</span> <span class='const'><span class='object_link'><a href="#UNPACK_STR64-constant" title="Mapi::Pst::NodePtr::UNPACK_STR64 (constant)">UNPACK_STR64</a></span></span> <span class='op'>:</span> <span class='const'><span class='object_link'><a href="#UNPACK_STR32-constant" title="Mapi::Pst::NodePtr::UNPACK_STR32 (constant)">UNPACK_STR32</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -648,8 +643,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute block_id</p>
+    <p>Returns the value of attribute block_id</p>
 
 
   </div>
@@ -667,8 +661,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>the current value of block_id</p>
+        <div class='inline'><p>the current value of block_id</p>
 </div>
       
     </li>
@@ -681,12 +674,12 @@
       <pre class="lines">
 
 
-414
-415
-416</pre>
+419
+420
+421</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 414</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_block_id'>block_id</span>
   <span class='ivar'>@block_id</span>
@@ -710,6 +703,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -735,12 +729,12 @@
       <pre class="lines">
 
 
-429
-430
-431</pre>
+434
+435
+436</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 429</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 434</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_children'>children</span>
   <span class='ivar'>@children</span>
@@ -763,8 +757,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute node_id</p>
+    <p>Returns the value of attribute node_id</p>
 
 
   </div>
@@ -782,8 +775,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>the current value of node_id</p>
+        <div class='inline'><p>the current value of node_id</p>
 </div>
       
     </li>
@@ -796,12 +788,12 @@
       <pre class="lines">
 
 
-414
-415
-416</pre>
+419
+420
+421</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 414</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_node_id'>node_id</span>
   <span class='ivar'>@node_id</span>
@@ -824,8 +816,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute parent_node_id</p>
+    <p>Returns the value of attribute parent_node_id</p>
 
 
   </div>
@@ -843,8 +834,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>the current value of parent_node_id</p>
+        <div class='inline'><p>the current value of parent_node_id</p>
 </div>
       
     </li>
@@ -857,12 +847,12 @@
       <pre class="lines">
 
 
-414
-415
-416</pre>
+419
+420
+421</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 414</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parent_node_id'>parent_node_id</span>
   <span class='ivar'>@parent_node_id</span>
@@ -886,6 +876,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -911,12 +902,12 @@
       <pre class="lines">
 
 
-426
-427
-428</pre>
+431
+432
+433</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 426</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 431</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pst'>pst</span>
   <span class='ivar'>@pst</span>
@@ -939,8 +930,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute sub_block_id</p>
+    <p>Returns the value of attribute sub_block_id</p>
 
 
   </div>
@@ -958,8 +948,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>the current value of sub_block_id</p>
+        <div class='inline'><p>the current value of sub_block_id</p>
 </div>
       
     </li>
@@ -972,12 +961,12 @@
       <pre class="lines">
 
 
-414
-415
-416</pre>
+419
+420
+421</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 414</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 419</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sub_block_id'>sub_block_id</span>
   <span class='ivar'>@sub_block_id</span>
@@ -1007,6 +996,7 @@
   <div class="discussion">
     
 
+
   </div>
 </div>
 <div class="tags">
@@ -1031,13 +1021,13 @@
       <pre class="lines">
 
 
-439
-440
-441
-442</pre>
+444
+445
+446
+447</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 439</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 444</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_block'>block</span>
 	<span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DO NOT USE</span><span class='tstring_end'>&quot;</span></span>
@@ -1060,6 +1050,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -1085,14 +1076,14 @@
       <pre class="lines">
 
 
-472
-473
-474
-475
-476</pre>
+477
+478
+479
+480
+481</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 472</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 477</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_local_node_list'>get_local_node_list</span>
 	<span class='id identifier rubyid_list'>list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1115,8 +1106,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Check if there is a sub data exists, where it is identified by its local id</p>
+    <p>Check if there is a sub data exists, where it is identified by its local id</p>
 
 
   </div>
@@ -1158,13 +1148,13 @@
       <pre class="lines">
 
 
-482
-483
-484
-485</pre>
+487
+488
+489
+490</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 482</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 487</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_has_sub'>has_sub</span> <span class='id identifier rubyid_local_node_id'>local_node_id</span>
 	<span class='comment'>#TODO fixme
@@ -1186,8 +1176,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>show all numbers in hex</p>
+    <p>show all numbers in hex</p>
 
 
   </div>
@@ -1201,12 +1190,12 @@
       <pre class="lines">
 
 
-488
-489
-490</pre>
+493
+494
+495</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 488</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 493</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
 	<span class='kw'>super</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>=(\d+)</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>=0x%x</span><span class='tstring_end'>&#39;</span></span> <span class='op'>%</span> <span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='rbrace'>}</span>
@@ -1227,8 +1216,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Read node data</p>
+    <p>Read node data</p>
 
 
   </div>
@@ -1255,16 +1243,16 @@
       <pre class="lines">
 
 
-453
-454
-455
-456
-457
 458
-459</pre>
+459
+460
+461
+462
+463
+464</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 453</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 458</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_main_array'>read_main_array</span>
 	<span class='ivar'>@read_main</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -1289,8 +1277,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Locate and read node sub data by its local id</p>
+    <p>Locate and read node sub data by its local id</p>
 
 
   </div>
@@ -1332,14 +1319,14 @@
       <pre class="lines">
 
 
-465
-466
-467
-468
-469</pre>
+470
+471
+472
+473
+474</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 465</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 470</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_sub_array'>read_sub_array</span> <span class='id identifier rubyid_local_node_id'>local_node_id</span>
 	<span class='id identifier rubyid_list'>list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1363,6 +1350,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -1388,13 +1376,13 @@
       <pre class="lines">
 
 
-445
-446
-447
-448</pre>
+450
+451
+452
+453</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 445</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 450</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sub_block'>sub_block</span>
 	<span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DO NOT USE</span><span class='tstring_end'>&quot;</span></span>
@@ -1410,7 +1398,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 22:03:38 2021 by
+  Generated on Sat Dec 25 16:10:26 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

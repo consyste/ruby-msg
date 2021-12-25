@@ -106,76 +106,83 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<h1 id="label-Introduction">Introduction</h1>
+    <p>= Introduction</p>
 
-<p>A big compononent of <code>Msg</code> files is the property store, which holds all the key/value pairs of properties. The message itself, and all its <code>Attachment</code>s and <code>Recipient</code>s have an instance of this class.</p>
+<p>A big compononent of +Msg+ files is the property store, which holds
+all the key/value pairs of properties. The message itself, and all
+its <tt>Attachment</tt>s and <tt>Recipient</tt>s have an instance of
+this class.</p>
 
-<h1 id="label-Storage+model">Storage model</h1>
+<p>= Storage model</p>
 
-<p>Property keys (tags?) can be either simple hex numbers, in the range 0x0000 - 0xffff, or they can be named properties. In fact, properties in the range 0x0000 to 0x7fff are supposed to be the non- named properties, and can be considered to be in the <code>PS_MAPI</code> namespace. (correct?)</p>
+<p>Property keys (tags?) can be either simple hex numbers, in the
+range 0x0000 - 0xffff, or they can be named properties. In fact,
+properties in the range 0x0000 to 0x7fff are supposed to be the non-
+named properties, and can be considered to be in the +PS_MAPI+
+namespace. (correct?)</p>
 
-<p>Named properties are serialized in the 0x8000 to 0xffff range, and are referenced as a guid and long/string pair.</p>
+<p>Named properties are serialized in the 0x8000 to 0xffff range,
+and are referenced as a guid and long/string pair.</p>
 
-<p>There are key ranges, which can be used to imply things generally about keys.</p>
+<p>There are key ranges, which can be used to imply things generally
+about keys.</p>
 
-<p>Further, we can give symbolic names to most keys, coming from constants in various places. Eg:</p>
+<p>Further, we can give symbolic names to most keys, coming from
+constants in various places. Eg:</p>
 
-<pre class="code ruby"><code class="ruby">0x0037 =&gt; subject
-{00062002-0000-0000-C000-000000000046}/0x8218 =&gt; response_status
-# displayed as categories in outlook
-{00020329-0000-0000-C000-000000000046}/&quot;Keywords&quot; =&gt; categories
-</code></pre>
+<p>0x0037 =&gt; subject
+  00062002-0000-0000-C000-000000000046/0x8218 =&gt; response_status
+  # displayed as categories in outlook
+  00020329-0000-0000-C000-000000000046/”Keywords” =&gt; categories</p>
 
-<p>Futher, there are completely different names, coming from other object models that get mapped to these things (CDO&#39;s model, Outlook&#39;s model etc). Eg “urn:schemas:httpmail:subject” I think these can be ignored though, as they aren&#39;t defined clearly in terms of mapi properties, and i&#39;m really just trying to make a mapi property store. (It should also be relatively easy to support them later.)</p>
+<p>Futher, there are completely different names, coming from other
+object models that get mapped to these things (CDO’s model,
+Outlook’s model etc). Eg “urn:schemas:httpmail:subject”
+I think these can be ignored though, as they aren’t defined clearly
+in terms of mapi properties, and i’m really just trying to make
+a mapi property store. (It should also be relatively easy to
+support them later.)</p>
 
-<h1 id="label-Usage">Usage</h1>
+<p>= Usage</p>
 
 <p>The api is driven by a desire to have the simple stuff “just work”, ie</p>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_subject'>subject</span>
-<span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_display_name'>display_name</span>
-</code></pre>
+<p>properties.subject
+  properties.display_name</p>
 
 <p>There also needs to be a way to look up properties more specifically:</p>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='int'>0x0037</span><span class='rbracket'>]</span> <span class='comment'># =&gt; gets the subject
-</span><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='int'>0x0037</span><span class='comma'>,</span> <span class='const'>PS_MAPI</span><span class='rbracket'>]</span> <span class='comment'># =&gt; still gets the subject
-</span><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Keywords</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='const'>PS_PUBLIC_STRINGS</span><span class='rbracket'>]</span> <span class='comment'># =&gt; gets outlook&#39;s categories array
-</span></code></pre>
+<p>properties[0x0037] # =&gt; gets the subject
+  properties[0x0037, PS_MAPI] # =&gt; still gets the subject
+  properties[‘Keywords’, PS_PUBLIC_STRINGS] # =&gt; gets outlook’s categories array</p>
 
 <p>The abbreviated versions work by “resolving” the symbols to full keys:</p>
 
-<p>	# the guid here is just PS_PUBLIC_STRINGS</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_resolve'>resolve</span> <span class='symbol'>:keywords</span> <span class='comment'># =&gt; #&lt;Key {00020329-0000-0000-c000-000000000046}/&quot;Keywords&quot;&gt;
-</span><span class='comment'># the result here is actually also a key
-</span><span class='id identifier rubyid_k'>k</span> <span class='op'>=</span> <span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_resolve'>resolve</span> <span class='symbol'>:subject</span>  <span class='comment'># =&gt; 0x0037
-</span><span class='comment'># it has a guid
-</span><span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='op'>::</span><span class='const'>Properties</span><span class='op'>::</span><span class='const'>PS_MAPI</span> <span class='comment'># =&gt; true
+<pre class="code ruby"><code class="ruby"><span class='comment'># the guid here is just PS_PUBLIC_STRINGS   properties.resolve :keywords # =&gt; #&lt;Key {00020329-0000-0000-c000-000000000046}/&quot;Keywords&quot;&gt;   # the result here is actually also a key   k = properties.resolve :subject  # =&gt; 0x0037   # it has a guid   k.guid == Msg::Properties::PS_MAPI # =&gt; true
 </span></code></pre>
 
-<h1 id="label-Parsing">Parsing</h1>
+<p>= Parsing</p>
 
-<p>There are three objects that need to be parsed to load a <code>Msg</code> property store:</p>
-<ol><li>
-<p>The <code>nameid</code> directory (<code>Properties.parse_nameid</code>)</p>
-</li><li>
-<p>The many <code>substg</code> objects, whose names should match <code>Properties::SUBSTG_RX</code> (<code>Properties#parse_substg</code>)</p>
-</li><li>
-<p>The <code>properties</code> file (<code>Properties#parse_properties</code>)</p>
-</li></ol>
+<p>There are three objects that need to be parsed to load a +Msg+ property store:</p>
+
+<ol>
+  <li>The +nameid+ directory (<tt>Properties.parse_nameid</tt>)</li>
+  <li>The many +substg+ objects, whose names should match <tt>Properties::SUBSTG_RX</tt>
+(<tt>Properties#parse_substg</tt>)</li>
+  <li>The +properties+ file (<tt>Properties#parse_properties</tt>)</li>
+</ol>
 
 <p>Understanding of the formats is by no means perfect.</p>
 
-<h1 id="label-TODO">TODO</h1>
-<ul><li>
-<p>While the key objects are sufficient, the value objects are just plain ruby types. It currently isn&#39;t possible to write to the values, or to know which encoding the value had.</p>
-</li><li>
-<p>Update this doc.</p>
-</li><li>
-<p>Perhaps change from eager loading, to be load-on-demand.</p>
-</li></ul>
+<p>= TODO</p>
+
+<ul>
+  <li>While the key objects are sufficient, the value objects are just plain
+ruby types. It currently isn’t possible to write to the values, or to know
+which encoding the value had.</li>
+  <li>Update this doc.</li>
+  <li>Perhaps change from eager loading, to be load-on-demand.</li>
+</ul>
 
 
   </div>
@@ -200,8 +207,10 @@
         <dt id="ENCODINGS-constant" class="">ENCODINGS =
           <div class="docstring">
   <div class="discussion">
-    
-<p>note that binary and default both use obj.open. not the block form. this means we should #close it later, which we don&#39;t. as we&#39;re only reading though, it shouldn&#39;t matter right? not really good though FIXME change these to use mapi symbolic const names</p>
+    <p>note that binary and default both use obj.open. not the block form. this means we should
+#close it later, which we don’t. as we’re only reading though, it shouldn’t matter right?
+not really good though FIXME
+change these to use mapi symbolic const names</p>
 
 
   </div>
@@ -272,7 +281,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -299,7 +309,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -334,8 +345,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The parsing methods.</p>
+    <span class="summary_desc"><div class='inline'><p>The parsing methods.</p>
 </div></span>
   
 </li>
@@ -358,8 +368,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Read nameid from the <code>Dirent</code> obj, which is used for mapping of named properties keys to proxy keys in the 0x8000 - 0xffff range.</p>
+    <span class="summary_desc"><div class='inline'><p>Read nameid from the +Dirent+ obj, which is used for mapping of named properties keys to proxy keys in the 0x8000 - 0xffff range.</p>
 </div></span>
   
 </li>
@@ -391,7 +400,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -415,8 +425,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A new instance of PropertyStore.</p>
+    <span class="summary_desc"><div class='inline'><p>A new instance of PropertyStore.</p>
 </div></span>
   
 </li>
@@ -439,8 +448,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Parse properties from the <code>Dirent</code> obj.</p>
+    <span class="summary_desc"><div class='inline'><p>Parse properties from the +Dirent+ obj.</p>
 </div></span>
   
 </li>
@@ -463,8 +471,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>delegate to cache.</p>
+    <span class="summary_desc"><div class='inline'><p>delegate to cache.</p>
 </div></span>
   
 </li>
@@ -487,8 +494,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>For parsing the <code>properties</code> file.</p>
+    <span class="summary_desc"><div class='inline'><p>For parsing the +properties+ file.</p>
 </div></span>
   
 </li>
@@ -511,8 +517,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Parse an <code>Dirent</code>, as per <code>msgconvert.pl</code>.</p>
+    <span class="summary_desc"><div class='inline'><p>Parse an +Dirent+, as per <tt>msgconvert.pl</tt>.</p>
 </div></span>
   
 </li>
@@ -541,8 +546,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns a new instance of PropertyStore.</p>
+    <p>Returns a new instance of PropertyStore.</p>
 
 
   </div>
@@ -611,8 +615,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>delegate to cache</p>
+    <p>delegate to cache</p>
 
 
   </div>
@@ -660,6 +663,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -714,6 +718,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -772,8 +777,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The parsing methods</p>
+    <p>The parsing methods</p>
 
 
   </div>
@@ -856,8 +860,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Read nameid from the <code>Dirent</code> obj, which is used for mapping of named properties keys to proxy keys in the 0x8000 - 0xffff range. Returns a hash of integer -&gt; Key.</p>
+    <p>Read nameid from the +Dirent+ obj, which is used for mapping of named properties keys to
+proxy keys in the 0x8000 - 0xffff range.
+Returns a hash of integer -&gt; Key.</p>
 
 
   </div>
@@ -1024,6 +1029,7 @@
   <div class="discussion">
     
 
+
   </div>
 </div>
 <div class="tags">
@@ -1152,8 +1158,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Parse properties from the <code>Dirent</code> obj</p>
+    <p>Parse properties from the +Dirent+ obj</p>
 
 
   </div>
@@ -1254,8 +1259,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>For parsing the <code>properties</code> file. Smaller properties are serialized in one chunk, such as longs, bools, times etc. The parsing has problems.</p>
+    <p>For parsing the +properties+ file. Smaller properties are serialized in one chunk,
+such as longs, bools, times etc. The parsing has problems.</p>
 
 
   </div>
@@ -1378,8 +1383,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Parse an <code>Dirent</code>, as per <code>msgconvert.pl</code>. This is how larger properties, such as strings, binary blobs, and other ole sub-directories (eg nested Msg) are stored.</p>
+    <p>Parse an +Dirent+, as per <tt>msgconvert.pl</tt>. This is how larger properties, such
+as strings, binary blobs, and other ole sub-directories (eg nested Msg) are stored.</p>
 
 
   </div>
@@ -1507,7 +1512,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 22:03:37 2021 by
+  Generated on Sat Dec 25 16:10:26 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

@@ -108,15 +108,16 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>RawPropertyStore is used to iterate through the properties of an item, or the auxiliary data for an attachment. its just a parser for the way the properties are serialized, when the properties don&#39;t have to conform to a column structure.</p>
+    <p>RawPropertyStore is used to iterate through the properties of an item, or the auxiliary
+data for an attachment. its just a parser for the way the properties are serialized, when the
+properties don’t have to conform to a column structure.</p>
 
-<p>structure of this chunk of data is often</p>
-
-<pre class="code ruby"><code class="ruby">header, property keys, data values, and then indexes.
-</code></pre>
-
-<p>the property keys has value in it. value can be the actual value if its a short type, otherwise you lookup the value in the indicies, where you get the offsets to use in the main data body. due to the indirect thing though, any of these parts could actually come from a separate stream.</p>
+<p>structure of this chunk of data is often
+  header, property keys, data values, and then indexes.
+the property keys has value in it. value can be the actual value if its a short type,
+otherwise you lookup the value in the indicies, where you get the offsets to use in the
+main data body. due to the indirect thing though, any of these parts could actually come
+from a separate stream.</p>
 
 
   </div>
@@ -159,8 +160,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute length.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute length.</p>
 </div></span>
   
 </li>
@@ -201,8 +201,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>iterate through the property tuples.</p>
+    <span class="summary_desc"><div class='inline'><p>iterate through the property tuples.</p>
 </div></span>
   
 </li>
@@ -227,8 +226,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Will read Property Context (PC).</p>
+    <span class="summary_desc"><div class='inline'><p>Will read Property Context (PC).</p>
 </div></span>
   
 </li>
@@ -269,8 +267,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Will read Property Context (PC)</p>
+    <p>Will read Property Context (PC)</p>
 
 
   </div>
@@ -332,25 +329,25 @@
       <pre class="lines">
 
 
-1219
-1220
-1221
-1222
-1223
-1224
-1225
-1226
-1227
-1228
-1229
-1230
-1231
-1232
-1233
-1234</pre>
+1234
+1235
+1236
+1237
+1238
+1239
+1240
+1241
+1242
+1243
+1244
+1245
+1246
+1247
+1248
+1249</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1219</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1234</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='id identifier rubyid_local_node_id'>local_node_id</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="BlockParser.html#USE_MAIN_DATA-constant" title="Mapi::Pst::BlockParser::USE_MAIN_DATA (constant)">USE_MAIN_DATA</a></span></span>
 	<span class='kw'>super</span>
@@ -391,8 +388,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute length.</p>
+    <p>Returns the value of attribute length.</p>
 
 
   </div>
@@ -406,12 +402,12 @@
       <pre class="lines">
 
 
-1212
-1213
-1214</pre>
+1227
+1228
+1229</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1212</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1227</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_length'>length</span>
   <span class='ivar'>@length</span>
@@ -439,8 +435,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>iterate through the property tuples</p>
+    <p>iterate through the property tuples</p>
 
 
   </div>
@@ -504,15 +499,15 @@
       <pre class="lines">
 
 
-1242
-1243
-1244
-1245
-1246
-1247</pre>
+1257
+1258
+1259
+1260
+1261
+1262</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1242</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/pst.rb', line 1257</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each'>each</span>
 	<span class='id identifier rubyid_length'>length</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
@@ -530,7 +525,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 22:03:38 2021 by
+  Generated on Sat Dec 25 16:10:27 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

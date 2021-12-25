@@ -99,7 +99,19 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>This is a helper class for <span class='object_link'><a href="Pst.html" title="Mapi::Pst (class)">Pst</a></span> and <span class='object_link'><a href="Msg.html" title="Mapi::Msg (class)">Msg</a></span>.
+Used to decode some data that depend on its user context.
+For example like ANSI encoding.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -128,7 +140,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -155,7 +168,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+</div></span>
   
 </li>
 
@@ -190,8 +204,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Convert to requested format:.</p>
+    <span class="summary_desc"><div class='inline'><p>Convert from <code>ASCII_8BIT</code> string into UTF_8 string or arbitrary object.</p>
 </div></span>
   
 </li>
@@ -216,8 +229,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A new instance of Helper.</p>
+    <span class="summary_desc"><div class='inline'><p>A new instance of Helper.</p>
 </div></span>
   
 </li>
@@ -240,8 +252,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns a new instance of Helper.</p>
+    <p>Returns a new instance of Helper.</p>
 
 
   </div>
@@ -285,13 +296,13 @@
       <pre class="lines">
 
 
-10
-11
-12
-13</pre>
+13
+14
+15
+16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_ansi_encoding'>ansi_encoding</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_to_unicode'>to_unicode</span><span class='op'>=</span><span class='kw'>false</span>
 	<span class='ivar'>@ansi_encoding</span> <span class='op'>=</span> <span class='id identifier rubyid_ansi_encoding'>ansi_encoding</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>BINARY</span><span class='tstring_end'>&quot;</span></span>
@@ -322,6 +333,7 @@
   <div class="discussion">
     
 
+
   </div>
 </div>
 <div class="tags">
@@ -346,12 +358,12 @@
       <pre class="lines">
 
 
-4
-5
-6</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ansi_encoding'>ansi_encoding</span>
   <span class='ivar'>@ansi_encoding</span>
@@ -375,6 +387,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
 
   </div>
 </div>
@@ -400,12 +413,12 @@
       <pre class="lines">
 
 
-6
-7
-8</pre>
+9
+10
+11</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_unicode'>to_unicode</span>
   <span class='ivar'>@to_unicode</span>
@@ -433,13 +446,15 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Convert to requested format:</p>
-<ul><li>
-<p>non Unicode string property</p>
-</li><li>
-<p>body (rtf, text)</p>
-</li></ul>
+    <p>Convert from <code>ASCII_8BIT</code> string into UTF_8 string or arbitrary object.</p>
+
+<p>Use cases:</p>
+
+<ul>
+  <li>Decode PT_STRING8 in <span class='object_link'><a href="Pst.html" title="Mapi::Pst (class)">Pst</a></span></li>
+  <li>Decode <code>0x001e</code> in <span class='object_link'><a href="Msg.html" title="Mapi::Msg (class)">Msg</a></span></li>
+  <li>Decode body (rtf, text) in <span class='object_link'><a href="PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></li>
+</ul>
 
 
   </div>
@@ -481,20 +496,20 @@
       <pre class="lines">
 
 
-22
-23
-24
-25
-26
-27
 28
 29
 30
 31
-32</pre>
+32
+33
+34
+35
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/helper.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_convert_ansi_str'>convert_ansi_str</span> <span class='id identifier rubyid_str'>str</span>
 	<span class='kw'>if</span> <span class='ivar'>@ansi_encoding</span>
@@ -517,7 +532,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Dec 24 22:03:39 2021 by
+  Generated on Sat Dec 25 16:10:27 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
