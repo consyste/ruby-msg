@@ -7,25 +7,40 @@ require 'minitest/autorun'
 require 'mapi/pst'
 
 class TestPst < Minitest::Test
-	def test_pst
+	def test_attachAndInline
 		load_pst "#{TEST_DIR}/pst/attachAndInline.pst"
+	end
+
+	def test_msgInMsg
 		load_pst "#{TEST_DIR}/pst/msgInMsg.pst"
+	end
+
+	def test_Outlook97_2002
 		load_pst "#{TEST_DIR}/pst/Outlook97-2002.pst"
+	end
+
+	def test_Outlook2003
 		load_pst "#{TEST_DIR}/pst/Outlook2003.pst"
+	end
+
+	def test_200_recipients
 		load_pst "#{TEST_DIR}/pst/200 recipients.pst"
 	end
 
-	def load_pst filename
-		p ["load pst", filename]
-		count = 0
+	def test_nonUnicodeCP932
+		load_pst "#{TEST_DIR}/pst/nonUnicodeCP932.pst"
+	end
 
+	def test_unicodeAttachmentFilename
+		load_pst "#{TEST_DIR}/pst/unicodeAttachmentFilename.pst"
+	end
+
+	def load_pst filename
 		open filename, "r" do |f|
 			pst = Mapi::Pst.new f
 			pst.each do |message|
-				count += 1
+				message.to_mime
 			end
 		end
-
-		p ["read", count, "messages"]
 	end
 end

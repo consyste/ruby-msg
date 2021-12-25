@@ -40,9 +40,9 @@ module Mapi
 			name, email = props.sender_name, props.sender_email_address
 			if props.sender_addrtype == 'SMTP'
 				headers['From'] = if name and email and name != email
-					[%{"#{name}" <#{email}>}]
+					[%{"#{Mime::to_encoded_word(name)}" <#{email}>}]
 				else
-					[email || name]
+					[email || Mime::to_encoded_word(name)]
 				end
 			elsif !headers.has_key?('From')
 				# some messages were never sent, so that sender stuff isn't filled out. need to find another
@@ -59,12 +59,12 @@ module Mapi
 					# this user stuff will give valid email i think, based on alias.
 					user = name ? name.sub(/(.*), (.*)/, "\\2.\\1") : email[/\w+$/].downcase
 					domain = (email[%r{^/O=([^/]+)}i, 1].downcase + '.com' rescue email)
-					headers['From'] = [name ? %{"#{name}" <#{user}@#{domain}>} : "<#{user}@#{domain}>" ]
+					headers['From'] = [name ? %{"#{Mime::to_encoded_word(name)}" <#{user}@#{domain}>} : "<#{user}@#{domain}>" ]
 				elsif name
 					# we only have a name? thats screwed up.
 					# disabling this warning for now
 					#Log.warn "* no smtp sender email address available (only name). creating fake one"
-					headers['From'] = [%{"#{name}"}]
+					headers['From'] = [%{"#{Mime::to_encoded_word(name)}"}]
 				else
 					# disabling this warning for now
 					#Log.warn "* no sender email address available at all. FIXME"
@@ -89,7 +89,7 @@ module Mapi
 				# recips.empty? is strange. i wouldn't have thought it possible, but it was right?
 				headers[type.to_s.sub(/^(.)/) { $1.upcase }] = [recips.join(', ')] unless recips.empty?
 			end
-			headers['Subject'] = [props.subject] if props.subject
+			headers['Subject'] = [Mime::to_encoded_word(props.subject)] if props.subject
 
 			# fill in a date value. by default, we won't mess with existing value hear
 			if !headers.has_key?('Date')
@@ -121,7 +121,7 @@ module Mapi
 				[:priority, 'Priority', proc { |val| val.to_s == '1' ? nil : val }],
 				[:sensitivity, 'Sensitivity', proc { |val| val.to_s == '0' ? nil : val }],
 				# yeah?
-				[:conversation_topic, 'Thread-Topic'],
+				[:conversation_topic, 'Thread-Topic', proc { |val| val ? Mime::to_encoded_word(val) : nil }],
 				# not sure of the distinction here
 				# :originator_delivery_report_requested ??
 				[:read_receipt_requested, 'Disposition-Notification-To', proc { |val| from }]
@@ -140,7 +140,9 @@ module Mapi
 
 		# shortcuts to some things from the headers
 		%w[From To Cc Bcc Subject].each do |key|
-			define_method(key.downcase) { headers[key].join(' ') if headers.has_key?(key) }
+			define_method(key.downcase) { 
+				headers[key].join(' ') if headers.has_key?(key) 
+			}
 		end
 
 		# @return [Mime]
@@ -227,7 +229,9 @@ module Mapi
 			# TODO: smarter mime typing.
 			mimetype = props.attach_mime_tag || 'application/octet-stream'
 			mime = Mime.new "Content-Type: #{mimetype}\r\n\r\n"
-			mime.headers['Content-Disposition'] = [%{attachment; filename="#{filename}"}]
+			mime.headers['Content-Disposition'] = [
+				%{attachment; filename="#{Mime::to_encoded_word(filename)}"}
+			]
 			mime.headers['Content-Transfer-Encoding'] = ['base64']
 			mime.headers['Content-Location'] = [props.attach_content_location] if props.attach_content_location
 			mime.headers['Content-ID'] = [props.attach_content_id] if props.attach_content_id
@@ -241,7 +245,9 @@ module Mapi
 				mime.headers.delete 'Content-Transfer-Encoding'
 				# not filename. rather name, or something else right?
 				# maybe it should be inline?? i forget attach_method / access meaning
-				mime.headers['Content-Disposition'] = [%{attachment; filename="#{@embedded_msg.subject}"}]
+				mime.headers['Content-Disposition'] = [
+					%{attachment; filename="#{Mime::to_encoded_word(@embedded_msg.subject)}"}
+				]
 				@embedded_msg.to_mime.to_s
 			elsif @embedded_ole
 				# kind of hacky

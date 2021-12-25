@@ -141,9 +141,8 @@ module Mapi
 			end
   		end
 
-		value_encoder = Proc.new { |val|
-			Mime.to_encoded_word(val)
-		}
+		# ensure non ASCII chars are well encoded (like rfc2047) by upper source
+		value_encoder = Proc.new { |val| val.encode("ASCII") }
 
   		str = ''
   		@headers.each do |key, vals|
@@ -161,14 +160,14 @@ module Mapi
 
 	# Compose encoded-word (rfc2047) for non-ASCII text
 	# 
-	# @param str [String]
-	# @return [String]
+	# @param str [String, nil]
+	# @return [String, nil]
 	# @private
 	def self.to_encoded_word str
 		# We can assume that str can produce valid byte array in regardless of encoding.
 
 		# Check if non-printable characters (including CR/LF) are inside.
-		if str.bytes.any? {|byte| byte <= 31 || 127 <= byte}
+		if str && str.bytes.any? {|byte| byte <= 31 || 127 <= byte}
 			sprintf("=?%s?B?%s?=", str.encoding.name, Base64.strict_encode64(str))
 		else
 			str

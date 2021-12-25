@@ -1251,9 +1251,9 @@ only remaining issue is test4 recipients of 200044. strange.
 		# iterate through the property tuples
 		#
 		# @yield [key, type, value]
-		# @yieldparam [Integer] key
-		# @yieldparam [Integer] type
-		# @yieldparam [Object] value
+		# @yieldparam key [Integer]
+		# @yieldparam type [Integer]
+		# @yieldparam value [Object]
 		def each
 			length.times do |i|
 				key, type, value = handle_indirect_values(*@index_data[8 * i, 8].unpack('vvV'))
@@ -1396,8 +1396,8 @@ only remaining issue is test4 recipients of 200044. strange.
 			Row.new self, idx
 		end
 
-		# @yield [it]
-		# @yieldparam [Row] it
+		# @yield [row]
+		# @yieldparam row [Row]
 		def each
 			length.times { |i| yield self[i] }
 		end
@@ -1426,9 +1426,9 @@ only remaining issue is test4 recipients of 200044. strange.
 			# iterate through the property tuples
 			#
 			# @yield [key, type, value]
-			# @yieldparam [Integer] key
-			# @yieldparam [Integer] type
-			# @yieldparam [Object] value
+			# @yieldparam key [Integer]
+			# @yieldparam type [Integer]
+			# @yieldparam value [Object]
 			def each
 				(@array_parser.index_data.length / 8).times do |i|
 					ref_type, type, ind2_off, size, slot = @array_parser.index_data[8 * i, 8].unpack 'v3CC'
@@ -1837,6 +1837,8 @@ which confirms my belief that the block size for idx and desc is more likely 512
 	# depth first search of all items
 	include Enumerable
 
+	# @yield [message]
+	# @yieldparam message [Item]
 	def each(&block)
 		root = self.root
 		block[root]

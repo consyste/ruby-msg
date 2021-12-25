@@ -65,7 +65,7 @@ module Mapi
 
 		def to_s
 			if name = self.name and !name.empty? and email && name != email
-				%{"#{name}" <#{email}>}
+				%{"#{Mime::to_encoded_word(name)}" <#{email}>}
 			else
 				email || name
 			end
