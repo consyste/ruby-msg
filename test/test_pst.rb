@@ -35,6 +35,10 @@ class TestPst < Minitest::Test
 		load_pst "#{TEST_DIR}/pst/unicodeAttachmentFilename.pst"
 	end
 
+	def test_recipientNameHasUnicodeChars
+		load_pst "#{TEST_DIR}/pst/recipientNameHasUnicodeChars.pst"
+	end
+
 	def load_pst filename
 		open filename, "r" do |f|
 			pst = Mapi::Pst.new f
