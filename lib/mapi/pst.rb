@@ -63,6 +63,7 @@ require 'ole/ranges_io'
 require 'mapi/helper'
 
 module Mapi
+# Read Outlook's pst file
 class Pst
 	class FormatError < StandardError
 	end
@@ -76,6 +77,7 @@ class Pst
 	# @param str [String]
 	# @param unpack_spec [String]
 	# @return [Array]
+	# @private
 	def self.unpack str, unpack_spec
 		return str.unpack(unpack_spec) unless unpack_spec['T']
 		@unpack_cache ||= {}
@@ -108,6 +110,7 @@ class Pst
 	# @param size [Integer]
 	# @param count [Integer]
 	# @return [Array<String>]
+	# @private
 	def self.split_per str, size, count
 		count = str.length / size if count < 0
 		list = []
@@ -121,6 +124,8 @@ class Pst
 	#
 
 	# class which encapsulates the pst header
+	#
+	# @private
 	class Header
 		SIZE = 512
 		MAGIC = 0x2142444e
@@ -209,6 +214,8 @@ class Pst
 	#
 	# simple substitution. see libpst.c
 	# maybe test switch to using a String#tr!
+	#
+	# @private
 	class CompressibleEncryption
 		DECRYPT_TABLE = [
 			0x47, 0xf1, 0xb4, 0xe6, 0x0b, 0x6a, 0x72, 0x48,
@@ -276,18 +283,31 @@ class Pst
 	end
 
 	# @return [IO]
+	# @private
 	attr_reader :io
+
 	# @return [Header]
+	# @private
 	attr_reader :header
+
 	# @return [Array<BlockPtr>]
+	# @private
 	attr_reader :blocks
+
 	# @return [Array<NodePtr>]
+	# @private
 	attr_reader :nodes
+
 	# @return [Hash]
+	# @private
 	attr_reader :special_folder_ids
+
 	# @return [Helper]
+	# @private
 	attr_reader :helper
 
+	# Construct {Pst}
+	#
 	# corresponds to
 	# * pst_open
 	# * pst_load_index
@@ -311,11 +331,15 @@ class Pst
 		@special_folder_ids = {}
 	end
 
+	# @return [Boolean]
+	# @private
 	def encrypted?
 		@header.encrypted?
 	end
 
 	# until i properly fix logging...
+	#
+	# @private
 	def warn s
 		Mapi::Log.warn s
 	end
@@ -325,17 +349,25 @@ class Pst
 	# ----------------------------------------------------------------------------
 	#
 
+	# @private
 	ToTree = Module.new
 
 	# more constants from libpst.c
 	# these relate to the index block
+	# @private
 	ITEM_COUNT_OFFSET = 0x1f0 # count byte
+
+	# @private
 	LEVEL_INDICATOR_OFFSET = 0x1f3 # node or leaf
+
+	# @private
 	BACKLINK_OFFSET = 0x1f8 # backlink u1 value
 
 	# these 3 classes are used to hold various file records
 
 	# pst_index
+	#
+	# @private
 	class BlockPtr < Struct.new(:id, :offset, :size, :u1)
 		UNPACK_STR32 = 'VVvv'
 		UNPACK_STR64 = 'TTvv'
@@ -394,10 +426,16 @@ class Pst
 	end
 
 	# mostly guesses.
+
+	# @private
 	ITEM_COUNT_OFFSET_64 = 0x1e8
+
+	# @private
 	LEVEL_INDICATOR_OFFSET_64 = 0x1eb # diff of 3 between these 2 as above...
 
 	# _pst_table_ptr_struct
+	#
+	# @private
 	class TablePtr < Struct.new(:start, :u1, :offset)
 		UNPACK_STR32 = 'V3'
 		UNPACK_STR64 = 'T3'
@@ -416,6 +454,8 @@ class Pst
 	# idx_id is a pointer to an idx record which gets the primary data stream for the Desc record.
 	# idx2_id gets you an idx record, that when read gives you an ID2 association list, which just maps
 	# another set of ids to index values
+	#
+	# @private
 	class NodePtr < Struct.new(:node_id, :block_id, :sub_block_id, :parent_node_id)
 		UNPACK_STR32 = 'V4'
 		UNPACK_STR64 = 'T3V'
@@ -497,6 +537,8 @@ class Pst
 
 	# corresponds to
 	# * _pst_build_id_ptr
+	#
+	# @private
 	def load_block_btree
 		@blocks = []
 		@block_offsets = []
@@ -515,6 +557,8 @@ class Pst
 	#
 	# corresponds to
 	# * _pst_build_id_ptr
+	#
+	# @private
 	def load_block_tree offset, linku1, start_val
 		@block_offsets << offset
 
@@ -565,6 +609,7 @@ class Pst
 	#
 	# @param id [Integer]
 	# @return [BlockPtr]
+	# @private
 	def block_from_id id
 		@block_from_id[id & ~1]
 	end
@@ -572,6 +617,8 @@ class Pst
 	# corresponds to
 	# * _pst_build_desc_ptr
 	# * record_descriptor
+	#
+	# @private
 	def load_node_btree
 		@nodes = []
 		@node_offsets = []
@@ -609,6 +656,7 @@ class Pst
 	end
 
 	# @return [Boolean]
+	# @private
 	def is64
 		@header.version_2003?
 	end
@@ -618,6 +666,8 @@ class Pst
 	# corresponds to
 	# * _pst_build_desc_ptr
 	# * record_descriptor
+	#
+	# @private
 	def load_node_tree offset, linku1, start_val
 		@node_offsets << offset
 		
@@ -671,12 +721,16 @@ class Pst
 	#
 	# @param id [Integer]
 	# @return [NodePtr]
+	#
+	# @private
 	def node_from_id id
 		@node_from_id[id]
 	end
 
 	# corresponds to
 	# * pst_load_extended_attributes
+	#
+	# @private
 	def load_xattrib
 	end
 
@@ -690,6 +744,7 @@ class Pst
 	# @param size [Integer]
 	# @param decrypt [Boolean]
 	# @return [String]
+	# @private
 	def pst_read_block_size offset, size, decrypt=true
 		io.seek offset
 		buf = io.read size
@@ -699,6 +754,7 @@ class Pst
 
 	# @param node_id [Integer]
 	# @param list [Array<String>]
+	# @private
 	def load_node_main_data_to node_id, list
 		raise 'node_is must be Integer' unless Integer === node_id
 		node = node_from_id node_id
@@ -708,6 +764,7 @@ class Pst
 	# @param node_id [Integer]
 	# @param local_node_id [Integer]
 	# @param list [Array<String>]
+	# @private
 	def load_node_sub_data_to node_id, local_node_id, list
 		raise 'node_is must be Integer' unless Integer === node_id
 		raise 'local_node_id must be Integer' unless Integer === local_node_id
@@ -719,6 +776,7 @@ class Pst
 	#
 	# @param node_id [String]
 	# @param list [Array<String>]
+	# @private
 	def get_local_node_list_to node_id, list
 		node = node_from_id node_id
 		get_local_node_list_of_sub_block_to node.sub_block_id, list
@@ -728,6 +786,7 @@ class Pst
 	#
 	# @param sub_block_id [String]
 	# @param list [Array<String>]
+	# @private
 	def get_local_node_list_of_sub_block_to sub_block_id, list
 		return if sub_block_id == 0
 
@@ -771,6 +830,7 @@ class Pst
 	# @param sub_block_id [Integer]
 	# @param local_node_id [Integer]
 	# @param list [Array<String>]
+	# @private
 	def load_sub_block_to sub_block_id, local_node_id, list
 		raise 'sub_block_id must be Integer' unless Integer === sub_block_id
 		return if sub_block_id == 0
@@ -823,6 +883,7 @@ class Pst
 
 	# @param block_id [Integer]
 	# @param list [Array<String>]
+	# @private
 	def load_main_block_to block_id, list
 		return if block_id == 0
 
@@ -875,13 +936,16 @@ class Pst
 	class BlockParser
 		include Mapi::Types::Constants
 
+		# @private
 		TYPES = {
 			0xbc => 1,
 			0x7c => 2,
 			# type 3 is removed. an artifact of not handling the indirect blocks properly in libpst.
 		}
 
+		# @private
 		PR_SUBJECT = PropertySet::TAGS.find { |num, (name, type)| name == 'PR_SUBJECT' }.first.hex
+		# @private
 		PR_BODY_HTML = PropertySet::TAGS.find { |num, (name, type)| name == 'PR_BODY_HTML' }.first.hex
 
 		# this stuff could maybe be moved to Ole::Types? or leverage it somehow?
@@ -890,10 +954,12 @@ class Pst
 
 		# these lists are very incomplete. think they are largely copied from libpst
 
+		# @private
 		IMMEDIATE_TYPES = [
 			PT_SHORT, PT_LONG, PT_BOOLEAN
 		]
 
+		# @private
 		INDIRECT_TYPES = [
 			PT_DOUBLE, PT_OBJECT,
 			0x0014, # whats this? probably something like PT_LONGLONG, given the correspondence with the
@@ -913,9 +979,14 @@ class Pst
 		# id2 values. seems strange. are there other extra streams? can find out by making higher
 		# level IO wrapper, which has the id2 value, and doing the diff of available id2 values versus
 		# used id2 values in properties of an item.
+
+		# @private
 		ID2_ATTACHMENTS = 0x671
+
+		# @private
 		ID2_RECIPIENTS = 0x692
 
+		# Targeting main data, not sub
 		USE_MAIN_DATA = -1
 
 		# @return [NodePtr]
@@ -950,6 +1021,7 @@ class Pst
 		# 
 		# @param data [String]
 		# @param page_index [Integer]
+		# @private
 		def load_page_header data, page_index
 			page_map = data.unpack('v').first
 
@@ -966,6 +1038,7 @@ class Pst
 		# Parse HNHDR
 		#
 		# @see https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-pst/8e4ae05c-3c24-4103-b7e5-ffef6f244834
+		# @private
 		def load_root_header data
 			page_map, sig, @heap_type, @offset1 = data.unpack 'vCCVV'
 			raise FormatError, 'invalid signature 0x%02x' % sig unless sig == 0xec
@@ -992,6 +1065,7 @@ class Pst
 		# 
 		# @param offset [Integer]
 		# @return [String]
+		# @private
 		def get_data_indirect offset
 			raise "offset must be Integer" unless Integer === offset
 
@@ -1003,6 +1077,7 @@ class Pst
 		# @see https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-pst/7ac490ce-31af-4a75-97df-eb9d07a003fd
 		# @param offset [Integer]
 		# @return [StringIO]
+		# @private
 		def get_data_indirect_io offset
 			raise "offset must be Integer" unless Integer === offset
 
@@ -1025,6 +1100,7 @@ class Pst
 
 		# @param offset [Integer]
 		# @return [Array<String>]
+		# @private
 		def get_data_array offset
 			raise "offset must be Integer" unless Integer === offset
 
@@ -1224,6 +1300,7 @@ only remaining issue is test4 recipients of 200044. strange.
 	class RawPropertyStore < BlockParser
 		include Enumerable
 
+		# @return [Integer] number of property tuples
 		attr_reader :length
 
 		# Will read Property Context (PC)
@@ -1271,6 +1348,7 @@ only remaining issue is test4 recipients of 200044. strange.
 	# load any of the properties upon creation. 
 	class RawPropertyStoreTable < BlockParser
 		# TCOLDESC
+		# @private
 		class Column < Struct.new(:ref_type, :type, :ind2_off, :size, :slot)
 			def initialize data
 				super(*data.unpack('v3CC'))
@@ -1383,6 +1461,7 @@ only remaining issue is test4 recipients of 200044. strange.
 		# for debug
 		#
 		# @return [Array<Column>]
+		# @private
 		def schema
 			@schema ||= Pst.split_per(index_data, 8, -1).map { |data| Column.new data }
 		end
@@ -1406,6 +1485,7 @@ only remaining issue is test4 recipients of 200044. strange.
 		#
 		# @param record_index [Integer]
 		# @return [String]
+		# @private
 		def get_record record_index
 			page_index = record_index / @rows_per_page
 			heap_index = record_index % @rows_per_page
@@ -1450,13 +1530,18 @@ only remaining issue is test4 recipients of 200044. strange.
 	class AttachmentTable < BlockParser
 		# a "fake" MAPI property name for this constant. if you get a mapi property with
 		# this value, it is the id2 value to use to get attachment data.
+		#
+		# @private
 		PR_ATTACHMENT_ID2 = 0x67f2
 
 		# @return [NodePtr]
+		# @private
 		attr_reader :node
 		# @return [RawPropertyStoreTable]
+		# @private
 		attr_reader :table
 
+		# @param node [NodePtr]
 		def initialize node
 			@node = node
 			# no super, we only actually want BlockParser2#idx2
@@ -1500,8 +1585,10 @@ only remaining issue is test4 recipients of 200044. strange.
 	# AttachmentTable.
 	class RecipientTable < BlockParser
 		# @return [NodePtr]
+		# @private
 		attr_reader :node
 		# @return [RawPropertyStoreTable]
+		# @private
 		attr_reader :table
 
 		# @param node [NodePtr]
@@ -1536,6 +1623,7 @@ only remaining issue is test4 recipients of 200044. strange.
 
 	# @param property_list [Array<Array(Integer, Integer, Object)>]
 	# @return [PropertySet]
+	# @private
 	def self.make_property_set property_list
 		hash = property_list.inject({}) do |hash, (key, type, value)|
 			hash.update PropertySet::Key.new(key) => value
@@ -1558,6 +1646,7 @@ only remaining issue is test4 recipients of 200044. strange.
 	end
 
 	class Item < Mapi::Message
+		# @private
 		class EntryID < Struct.new(:u1, :entry_id, :id)
 			UNPACK_STR = 'VA16V'
 
@@ -1569,7 +1658,9 @@ only remaining issue is test4 recipients of 200044. strange.
 
 		include RecursivelyEnumerable
 
+		# @private
 		attr_accessor :type
+		# @private
 		attr_accessor :parent
 
 		# @param node [NodePtr]
@@ -1607,6 +1698,9 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 			@type = type
 		end
 
+		# @yield [item]
+		# @yieldparam item [Item]
+		# @return [void]
 		def each_child
 			id = ipm_subtree_entryid
 			if id
@@ -1635,7 +1729,7 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 			end
 		end
 
-		# @return [Array]
+		# @return [String]
 		def path
 			parents, item = [], self
 			parents.unshift item while item = item.parent
@@ -1644,7 +1738,7 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 			parents.map { |item| item.props.display_name or raise 'unable to construct path' } * '/'
 		end
 
-		# @return [Array]
+		# @return [Array<Item>]
 		def children
 			to_enum(:each_child).to_a
 		end
@@ -1652,16 +1746,22 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 		# these are still around because they do different stuff
 
 		# Top of Personal Folder Record
+		#
+		# @private
 		def ipm_subtree_entryid
 			@ipm_subtree_entryid ||= EntryID.new(props.ipm_subtree_entryid.read).id rescue nil
 		end
 
 		# Deleted Items Folder Record
+		#
+		# @private
 		def ipm_wastebasket_entryid
 			@ipm_wastebasket_entryid ||= EntryID.new(props.ipm_wastebasket_entryid.read).id rescue nil
 		end
 
 		# Search Root Record
+		#
+		# @private
 		def finder_entryid
 			@finder_entryid ||= EntryID.new(props.finder_entryid.read).id rescue nil
 		end
@@ -1688,15 +1788,20 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 		# so if you want the last attachment, you can get it without creating the others perhaps.
 		# it just has to handle the no table at all case a bit more gracefully.
 
+		# @return [Array<Attachment>]
 		def attachments
 			@attachments ||= AttachmentTable.new(@node).to_a.map { |list| Attachment.new list }
 		end
 
+		# @return [Array<Recipient>]
 		def recipients
 			#[]
 			@recipients ||= RecipientTable.new(@node).to_a.map { |list| Recipient.new list }
 		end
 
+		# @yield [item]
+		# @yieldparam item [Item]
+		# @return [void]
 		def each_recursive(&block)
 			#p :self => self
 			children.each do |child|
@@ -1723,6 +1828,7 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 	#
 	# @param desc [NodePtr]
 	# @return [Item]
+	# @private
 	def pst_parse_item node
 		Item.new node, RawPropertyStore.new(node).to_a
 	end
@@ -1732,6 +1838,7 @@ it seems that 0x4 is for regular messages (and maybe contacts etc)
 	# ----------------------------------------------------------------------------
 	#
 
+	# @private
 	def dump_debug_info
 		puts "* pst header"
 		p header
@@ -1818,11 +1925,13 @@ which confirms my belief that the block size for idx and desc is more likely 512
 	end
 
 	# @return [NodePtr]
+	# @private
 	def root_desc
 		@nodes.first
 	end
 
 	# @return [Item]
+	# @private
 	def root_item
 		item = pst_parse_item root_desc
 		item.type = :root
@@ -1830,6 +1939,7 @@ which confirms my belief that the block size for idx and desc is more likely 512
 	end
 
 	# @return [Item]
+	# @private
 	def root
 		root_item
 	end
@@ -1839,12 +1949,14 @@ which confirms my belief that the block size for idx and desc is more likely 512
 
 	# @yield [message]
 	# @yieldparam message [Item]
+	# @return [void]
 	def each(&block)
 		root = self.root
 		block[root]
 		root.each_recursive(&block)
 	end
 
+	# @return [String]
 	def name
 		@name ||= root_item.props.display_name
 	end
