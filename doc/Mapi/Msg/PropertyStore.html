@@ -106,19 +106,19 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>= Introduction</p>
+    <h1 id="introduction">Introduction</h1>
 
-<p>A big compononent of +Msg+ files is the property store, which holds
+<p>A big compononent of <span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Mapi::Msg</a></span> files is the property store, which holds
 all the key/value pairs of properties. The message itself, and all
-its <tt>Attachment</tt>s and <tt>Recipient</tt>s have an instance of
+its <span class='object_link'><a href="Attachment.html" title="Mapi::Msg::Attachment (class)">Attachment</a></span>s and <span class='object_link'><a href="Recipient.html" title="Mapi::Msg::Recipient (class)">Recipient</a></span>s have an instance of
 this class.</p>
 
-<p>= Storage model</p>
+<h1 id="storage-model">Storage model</h1>
 
 <p>Property keys (tags?) can be either simple hex numbers, in the
 range 0x0000 - 0xffff, or they can be named properties. In fact,
 properties in the range 0x0000 to 0x7fff are supposed to be the non-
-named properties, and can be considered to be in the +PS_MAPI+
+named properties, and can be considered to be in the <code>PS_MAPI</code>
 namespace. (correct?)</p>
 
 <p>Named properties are serialized in the 0x8000 to 0xffff range,
@@ -130,58 +130,66 @@ about keys.</p>
 <p>Further, we can give symbolic names to most keys, coming from
 constants in various places. Eg:</p>
 
-<p>0x0037 =&gt; subject
-  00062002-0000-0000-C000-000000000046/0x8218 =&gt; response_status
-  # displayed as categories in outlook
-  00020329-0000-0000-C000-000000000046/”Keywords” =&gt; categories</p>
+<pre class="code ruby"><code class="ruby">0x0037 =&gt; subject
+{00062002-0000-0000-C000-000000000046}/0x8218 =&gt; response_status
+# displayed as categories in outlook
+{00020329-0000-0000-C000-000000000046}/&quot;Keywords&quot; =&gt; categories
+</code></pre>
 
 <p>Futher, there are completely different names, coming from other
-object models that get mapped to these things (CDO’s model,
-Outlook’s model etc). Eg “urn:schemas:httpmail:subject”
-I think these can be ignored though, as they aren’t defined clearly
-in terms of mapi properties, and i’m really just trying to make
+object models that get mapped to these things (CDO&#39;s model,
+Outlook&#39;s model etc). Eg &quot;urn:schemas:httpmail:subject&quot;
+I think these can be ignored though, as they aren&#39;t defined clearly
+in terms of mapi properties, and i&#39;m really just trying to make
 a mapi property store. (It should also be relatively easy to
 support them later.)</p>
 
-<p>= Usage</p>
+<h1 id="usage">Usage</h1>
 
-<p>The api is driven by a desire to have the simple stuff “just work”, ie</p>
+<p>The api is driven by a desire to have the simple stuff &quot;just work&quot;, ie</p>
 
-<p>properties.subject
-  properties.display_name</p>
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_subject'>subject</span>
+<span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_display_name'>display_name</span>
+</code></pre>
 
 <p>There also needs to be a way to look up properties more specifically:</p>
 
-<p>properties[0x0037] # =&gt; gets the subject
-  properties[0x0037, PS_MAPI] # =&gt; still gets the subject
-  properties[‘Keywords’, PS_PUBLIC_STRINGS] # =&gt; gets outlook’s categories array</p>
-
-<p>The abbreviated versions work by “resolving” the symbols to full keys:</p>
-
-<pre class="code ruby"><code class="ruby"><span class='comment'># the guid here is just PS_PUBLIC_STRINGS   properties.resolve :keywords # =&gt; #&lt;Key {00020329-0000-0000-c000-000000000046}/&quot;Keywords&quot;&gt;   # the result here is actually also a key   k = properties.resolve :subject  # =&gt; 0x0037   # it has a guid   k.guid == Msg::Properties::PS_MAPI # =&gt; true
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='int'>0x0037</span><span class='rbracket'>]</span> <span class='comment'># =&gt; gets the subject
+</span><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='int'>0x0037</span><span class='comma'>,</span> <span class='const'>PS_MAPI</span><span class='rbracket'>]</span> <span class='comment'># =&gt; still gets the subject
+</span><span class='id identifier rubyid_properties'>properties</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Keywords</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='const'>PS_PUBLIC_STRINGS</span><span class='rbracket'>]</span> <span class='comment'># =&gt; gets outlook&#39;s categories array
 </span></code></pre>
 
-<p>= Parsing</p>
+<p>The abbreviated versions work by &quot;resolving&quot; the symbols to full keys:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># the guid here is just PS_PUBLIC_STRINGS
+</span><span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_resolve'>resolve</span> <span class='symbol'>:keywords</span> <span class='comment'># =&gt; #&lt;Key {00020329-0000-0000-c000-000000000046}/&quot;Keywords&quot;&gt;
+</span><span class='comment'># the result here is actually also a key
+</span><span class='id identifier rubyid_k'>k</span> <span class='op'>=</span> <span class='id identifier rubyid_properties'>properties</span><span class='period'>.</span><span class='id identifier rubyid_resolve'>resolve</span> <span class='symbol'>:subject</span>  <span class='comment'># =&gt; 0x0037
+</span><span class='comment'># it has a guid
+</span><span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='op'>::</span><span class='const'>Properties</span><span class='op'>::</span><span class='const'>PS_MAPI</span> <span class='comment'># =&gt; true
+</span></code></pre>
+
+<h1 id="parsing">Parsing</h1>
 
 <p>There are three objects that need to be parsed to load a +Msg+ property store:</p>
 
 <ol>
-  <li>The +nameid+ directory (<tt>Properties.parse_nameid</tt>)</li>
-  <li>The many +substg+ objects, whose names should match <tt>Properties::SUBSTG_RX</tt>
-(<tt>Properties#parse_substg</tt>)</li>
-  <li>The +properties+ file (<tt>Properties#parse_properties</tt>)</li>
+<li>The <code>nameid</code> directory (<code>Properties.parse_nameid</code>)</li>
+<li>The many <code>substg</code> objects, whose names should match <code>Properties::SUBSTG_RX</code>
+(<code>Properties#parse_substg</code>)</li>
+<li>The <code>properties</code> file (<code>Properties#parse_properties</code>)</li>
 </ol>
 
 <p>Understanding of the formats is by no means perfect.</p>
 
-<p>= TODO</p>
+<h1 id="todo">TODO</h1>
 
 <ul>
-  <li>While the key objects are sufficient, the value objects are just plain
-ruby types. It currently isn’t possible to write to the values, or to know
+<li>While the key objects are sufficient, the value objects are just plain
+ruby types. It currently isn&#39;t possible to write to the values, or to know
 which encoding the value had.</li>
-  <li>Update this doc.</li>
-  <li>Perhaps change from eager loading, to be load-on-demand.</li>
+<li>Update this doc.</li>
+<li>Perhaps change from eager loading, to be load-on-demand.</li>
 </ul>
 
 
@@ -207,9 +215,11 @@ which encoding the value had.</li>
         <dt id="ENCODINGS-constant" class="">ENCODINGS =
           <div class="docstring">
   <div class="discussion">
-    <p>note that binary and default both use obj.open. not the block form. this means we should
-#close it later, which we don’t. as we’re only reading though, it shouldn’t matter right?
-not really good though FIXME
+    <p>note that binary and default both use obj.open. not the block form. this means we should</p>
+
+<h1 id="close-it-later-which-we-dont-as-were-only-reading-though-it-shouldnt-matter-right">close it later, which we don&#39;t. as we&#39;re only reading though, it shouldn&#39;t matter right?</h1>
+
+<p>not really good though FIXME
 change these to use mapi symbolic const names</p>
 
 
@@ -281,8 +291,7 @@ change these to use mapi symbolic const names</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -309,8 +318,7 @@ change these to use mapi symbolic const names</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -400,8 +408,7 @@ change these to use mapi symbolic const names</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -575,15 +582,15 @@ change these to use mapi symbolic const names</p>
       <pre class="lines">
 
 
-123
-124
-125
-126
-127
-128</pre>
+131
+132
+133
+134
+135
+136</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='ivar'>@nameid</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -629,12 +636,12 @@ change these to use mapi symbolic const names</p>
       <pre class="lines">
 
 
-342
-343
-344</pre>
+350
+351
+352</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 342</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 350</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
 	<span class='ivar'>@cache</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -664,7 +671,6 @@ change these to use mapi symbolic const names</p>
   <div class="discussion">
     
 
-
   </div>
 </div>
 <div class="tags">
@@ -689,12 +695,12 @@ change these to use mapi symbolic const names</p>
       <pre class="lines">
 
 
-120
-121
-122</pre>
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 120</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_helper'>helper</span>
   <span class='ivar'>@helper</span>
@@ -718,7 +724,6 @@ change these to use mapi symbolic const names</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-
 
   </div>
 </div>
@@ -744,12 +749,12 @@ change these to use mapi symbolic const names</p>
       <pre class="lines">
 
 
-118
-119
-120</pre>
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 126</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_nameid'>nameid</span>
   <span class='ivar'>@nameid</span>
@@ -830,14 +835,14 @@ change these to use mapi symbolic const names</p>
       <pre class="lines">
 
 
-135
-136
-137
-138
-139</pre>
+143
+144
+145
+146
+147</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='id identifier rubyid_prop'>prop</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_helper'>helper</span>
@@ -891,14 +896,6 @@ Returns a hash of integer -&gt; Key.</p>
       <pre class="lines">
 
 
-176
-177
-178
-179
-180
-181
-182
-183
 184
 185
 186
@@ -945,10 +942,18 @@ Returns a hash of integer -&gt; Key.</p>
 227
 228
 229
-230</pre>
+230
+231
+232
+233
+234
+235
+236
+237
+238</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 184</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_nameid'>parse_nameid</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_remaining'>remaining</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
@@ -1029,7 +1034,6 @@ Returns a hash of integer -&gt; Key.</p>
   <div class="discussion">
     
 
-
   </div>
 </div>
 <div class="tags">
@@ -1080,14 +1084,6 @@ Returns a hash of integer -&gt; Key.</p>
       <pre class="lines">
 
 
-311
-312
-313
-314
-315
-316
-317
-318
 319
 320
 321
@@ -1108,10 +1104,18 @@ Returns a hash of integer -&gt; Key.</p>
 336
 337
 338
-339</pre>
+339
+340
+341
+342
+343
+344
+345
+346
+347</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 311</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 319</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_property'>add_property</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_pos'>pos</span><span class='op'>=</span><span class='kw'>nil</span>
 	<span class='comment'># map keys in the named property range through nameid
@@ -1187,14 +1191,6 @@ Returns a hash of integer -&gt; Key.</p>
       <pre class="lines">
 
 
-144
-145
-146
-147
-148
-149
-150
-151
 152
 153
 154
@@ -1212,10 +1208,18 @@ Returns a hash of integer -&gt; Key.</p>
 166
 167
 168
-169</pre>
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 144</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 152</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='comment'># we need to do the nameid first, as it provides the map for later user defined properties
@@ -1289,14 +1293,6 @@ such as longs, bools, times etc. The parsing has problems.</p>
       <pre class="lines">
 
 
-270
-271
-272
-273
-274
-275
-276
-277
 278
 279
 280
@@ -1325,10 +1321,18 @@ such as longs, bools, times etc. The parsing has problems.</p>
 303
 304
 305
-306</pre>
+306
+307
+308
+309
+310
+311
+312
+313
+314</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 270</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 278</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_properties'>parse_properties</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span>
@@ -1446,14 +1450,6 @@ as strings, binary blobs, and other ole sub-directories (eg nested Msg) are stor
       <pre class="lines">
 
 
-239
-240
-241
-242
-243
-244
-245
-246
 247
 248
 249
@@ -1471,10 +1467,18 @@ as strings, binary blobs, and other ole sub-directories (eg nested Msg) are stor
 261
 262
 263
-264</pre>
+264
+265
+266
+267
+268
+269
+270
+271
+272</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 239</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 247</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_substg'>parse_substg</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_encoding'>encoding</span><span class='comma'>,</span> <span class='id identifier rubyid_offset'>offset</span><span class='comma'>,</span> <span class='id identifier rubyid_obj'>obj</span>
 	<span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>&amp;</span> <span class='int'>0x1000</span><span class='rparen'>)</span> <span class='op'>!=</span> <span class='int'>0</span>
@@ -1512,7 +1516,7 @@ as strings, binary blobs, and other ole sub-directories (eg nested Msg) are stor
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 18:24:02 2021 by
+  Generated on Sat Dec 25 20:05:05 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

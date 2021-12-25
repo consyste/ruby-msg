@@ -57,121 +57,17 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'>
-<h1 id="label-Introduction">Introduction</h1>
+      <div id="content"><div id='filecontents'><h1 id="ruby-msg">ruby-msg</h1>
 
-<p>Generally, the goal of the project is to enable the conversion of msg and pst files into standards based formats, without reliance on outlook, or any platform dependencies. In fact its currently <em>pure ruby</em>, so it should be easy to get running.</p>
+<p><a href="https://dev.azure.com/HiraokaHyperTools/ruby-msg/_build/latest?definitionId=12&branchName=dev"><img src="https://dev.azure.com/HiraokaHyperTools/ruby-msg/_apis/build/status/HiraokaHyperTools.ruby-msg?branchName=dev" alt="Build Status"></a></p>
 
-<p>It is targeted at people who want to migrate their PIM data from outlook, converting msg and pst files into rfc2822 emails, vCard contacts, iCalendar appointments etc. However, it also aims to be a fairly complete mapi message store manipulation library, providing a sane model for (currently read-only) access to msg and pst files (message stores).</p>
+<p><em>Quick links</em>: <a href="https://hiraokahypertools.github.io/ruby-msg/">Home</a> | <a href="https://hiraokahypertools.github.io/ruby-msg/doc/index.html">yard</a></p>
 
-<p>I am happy to accept patches, give commit bits etc.</p>
-
-<p>Please let me know how it works for you, any feedback would be welcomed.</p>
-
-<h1 id="label-Features">Features</h1>
-
-<p>Broad features of the project:</p>
-<ul><li>
-<p>Can be used as a general mapi library, where conversion to and working on a standard format doesn&#39;t make sense.</p>
-</li><li>
-<p>Supports conversion of messages to standard formats, like rfc2822 emails, vCard, etc.</p>
-</li><li>
-<p>Well commented, and easily extended.</p>
-</li><li>
-<p>Basic RTF converter, for providing a readable body when only RTF exists (needs work)</p>
-</li><li>
-<p>RTF decompression support included, as well as HTML extraction from RTF where appropriate (both in pure ruby, see <code>lib/mapi/rtf.rb</code>)</p>
-</li><li>
-<p>Support for mapping property codes to symbolic names, with many included.</p>
-</li></ul>
-
-<p>Features of the msg format message store:</p>
-<ul><li>
-<p>Most key .msg structures are understood, and the only the parsing code should require minor tweaks. Most of remaining work is in achieving high-fidelity conversion to standards formats (see [TODO]).</p>
-</li><li>
-<p>Supports both types of property storage (large ones in <code>substg</code> files, and small ones in the <code>properties</code> file.</p>
-</li><li>
-<p>Complete support for named properties in different GUID namespaces.</p>
-</li><li>
-<p>Initial support for handling embedded ole files, converting nested .msg files to message/rfc822 attachments, and serializing others as ole file attachments (allows you to view embedded excel for example).</p>
-</li></ul>
-
-<p>Features of the pst format message store:</p>
-<ul><li>
-<p>Handles both Outlook 1997 &amp; 2003 format pst files, both with no- and “compressible-” encryption.</p>
-</li><li>
-<p>Understanding of the file format is still very superficial.</p>
-</li></ul>
-
-<h1 id="label-Usage">Usage</h1>
-
-<p>At the command line, it is simple to convert individual msg or pst files to .eml, or to convert a batch to an mbox format file. See mapitool help for details:</p>
-
-<pre class="code ruby"><code class="ruby">mapitool -si some_email.msg &gt; some_email.eml
-mapitool -s *.msg &gt; mbox
-</code></pre>
-
-<p>There is also a fairly complete and easy to use high level library access:</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mapi/msg</span><span class='tstring_end'>&#39;</span></span>
-
-<span class='id identifier rubyid_msg'>msg</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Mapi.html" title="Mapi (module)">Mapi</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Mapi/Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='period'>.</span><span class='id identifier rubyid_open'><span class='object_link'><a href="Mapi/Msg.html#open-class_method" title="Mapi::Msg.open (method)">open</a></span></span> <span class='id identifier rubyid_filename'>filename</span>
-
-<span class='comment'># access to the 3 main data stores, if you want to poke with the msg
-</span><span class='comment'># internals
-</span><span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_recipients'>recipients</span>
-<span class='comment'># =&gt; [#&lt;Recipient:&#39;\&#39;Marley, Bob\&#39; &lt;bob.marley@gmail.com&gt;&#39;&gt;]
-</span><span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_attachments'>attachments</span>
-<span class='comment'># =&gt; [#&lt;Attachment filename=&#39;blah1.tif&#39;&gt;, #&lt;Attachment filename=&#39;blah2.tif&#39;&gt;]
-</span><span class='id identifier rubyid_msg'>msg</span><span class='period'>.</span><span class='id identifier rubyid_properties'>properties</span>
-<span class='comment'># =&gt; #&lt;Properties ... normalized_subject=&#39;Testing&#39; ... 
-</span><span class='comment'># creation_time=#&lt;DateTime: 2454042.45074714,0,2299161&gt; ...&gt;
-</span></code></pre>
-
-<p>To completely abstract away all msg peculiarities, convert the msg to a mime object. The message as a whole, and some of its main parts support conversion to mime objects.</p>
-
-<pre class="code ruby"><code class="ruby">msg.attachments.first.to_mime
-# =&gt; #&lt;Mime content_type=&#39;application/octet-stream&#39;&gt;
-mime = msg.to_mime
-puts mime.to_tree
-# =&gt;
-- #&lt;Mime content_type=&#39;multipart/mixed&#39;&gt;
-  |- #&lt;Mime content_type=&#39;multipart/alternative&#39;&gt;
-  |  |- #&lt;Mime content_type=&#39;text/plain&#39;&gt;
-  |  \- #&lt;Mime content_type=&#39;text/html&#39;&gt;
-  |- #&lt;Mime content_type=&#39;application/octet-stream&#39;&gt;
-  \- #&lt;Mime content_type=&#39;application/octet-stream&#39;&gt;
-
-# convert mime object to serialised form,
-# inclusive of attachments etc. (not ideal in memory, but its wip).
-puts mime.to_s
-</code></pre>
-
-<h1 id="label-Thanks">Thanks</h1>
-<ul><li>
-<p>The initial implementation of parsing msg files was based primarily on <a href="http://www.matijs.net/software/msgconv/">msgconvert.pl</a>.</p>
-</li><li>
-<p>The basis for the outlook 97 pst file was the source to <code>libpst</code>.</p>
-</li><li>
-<p>The code for rtf decompression was implemented by inspecting the algorithm used in the <code>JTNEF</code> project.</p>
-</li></ul>
-
-<h1 id="label-Other">Other</h1>
-
-<p>For more information, see</p>
-<ul><li>
-<p><a href="/aquasync/ruby-msg/wiki/TODO">TODO</a></p>
-</li><li>
-<p><a href="/aquasync/ruby-msg/wiki/MsgDetails">MsgDetails</a></p>
-</li><li>
-<p><a href="/aquasync/ruby-msg/wiki/PstDetails">PstDetails</a></p>
-</li><li>
-<p><a href="/aquasync/ruby-msg/wiki/OleDetails">OleDetails</a></p>
-</li></ul>
+<p>This is a private fork of <a href="https://github.com/aquasync/ruby-msg">https://github.com/aquasync/ruby-msg</a> repository.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Sat Dec 25 18:24:02 2021 by
+  Generated on Sat Dec 25 20:06:44 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

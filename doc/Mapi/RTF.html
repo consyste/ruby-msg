@@ -90,7 +90,7 @@
 <p>The +RTF+ module contains a few helper functions for dealing with rtf
 in mapi messages: +rtfdecompr+, and <tt>rtf2html</tt>.</p>
 
-<p>Both were ported from their original C versions for simplicity’s sake.</p>
+<p>Both were ported from their original C versions for simplicity&#39;s sake.</p>
 
 
   </div>
@@ -212,12 +212,12 @@ in mapi messages: +rtfdecompr+, and <tt>rtf2html</tt>.</p>
     <p>Note, this is a conversion of the original C code. Not great - needs tests and
 some refactoring, and an attempt to correct some inaccuracies. Hacky but works.</p>
 
-<p>Returns +nil+ if it doesn’t look like an rtf encapsulated rtf.</p>
+<p>Returns +nil+ if it doesn&#39;t look like an rtf encapsulated rtf.</p>
 
-<p>Some cases that the original didn’t deal with have been patched up, eg from 
+<p>Some cases that the original didn&#39;t deal with have been patched up, eg from 
 this chunk, where there are tags outside of the htmlrtf ignore block.</p>
 
-<p>”<br />\htmlrtf \line \htmlrtf0 \line {\</em>\htmltag84 &lt;a href…”</p>
+<p>&quot;<br />\htmlrtf \line \htmlrtf0 \line {\*\htmltag84 &lt;a href...&quot;</p>
 
 <p>We take the approach of ignoring all rtf tags not explicitly handled. A proper
 parse tree would be nicer to work with. will need to look for ruby rtf library</p>
@@ -239,16 +239,16 @@ rtf markup, and extract the html markup out of the comments, and get a valid
 html document.</p>
 
 <p>There are actually two kinds of html markup in comments. Most of them are
-prefixed by “*\htmltagNNN”, for some number NNN. But sometimes there’s one
-prefixed by “*\mhtmltagNNN” followed by “*\htmltagNNN”. In this case,
+prefixed by &quot;*\htmltagNNN&quot;, for some number NNN. But sometimes there&#39;s one
+prefixed by &quot;*\mhtmltagNNN&quot; followed by &quot;*\htmltagNNN&quot;. In this case,
 the two are equivalent, but the m-tag is for a MIME Multipart/Mixed Message
-and contains tags that refer to content-ids (e.g. img src=”cid:072344a7”)
-while the normal tag just refers to a name (e.g. img src=”fred.jpg”)
+and contains tags that refer to content-ids (e.g. img src=&quot;cid:072344a7&quot;)
+while the normal tag just refers to a name (e.g. img src=&quot;fred.jpg&quot;)
 The code below keeps the m-tag and discards the normal tag.
 If there are any m-tags like this, then the message also contains an
-attachment with a PR_CONTENT_ID property e.g. “072344a7”. Actually,
-sometimes the m-tag is e.g. img src=”http://outlook/welcome.html” and the
-attachment has a PR_CONTENT_LOCATION “http://outlook/welcome.html” instead
+attachment with a PR_CONTENT_ID property e.g. &quot;072344a7&quot;. Actually,
+sometimes the m-tag is e.g. img src=&quot;<a href="http://outlook/welcome.html">http://outlook/welcome.html</a>&quot; and the
+attachment has a PR_CONTENT_LOCATION &quot;<a href="http://outlook/welcome.html">http://outlook/welcome.html</a>&quot; instead
 of a PR_CONTENT_ID.</p>
 
 
@@ -520,7 +520,7 @@ read/write neutral fashion.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 18:24:02 2021 by
+  Generated on Sat Dec 25 20:21:21 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

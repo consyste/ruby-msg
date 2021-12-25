@@ -105,8 +105,9 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>+Recipient+ serves as a container for the +recip+ directories in the .msg.
-It has things like office_location, business_telephone_number, but I don’t
+    <p><code>Recipient</code> serves as a container for the <code>recip</code> directories in the <code>.msg</code>.</p>
+
+<p>It has things like office_location, business_telephone_number, but I don&#39;t
 think enough to make a vCard out of?</p>
 
 
@@ -127,34 +128,6 @@ think enough to make a vCard out of?</p>
 
   <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#obj-instance_method" title="#obj (instance method)">#<strong>obj</strong>  &#x21d2; Ole::Storage::Dirent </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-</div></span>
-  
-</li>
-
     
       <li class="public ">
   <span class="summary_signature">
@@ -298,19 +271,19 @@ think enough to make a vCard out of?</p>
       <pre class="lines">
 
 
-485
-486
-487
-488
-489</pre>
+508
+509
+510
+511
+512</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 485</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 508</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span>
 	<span class='ivar'>@obj</span> <span class='op'>=</span> <span class='id identifier rubyid_obj'>obj</span>
-	<span class='kw'>super</span> <span class='const'><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../PropertySet.html#initialize-instance_method" title="Mapi::PropertySet#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="PropertyStore.html" title="Mapi::Msg::PropertyStore (class)">PropertyStore</a></span></span><span class='period'>.</span><span class='id identifier rubyid_load'><span class='object_link'><a href="PropertyStore.html#load-class_method" title="Mapi::Msg::PropertyStore.load (method)">load</a></span></span><span class='lparen'>(</span><span class='ivar'>@obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='rparen'>)</span><span class='rparen'>)</span>
-	<span class='const'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn_unknown'><span class='object_link'><a href="../Msg.html#warn_unknown-class_method" title="Mapi::Msg.warn_unknown (method)">warn_unknown</a></span></span> <span class='ivar'>@obj</span>
+	<span class='kw'>super</span> <span class='const'><span class='object_link'><a href="../PropertySet.html" title="Mapi::PropertySet (class)">PropertySet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../PropertySet.html#initialize-instance_method" title="Mapi::PropertySet#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='const'>PropertyStore</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='ivar'>@obj</span><span class='comma'>,</span> <span class='id identifier rubyid_helper'>helper</span><span class='rparen'>)</span><span class='rparen'>)</span>
+	<span class='const'><span class='object_link'><a href="../Msg.html" title="Mapi::Msg (class)">Msg</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn_unknown'>warn_unknown</span> <span class='ivar'>@obj</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -325,62 +298,7 @@ think enough to make a vCard out of?</p>
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="obj-instance_method">
-  
-    #<strong>obj</strong>  &#x21d2; <tt>Ole::Storage::Dirent</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Ole::Storage::Dirent</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-479
-480
-481</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 479</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_obj'>obj</span>
-  <span class='ivar'>@obj</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="properties-instance_method">
+  <h3 class="signature first" id="properties-instance_method">
   
     #<strong>properties</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
@@ -408,12 +326,12 @@ think enough to make a vCard out of?</p>
       <pre class="lines">
 
 
-480
-481
-482</pre>
+502
+503
+504</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 480</span>
+      <pre class="code"><span class="info file"># File 'lib/mapi/msg.rb', line 502</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_properties'>properties</span>
   <span class='ivar'>@properties</span>
@@ -429,7 +347,7 @@ think enough to make a vCard out of?</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 18:24:03 2021 by
+  Generated on Sat Dec 25 20:21:21 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>

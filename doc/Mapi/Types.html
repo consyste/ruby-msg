@@ -110,13 +110,13 @@
         <dt id="DATA-constant" class="">DATA =
           <div class="docstring">
   <div class="discussion">
-    <p>Mapi property types, taken from http://msdn2.microsoft.com/en-us/library/bb147591.aspx.</p>
+    <p>Mapi property types, taken from <a href="http://msdn2.microsoft.com/en-us/library/bb147591.aspx">http://msdn2.microsoft.com/en-us/library/bb147591.aspx</a>.</p>
 
 <p>The fields are [mapi name, variant name, description]. Maybe I should just make it a
 struct.</p>
 
 <p>seen some synonyms here, like PT_I8 vs PT_LONG. seen stuff like PT_SRESTRICTION, not
-sure what that is. look at <code>grep ' PT_' data/mapitags.yaml  | sort -u</code>
+sure what that is. look at <code>grep &#39; PT_&#39; data/mapitags.yaml  | sort -u</code>
 also, it has stuff like PT_MV_BINARY, where <em>MV</em> probably means multi value, and is
 likely just defined to | in 0x1000.</p>
 
@@ -124,8 +124,8 @@ likely just defined to | in 0x1000.</p>
 for the corresponding variant type. Odd. Also, the last 2 are currently commented out here
 because of the clash.</p>
 
-<p>Note 2 - the strings here say VT_BSTR, but I don’t have that defined in Ole::Types. Should
-maybe change them to match. I’ve also seen reference to PT_TSTRING, which is defined as some
+<p>Note 2 - the strings here say VT_BSTR, but I don&#39;t have that defined in Ole::Types. Should
+maybe change them to match. I&#39;ve also seen reference to PT_TSTRING, which is defined as some
 sort of get unicode first, and fallback to ansii or something.</p>
 
 
@@ -173,7 +173,7 @@ sort of get unicode first, and fallback to ansii or something.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 25 18:24:02 2021 by
+  Generated on Sat Dec 25 20:21:21 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.6.5).
 </div>
