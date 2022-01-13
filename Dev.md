@@ -22,5 +22,11 @@ Docs.
 
 ```bat
 gem install yard
-yardoc -o docs\doc -r README.rdoc
+yardoc --no-private -m markdown -M redcarpet -o docs\doc -r Home.md
+```
+
+Build `build/ruby-msg-nx-0.3.0`
+
+```bat
+rake gem
 ```
