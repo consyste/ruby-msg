@@ -163,7 +163,7 @@ class Pst
 		def initialize data
 			@magic = data.unpack('N')[0]
 			@index_type = data[INDEX_TYPE_OFFSET].ord
-			@version = {0x0e => 1997, 0x17 => 2003}[@index_type]
+			@version = {0x0e => 1997, 0x17 => 2003, 0x24 => 2003}[@index_type]
 
 			if version_2003?
 				# don't know?
@@ -205,7 +205,7 @@ class Pst
 
 		def validate!
 			raise FormatError, "bad signature on pst file (#{'0x%x' % magic})" unless magic == MAGIC
-			raise FormatError, "only index types 0x0e and 0x17 are handled (#{'0x%x' % index_type})" unless [0x0e, 0x17].include?(index_type)
+			raise FormatError, "only index types 0x0e, 0x17 and 0x24 are handled (#{'0x%x' % index_type})" unless [0x0e, 0x17, 0x24].include?(index_type)
 			raise FormatError, "only encrytion types 0 and 1 are handled (#{encrypt_type.inspect})" unless [0, 1].include?(encrypt_type)
 		end
 	end

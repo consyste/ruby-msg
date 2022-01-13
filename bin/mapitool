@@ -23,8 +23,8 @@ class Mapitool
 		@helper = Mapi::Helper.new opts[:ansi_encoding], opts[:to_unicode]
 		files.map! do |f|
 			ext = File.extname(f.downcase)[1..-1]
-			raise ArgumentError, 'Unsupported file type - %s' % f unless ext =~ /^(msg|pst)$/
-			raise ArgumentError, 'Expermiental pst support not enabled' if ext == 'pst' and !opts[:enable_pst]
+			raise ArgumentError, 'Unsupported file type - %s' % f unless ext =~ /^(msg|pst|ost)$/
+			raise ArgumentError, 'Expermiental pst support not enabled' if /^(pst|ost)$/.match(ext) and !opts[:enable_pst]
 			[ext.to_sym, f]
 		end
 		if dir = opts[:output_dir]
@@ -34,7 +34,7 @@ class Mapitool
 
 	def each_message(&block)
 		files.each do |format, filename|
-			if format == :pst
+			if [:pst, :ost].include? format
 				if filter_path = opts[:filter_path]
 					filter_path = filter_path.tr("\\", '/').gsub(/\/+/, '/').sub(/^\//, '').sub(/\/$/, '')
 				end
