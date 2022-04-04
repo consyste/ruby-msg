@@ -21,6 +21,6 @@ Gem::Specification.new do |s|
 	s.files += Dir.glob('bin/*')
 
 	s.add_runtime_dependency 'ruby-ole', '~> 1.2', '>=1.2.8'
-	s.add_runtime_dependency 'vpim', '~> 0.360'
+	s.add_runtime_dependency 'vpim', '>= 0.360'
 end
 
