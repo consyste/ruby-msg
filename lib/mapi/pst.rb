@@ -57,7 +57,6 @@ need to think about the role of the mapi code, and Pst::Item etc, but that layer
 =end
 
 require 'mapi'
-require 'enumerator'
 require 'ostruct'
 require 'ole/ranges_io'
 require 'mapi/helper'
